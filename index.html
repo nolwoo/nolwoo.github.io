@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>놀우 · 포트폴리오</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #46BFA6;
+      --secondary: #86D9C9;
+      --ink: #3f4a47;
+      --ink-soft: #7b8784;
+      --bg: #ffffff;
+      --bg-warm: #F1FBF8;
+      --line: #f0e7df;
+      --radius: 14px;
+      --max: 1000px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { font-weight: 900; font-size: 22px; color: var(--ink); text-decoration: none; letter-spacing: -0.5px; }
+    .logo span { color: var(--primary); }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { color: var(--ink-soft); text-decoration: none; font-size: 15px; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--primary); }
+    .btn {
+      display: inline-block; background: var(--primary); color: #fff;
+      padding: 12px 24px; border-radius: 12px; text-decoration: none;
+      font-weight: 700; font-size: 15px; transition: transform .15s, box-shadow .2s;
+      box-shadow: 0 6px 18px rgba(70,191,166,0.30);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(70,191,166,0.38); }
+    .btn-ghost { background: transparent; color: var(--primary); box-shadow: none; border: 1.5px solid var(--primary); }
+    .btn-ghost:hover { background: var(--bg-warm); }
+    @media (max-width: 640px) { .nav-links a:not(.btn) { display: none; } }
+
+    /* Hero */
+    .hero { padding: 96px 0 80px; text-align: center; background: linear-gradient(180deg, var(--bg-warm), #fff); }
+    .eyebrow {
+      display: inline-block; background: #fff; color: var(--primary);
+      border: 1px solid var(--line); padding: 7px 16px; border-radius: 999px;
+      font-size: 14px; font-weight: 700; margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 60px); font-weight: 900; letter-spacing: -1.5px;
+      line-height: 1.2; color: var(--ink); margin-bottom: 20px;
+    }
+    .hero h1 .hl { color: var(--primary); }
+    .hero p { font-size: clamp(16px, 2.2vw, 20px); color: var(--ink-soft); max-width: 560px; margin: 0 auto 36px; }
+    .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* Section base */
+    section { padding: 84px 0; }
+    .section-tag { color: var(--primary); font-weight: 700; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+    .section-title { font-size: clamp(26px, 4vw, 36px); font-weight: 900; letter-spacing: -1px; line-height: 1.3; margin-bottom: 16px; }
+    .section-lead { color: var(--ink-soft); font-size: 18px; max-width: 620px; }
+
+    /* About */
+    .about { background: var(--bg-warm); }
+    .about .big {
+      font-size: clamp(22px, 3.4vw, 30px); font-weight: 700; line-height: 1.6;
+      letter-spacing: -0.6px; max-width: 760px;
+    }
+    .about .big b { color: var(--primary); }
+
+    /* Work cards */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin-top: 44px; }
+    .card {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 28px; transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(69,71,71,0.08); }
+    .card .thumb {
+      height: 150px; border-radius: 10px; margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px;
+    }
+    .card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
+    .card p { color: var(--ink-soft); font-size: 15px; }
+    .card .tags { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag { background: var(--bg-warm); color: var(--primary); font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 999px; }
+
+    /* CTA */
+    .cta { text-align: center; background: linear-gradient(180deg, #fff, var(--bg-warm)); }
+    .cta h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 900; letter-spacing: -1px; margin-bottom: 14px; }
+    .cta h2 b { color: var(--primary); }
+    .cta p { color: var(--ink-soft); font-size: 18px; margin-bottom: 32px; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--line); padding: 40px 0; }
+    .foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .foot .copy { color: var(--ink-soft); font-size: 14px; }
+    .foot .social { display: flex; gap: 18px; }
+    .foot .social a { color: var(--ink-soft); text-decoration: none; font-size: 14px; font-weight: 600; }
+    .foot .social a:hover { color: var(--primary); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a href="#" class="logo">놀우<span>.</span></a>
+      <nav class="nav-links">
+        <a href="#about">소개</a>
+        <a href="#work">작업</a>
+        <a href="#contact">연락처</a>
+        <a href="#contact" class="btn">연락하기</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">✦ 포트폴리오</span>
+      <h1>데이터와 투자를 AI로<br />더 <span class="hl">깊게</span> 들여다보는 사람</h1>
+      <p>복잡한 숫자도 AI를 곁에 두고 차근차근 풀어냅니다. 어렵게 느껴지던 것들을 누구나 보기 좋게 정리해요.</p>
+      <div class="hero-cta">
+        <a href="#work" class="btn">작업 보기</a>
+        <a href="#contact" class="btn btn-ghost">연락하기</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <p class="section-tag">About</p>
+      <p class="big">저는 매일의 시장과 종목을 기록하는 <b>개인 투자자</b>예요. AI를 곁에 두고 <b>매크로·섹터 브리핑</b>을 정리하고, 관심 종목이 호재에 얼마나 <b>선반영</b>됐는지 차분히 점검합니다. 화려한 예측보다, 꾸준한 기록과 데이터가 결국 더 멀리 간다고 믿어요.</p>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="wrap">
+      <p class="section-tag">Work</p>
+      <h2 class="section-title">제가 만든 것들</h2>
+      <p class="section-lead">AI를 곁에 두고 꾸준히 만들어온 기록과 분석들이에요.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="thumb">📈</div>
+          <h3>투자 리포트 자동화</h3>
+          <p>종목 이야기를 구조화된 투자 메모로 정리해 문서로 뽑아내요.</p>
+          <div class="tags"><span class="tag">AI</span><span class="tag">자동화</span></div>
+        </div>
+        <div class="card">
+          <div class="thumb">📰</div>
+          <h3>데일리 매크로 브리핑</h3>
+          <p>매일 아침 글로벌 매크로와 섹터 뉴스를 차분히 정리한 노트.</p>
+          <div class="tags"><span class="tag">리서치</span><span class="tag">매일</span></div>
+        </div>
+        <div class="card">
+          <div class="thumb">🚦</div>
+          <h3>종목 선반영 점검</h3>
+          <p>호재가 주가에 얼마나 반영됐는지 신호등으로 진단해요.</p>
+          <div class="tags"><span class="tag">투자</span><span class="tag">분석</span></div>
+        </div>
+        <div class="card">
+          <div class="thumb">🏠</div>
+          <h3>부동산 경매물건 분석</h3>
+          <p>경매지에서 시세·수익률을 뽑아 적정 입찰가를 가늠해요.</p>
+          <div class="tags"><span class="tag">부동산</span><span class="tag">데이터</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / CONTACT -->
+  <section class="cta" id="contact">
+    <div class="wrap">
+      <h2>같이 <b>이야기</b> 나눠요</h2>
+      <p>궁금한 점이나 함께하고 싶은 일이 있다면 편하게 연락 주세요.</p>
+      <a href="mailto:uni4eber@gmail.com" class="btn">이메일 보내기</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <span class="copy">© 2026 놀우. All rights reserved.</span>
+      <div class="social">
+        <a href="https://blog.naver.com/uni4eber" target="_blank" rel="noopener">블로그</a>
+        <a href="mailto:uni4eber@gmail.com">이메일</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
