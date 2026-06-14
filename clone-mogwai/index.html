@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>놀우의 투자노트 · 데이터와 투자를 기록하는 사람</title>
+  <meta name="description" content="복잡한 숫자도 AI를 곁에 두고 차근차근. 매일의 시장과 종목을 기록하는 개인 투자자, 놀우의 작업 모음." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #46BFA6;
+      --primary-dark: #34a78f;
+      --secondary: #86D9C9;
+      --ink: #2f3a37;
+      --ink-soft: #7b8784;
+      --bg: #ffffff;
+      --bg-warm: #F1FBF8;
+      --bg-mint: #e7f7f2;
+      --line: #ecf2f0;
+      --radius: 18px;
+      --max: 1080px;
+      --shadow-sm: 0 6px 18px rgba(47,58,55,0.06);
+      --shadow-md: 0 16px 40px rgba(47,58,55,0.09);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Reveal animation ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Top banner ── */
+    .topbar {
+      background: var(--ink); color: #fff; font-size: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      padding: 10px 24px; text-align: center; position: relative;
+    }
+    .topbar a.bn-link { color: var(--secondary); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+    .topbar .bn-dismiss {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.12); border: 0; color: #fff; cursor: pointer;
+      font-size: 12px; padding: 5px 10px; border-radius: 999px; font-family: inherit;
+    }
+    .topbar .bn-dismiss:hover { background: rgba(255,255,255,.24); }
+    .topbar.hide { display: none; }
+    @media (max-width: 640px) { .topbar { font-size: 12.5px; padding: 10px 90px 10px 16px; } }
+
+    /* ── Header ── */
+    header {
+      position: sticky; top: 0; z-index: 60;
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: saturate(140%) blur(12px);
+      -webkit-backdrop-filter: saturate(140%) blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    .logo { font-weight: 900; font-size: 23px; text-decoration: none; letter-spacing: -0.5px; }
+    .logo span { color: var(--primary); }
+    .nav-links { display: flex; gap: 4px; align-items: center; }
+    .nav-links > a, .has-drop > .drop-trigger {
+      color: var(--ink-soft); text-decoration: none; font-size: 15.5px; font-weight: 500;
+      padding: 10px 16px; border-radius: 10px; transition: color .2s, background .2s;
+      cursor: pointer; background: none; border: 0; font-family: inherit; display: inline-flex; align-items: center; gap: 5px;
+    }
+    .nav-links > a:hover, .has-drop:hover > .drop-trigger { color: var(--primary); background: var(--bg-warm); }
+    .drop-trigger .caret { font-size: 10px; transition: transform .2s; }
+    .has-drop:hover .caret { transform: rotate(180deg); }
+
+    /* Dropdown */
+    .has-drop { position: relative; }
+    .dropdown {
+      position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%) translateY(8px);
+      background: #fff; border: 1px solid var(--line); border-radius: 14px;
+      box-shadow: var(--shadow-md); padding: 8px; min-width: 210px;
+      opacity: 0; visibility: hidden; transition: opacity .2s, transform .2s;
+    }
+    .has-drop:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .dropdown a {
+      display: block; padding: 11px 14px; border-radius: 10px; text-decoration: none;
+      color: var(--ink); font-size: 14.5px; font-weight: 500; transition: background .15s;
+    }
+    .dropdown a small { display: block; color: var(--ink-soft); font-size: 12.5px; font-weight: 400; }
+    .dropdown a:hover { background: var(--bg-warm); color: var(--primary); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--primary); color: #fff;
+      padding: 12px 22px; border-radius: 12px; text-decoration: none;
+      font-weight: 700; font-size: 15px; transition: transform .15s, box-shadow .2s, background .2s;
+      box-shadow: 0 8px 20px rgba(70,191,166,0.32); border: 0; cursor: pointer; font-family: inherit;
+    }
+    .btn:hover { transform: translateY(-2px); background: var(--primary-dark); box-shadow: 0 12px 26px rgba(70,191,166,0.40); }
+    .btn-ghost { background: transparent; color: var(--primary); box-shadow: none; border: 1.5px solid var(--primary); }
+    .btn-ghost:hover { background: var(--bg-warm); color: var(--primary-dark); }
+    .btn-lg { padding: 16px 32px; font-size: 16.5px; border-radius: 14px; }
+
+    .nav-cta { margin-left: 8px; }
+    .hamburger { display: none; background: none; border: 0; cursor: pointer; padding: 8px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); margin: 5px 0; border-radius: 2px; transition: .25s; }
+
+    /* Mobile drawer */
+    .drawer {
+      position: fixed; inset: 0 0 0 auto; width: min(78vw, 320px);
+      background: #fff; z-index: 80; box-shadow: -10px 0 40px rgba(0,0,0,.12);
+      transform: translateX(100%); transition: transform .3s cubic-bezier(.2,.7,.2,1);
+      padding: 24px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer a { padding: 14px 12px; text-decoration: none; color: var(--ink); font-weight: 600; border-radius: 10px; }
+    .drawer a:hover { background: var(--bg-warm); color: var(--primary); }
+    .drawer .drawer-close { align-self: flex-end; background: none; border: 0; font-size: 26px; cursor: pointer; color: var(--ink-soft); line-height: 1; }
+    .scrim { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 70; opacity: 0; visibility: hidden; transition: opacity .3s; }
+    .scrim.open { opacity: 1; visibility: visible; }
+
+    @media (max-width: 820px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+    }
+
+    /* ── Hero ── */
+    .hero { background: linear-gradient(180deg, var(--bg-warm) 0%, #fff 100%); padding: 88px 0 96px; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 7px; background: #fff; color: var(--primary);
+      border: 1px solid var(--line); padding: 7px 16px; border-radius: 999px;
+      font-size: 14px; font-weight: 700; margin-bottom: 22px; box-shadow: var(--shadow-sm);
+    }
+    .hero h1 {
+      font-size: clamp(34px, 5.2vw, 56px); font-weight: 900; letter-spacing: -1.6px;
+      line-height: 1.22; margin-bottom: 22px;
+    }
+    .hero h1 .hl { color: var(--primary); }
+    .hero p.sub { font-size: clamp(16px, 2.1vw, 19px); color: var(--ink-soft); max-width: 520px; margin-bottom: 34px; }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* Hero visual card */
+    .hero-visual {
+      position: relative; aspect-ratio: 4/3.4; border-radius: 26px; overflow: hidden;
+      background: linear-gradient(140deg, var(--secondary), var(--primary));
+      box-shadow: var(--shadow-md); display: grid; place-items: center;
+    }
+    .hero-visual .blob { position: absolute; border-radius: 50%; filter: blur(2px); opacity: .35; }
+    .hero-visual .b1 { width: 180px; height: 180px; background: #fff; top: -40px; right: -30px; }
+    .hero-visual .b2 { width: 130px; height: 130px; background: var(--bg-warm); bottom: -30px; left: -20px; opacity:.5; }
+    .hero-card {
+      position: relative; background: rgba(255,255,255,.92); border-radius: 16px; padding: 22px 24px;
+      width: 78%; box-shadow: 0 18px 40px rgba(0,0,0,.16);
+    }
+    .hero-card .row { display: flex; align-items: center; gap: 12px; padding: 9px 0; }
+    .hero-card .row + .row { border-top: 1px dashed var(--line); }
+    .hero-card .dot { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; font-size: 19px; background: var(--bg-warm); flex: none; }
+    .hero-card .t { font-weight: 700; font-size: 14.5px; }
+    .hero-card .s { font-size: 12.5px; color: var(--ink-soft); }
+    .hero-card .sig { margin-left: auto; font-size: 16px; }
+
+    @media (max-width: 820px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+      .hero-visual { max-width: 420px; margin: 0 auto; width: 100%; }
+    }
+
+    /* ── Section base ── */
+    section { padding: 92px 0; }
+    .section-tag { color: var(--primary); font-weight: 700; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 14px; }
+    .section-title { font-size: clamp(25px, 3.6vw, 35px); font-weight: 900; letter-spacing: -1px; line-height: 1.32; margin-bottom: 14px; }
+    .section-lead { color: var(--ink-soft); font-size: 17.5px; max-width: 600px; }
+    .center { text-align: center; } .center .section-lead { margin: 0 auto; }
+
+    /* ── Statement (philosophy) ── */
+    .statement { background: var(--bg-warm); }
+    .statement .big {
+      font-size: clamp(21px, 3.2vw, 31px); font-weight: 700; line-height: 1.62;
+      letter-spacing: -0.7px; max-width: 820px;
+    }
+    .statement .big b { color: var(--primary); }
+    .statement .sub2 { color: var(--ink-soft); font-size: 17px; margin-top: 24px; max-width: 680px; }
+
+    /* ── Marquee ── */
+    .marquee-sec { padding: 56px 0; overflow: hidden; }
+    .marquee { display: flex; gap: 18px; width: max-content; animation: slide 32s linear infinite; }
+    .marquee:hover { animation-play-state: paused; }
+    @keyframes slide { to { transform: translateX(-50%); } }
+    .m-tile {
+      width: 220px; height: 150px; border-radius: 16px; flex: none; display: flex;
+      flex-direction: column; justify-content: flex-end; padding: 18px; color: #fff;
+      font-weight: 700; position: relative; overflow: hidden;
+    }
+    .m-tile .emo { position: absolute; top: 14px; right: 16px; font-size: 30px; opacity: .92; }
+    .m-tile .mt { font-size: 15px; }
+    .m-tile .ms { font-size: 12px; font-weight: 500; opacity: .9; }
+    .g1 { background: linear-gradient(135deg,#46BFA6,#2f9b86); }
+    .g2 { background: linear-gradient(135deg,#86D9C9,#46BFA6); }
+    .g3 { background: linear-gradient(135deg,#5fb8d9,#3f8fc0); }
+    .g4 { background: linear-gradient(135deg,#f0a868,#e08a4a); }
+    .g5 { background: linear-gradient(135deg,#9b8cd9,#7a6bc0); }
+    .g6 { background: linear-gradient(135deg,#7ac8a0,#4ba87a); }
+
+    /* ── Work cards ── */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin-top: 46px; }
+    .card {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 30px; transition: transform .25s, box-shadow .25s, border-color .25s;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: transparent; }
+    .card .ico {
+      width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center;
+      font-size: 28px; margin-bottom: 20px; background: var(--bg-mint);
+    }
+    .card h3 { font-size: 20px; font-weight: 700; margin-bottom: 9px; letter-spacing: -0.5px; }
+    .card p { color: var(--ink-soft); font-size: 15px; }
+    .card .tags { margin-top: 18px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag { background: var(--bg-warm); color: var(--primary-dark); font-size: 12.5px; font-weight: 600; padding: 5px 12px; border-radius: 999px; }
+
+    /* ── Process (3 steps) ── */
+    .process { background: var(--bg-warm); }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 46px; }
+    .step {
+      background: #fff; border-radius: var(--radius); padding: 30px 28px; border: 1px solid var(--line);
+      position: relative; transition: transform .25s, box-shadow .25s;
+    }
+    .step:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .step .num {
+      width: 40px; height: 40px; border-radius: 12px; background: var(--primary); color: #fff;
+      font-weight: 900; display: grid; place-items: center; font-size: 17px; margin-bottom: 18px;
+    }
+    .step h4 { font-size: 18px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.4px; }
+    .step p { color: var(--ink-soft); font-size: 14.5px; }
+    @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+
+    /* ── Stats / testimonials ── */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 46px; }
+    .stat { text-align: center; padding: 28px 16px; background: var(--bg-warm); border-radius: var(--radius); }
+    .stat .n { font-size: clamp(30px, 5vw, 44px); font-weight: 900; color: var(--primary); letter-spacing: -1.5px; line-height: 1; }
+    .stat .l { color: var(--ink-soft); font-size: 14.5px; margin-top: 10px; }
+    @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+    .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 30px; }
+    .quote { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
+    .quote .stars { color: #f3b54a; font-size: 15px; letter-spacing: 2px; margin-bottom: 12px; }
+    .quote p { font-size: 15px; color: var(--ink); }
+    .quote .who { margin-top: 16px; font-size: 13.5px; color: var(--ink-soft); font-weight: 600; }
+    @media (max-width: 760px) { .quotes { grid-template-columns: 1fr; } }
+
+    /* ── CTA ── */
+    .cta { text-align: center; background: linear-gradient(180deg, #fff, var(--bg-warm)); }
+    .cta h2 { font-size: clamp(26px, 4.2vw, 40px); font-weight: 900; letter-spacing: -1px; margin-bottom: 14px; }
+    .cta h2 b { color: var(--primary); }
+    .cta p { color: var(--ink-soft); font-size: 18px; margin-bottom: 34px; }
+
+    /* ── Footer ── */
+    footer { background: #fafdfc; border-top: 1px solid var(--line); padding: 56px 0 40px; }
+    .foot-top { display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; padding-bottom: 32px; border-bottom: 1px solid var(--line); }
+    .foot-brand .logo { font-size: 24px; }
+    .foot-brand p { color: var(--ink-soft); font-size: 14.5px; margin-top: 10px; max-width: 320px; }
+    .foot-cols { display: flex; gap: 56px; flex-wrap: wrap; }
+    .foot-col h5 { font-size: 13px; color: var(--ink); margin-bottom: 14px; letter-spacing: .5px; }
+    .foot-col a { display: block; color: var(--ink-soft); text-decoration: none; font-size: 14px; padding: 5px 0; }
+    .foot-col a:hover { color: var(--primary); }
+    .foot-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 26px; }
+    .foot-bottom .copy { color: var(--ink-soft); font-size: 13.5px; }
+    .foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
+    .foot-links a { color: var(--ink-soft); text-decoration: none; font-size: 13.5px; }
+    .foot-links a:hover { color: var(--primary); }
+
+    /* Back to top */
+    .totop {
+      position: fixed; right: 22px; bottom: 22px; z-index: 40;
+      width: 48px; height: 48px; border-radius: 50%; background: var(--primary); color: #fff;
+      border: 0; cursor: pointer; font-size: 20px; box-shadow: 0 10px 26px rgba(70,191,166,.4);
+      opacity: 0; visibility: hidden; transform: translateY(10px); transition: .25s;
+    }
+    .totop.show { opacity: 1; visibility: visible; transform: none; }
+    .totop:hover { background: var(--primary-dark); }
+  </style>
+</head>
+<body>
+
+  <!-- ① TOP BANNER (dismissible, remembers for 1 day) -->
+  <div class="topbar" id="topbar">
+    <span>새 단장을 했어요. 기록은 더 깊어지고, 보기는 더 편해졌어요. <a href="#about" class="bn-link">이야기 보기</a></span>
+    <button class="bn-dismiss" id="bnDismiss">1일 동안 보지 않음</button>
+  </div>
+
+  <!-- ② HEADER -->
+  <header>
+    <div class="wrap nav">
+      <a href="#top" class="logo">놀우의 <span>투자노트</span></a>
+      <nav class="nav-links">
+        <div class="has-drop">
+          <button class="drop-trigger">작업 <span class="caret">▾</span></button>
+          <div class="dropdown">
+            <a href="#work">투자 리포트 자동화 <small>대화를 투자 메모로</small></a>
+            <a href="#work">데일리 매크로 브리핑 <small>매일 아침 시장 정리</small></a>
+            <a href="#work">종목 선반영 점검 <small>신호등으로 진단</small></a>
+            <a href="#work">부동산 경매 분석 <small>적정 입찰가 가늠</small></a>
+          </div>
+        </div>
+        <a href="#about">소개</a>
+        <a href="#process">일하는 방식</a>
+        <a href="#contact">연락처</a>
+        <a href="#contact" class="btn nav-cta">연락하기</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile drawer -->
+  <div class="scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer">
+    <button class="drawer-close" id="drawerClose" aria-label="닫기">×</button>
+    <a href="#work">작업</a>
+    <a href="#about">소개</a>
+    <a href="#process">일하는 방식</a>
+    <a href="#contact">연락처</a>
+    <a href="#contact" class="btn" style="margin-top:8px;">연락하기</a>
+  </aside>
+
+  <span id="top"></span>
+
+  <!-- ③ HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <span class="eyebrow">✦ 포트폴리오</span>
+        <h1>데이터와 투자를 AI로<br />더 <span class="hl">깊게</span> 들여다보는 사람</h1>
+        <p class="sub">복잡한 숫자도 AI를 곁에 두고 차근차근 풀어냅니다. 어렵게 느껴지던 것들을 누구나 보기 좋게 정리해요.</p>
+        <div class="hero-cta">
+          <a href="#work" class="btn btn-lg">작업 보기</a>
+          <a href="#contact" class="btn btn-ghost btn-lg">연락하기</a>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="blob b1"></div><div class="blob b2"></div>
+        <div class="hero-card">
+          <div class="row"><div class="dot">📈</div><div><div class="t">SK하이닉스</div><div class="s">선반영 점검 · 균형</div></div><div class="sig">🟡</div></div>
+          <div class="row"><div class="dot">📰</div><div><div class="t">오늘의 매크로</div><div class="s">금리·환율·SOX 정리</div></div><div class="sig">✓</div></div>
+          <div class="row"><div class="dot">🏠</div><div><div class="t">경매 물건 #3</div><div class="s">평당가·수익률 산출</div></div><div class="sig">↗</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ STATEMENT 1 (About) -->
+  <section class="statement" id="about">
+    <div class="wrap reveal">
+      <p class="section-tag">About</p>
+      <p class="big">저는 매일의 시장과 종목을 기록하는 <b>개인 투자자</b>예요. AI를 곁에 두고 <b>매크로·섹터 브리핑</b>을 정리하고, 관심 종목이 호재에 얼마나 <b>선반영</b>됐는지 차분히 점검합니다.</p>
+      <p class="sub2">화려한 예측보다, 꾸준한 기록과 데이터가 결국 더 멀리 간다고 믿어요. 흩어진 정보를 모아 한눈에 들어오는 형태로 정리하는 일을 좋아합니다.</p>
+    </div>
+  </section>
+
+  <!-- ⑤ MARQUEE (infinite auto-slide) -->
+  <div class="marquee-sec">
+    <div class="marquee" id="marquee">
+      <!-- duplicated set for seamless loop; JS clones to fill -->
+      <div class="m-tile g1"><span class="emo">📈</span><div class="mt">투자 리포트</div><div class="ms">대화 → 메모</div></div>
+      <div class="m-tile g2"><span class="emo">📰</span><div class="mt">매크로 브리핑</div><div class="ms">매일 아침</div></div>
+      <div class="m-tile g3"><span class="emo">🚦</span><div class="mt">선반영 점검</div><div class="ms">신호등 진단</div></div>
+      <div class="m-tile g4"><span class="emo">🏠</span><div class="mt">경매 분석</div><div class="ms">적정 입찰가</div></div>
+      <div class="m-tile g5"><span class="emo">🪙</span><div class="mt">크립토 브리핑</div><div class="ms">간밤 정리</div></div>
+      <div class="m-tile g6"><span class="emo">🗂️</span><div class="mt">노트 위키</div><div class="ms">테마별 연결</div></div>
+    </div>
+  </div>
+
+  <!-- ⑥ STATEMENT 2 (vision) -->
+  <section class="statement">
+    <div class="wrap reveal">
+      <p class="section-tag">Why</p>
+      <p class="big">하나의 숫자도 그냥 지나치지 않고, <b>맥락</b>과 함께 남겨두려 해요. 기록이 쌓이면 시장을 보는 눈도 함께 자란다고 믿어요.</p>
+      <p class="sub2">오늘의 판단이 내일 어떻게 맞고 틀렸는지 돌아볼 수 있도록, 매일의 시각을 데이터로 붙잡아 둡니다.</p>
+    </div>
+  </section>
+
+  <!-- ⑦ WORK -->
+  <section id="work">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="section-tag">Work</p>
+        <h2 class="section-title">제가 만든 것들</h2>
+        <p class="section-lead">AI를 곁에 두고 꾸준히 만들어온 기록과 분석 도구들이에요.</p>
+      </div>
+      <div class="grid">
+        <div class="card reveal">
+          <div class="ico">📈</div>
+          <h3>투자 리포트 자동화</h3>
+          <p>종목 이야기를 구조화된 투자 메모로 정리해 문서(.docx/.pdf)로 뽑아내요.</p>
+          <div class="tags"><span class="tag">AI</span><span class="tag">자동화</span><span class="tag">문서화</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="ico">📰</div>
+          <h3>데일리 매크로 브리핑</h3>
+          <p>매일 아침 금리·환율·SOX와 섹터 뉴스를 차분히 정리한 노트로 받아봐요.</p>
+          <div class="tags"><span class="tag">리서치</span><span class="tag">매일</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="ico">🚦</div>
+          <h3>종목 선반영 점검</h3>
+          <p>호재가 주가에 얼마나 반영됐는지 신호등 5단계로 진단하고 기록해요.</p>
+          <div class="tags"><span class="tag">투자</span><span class="tag">분석</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="ico">🏠</div>
+          <h3>부동산 경매물건 분석</h3>
+          <p>경매지에서 시세·평당가·수익률을 뽑아 적정 입찰가를 가늠해요.</p>
+          <div class="tags"><span class="tag">부동산</span><span class="tag">데이터</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="ico">🪙</div>
+          <h3>크립토 아침 브리핑</h3>
+          <p>간밤의 BTC·ETH·규제·ETF 뉴스를 관심 종목 관점으로 묶어 정리해요.</p>
+          <div class="tags"><span class="tag">크립토</span><span class="tag">리서치</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="ico">🗂️</div>
+          <h3>노트 위키 엮기</h3>
+          <p>흩어진 투자 노트를 종목·테마별 허브로 연결해 한눈에 보이게 만들어요.</p>
+          <div class="tags"><span class="tag">정리</span><span class="tag">지식관리</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑧ PROCESS (3 steps) -->
+  <section class="process" id="process">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="section-tag">How</p>
+        <h2 class="section-title">이런 순서로 일해요</h2>
+        <p class="section-lead">매일의 시장을 흘려보내지 않도록, 같은 흐름을 꾸준히 반복합니다.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="num">1</div>
+          <h4>기록한다</h4>
+          <p>그날의 매크로와 섹터 뉴스, 종목 이슈를 빠짐없이 모아 날짜별 노트로 남겨요.</p>
+        </div>
+        <div class="step reveal">
+          <div class="num">2</div>
+          <h4>분석한다</h4>
+          <p>모은 정보를 AI와 함께 구조화해, 숫자 뒤의 맥락과 의미를 끌어내요.</p>
+        </div>
+        <div class="step reveal">
+          <div class="num">3</div>
+          <h4>점검한다</h4>
+          <p>호재가 이미 주가에 반영됐는지 신호등으로 진단하고, 판단의 비대칭을 따져요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑨ STATS + TESTIMONIALS -->
+  <section>
+    <div class="wrap">
+      <div class="reveal center">
+        <p class="section-tag">Track record</p>
+        <h2 class="section-title">지금까지 쌓아온 기록들이에요</h2>
+        <p class="section-lead">매일의 작은 기록이 모여, 시장을 보는 저만의 자료가 됐어요.</p>
+      </div>
+      <div class="stats">
+        <div class="stat reveal"><div class="n" data-count="365">0</div><div class="l">아침 브리핑</div></div>
+        <div class="stat reveal"><div class="n" data-count="48">0</div><div class="l">선반영 점검</div></div>
+        <div class="stat reveal"><div class="n" data-count="12">0</div><div class="l">경매 물건 분석</div></div>
+        <div class="stat reveal"><div class="n" data-count="6">0</div><div class="l">자동화 도구</div></div>
+      </div>
+      <div class="quotes">
+        <div class="quote reveal">
+          <div class="stars">★★★★★</div>
+          <p>"매일 아침 브리핑을 보면 그날 시장의 결이 먼저 읽혀요. 흩어진 뉴스가 한 줄로 정리되는 느낌."</p>
+          <div class="who">— 함께 투자 공부하는 동료</div>
+        </div>
+        <div class="quote reveal">
+          <div class="stars">★★★★★</div>
+          <p>"선반영 점검 신호등 덕분에 '지금 사도 될까'를 감이 아니라 근거로 따져보게 됐어요."</p>
+          <div class="who">— 관심 종목을 같이 보는 친구</div>
+        </div>
+        <div class="quote reveal">
+          <div class="stars">★★★★★</div>
+          <p>"경매 분석을 부탁하면 평당가랑 수익률이 표로 딱 나와서 결정이 훨씬 빨라졌어요."</p>
+          <div class="who">— 경매 물건을 함께 본 지인</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑩ CTA -->
+  <section class="cta" id="contact">
+    <div class="wrap reveal">
+      <h2>같이 <b>이야기</b> 나눠요</h2>
+      <p>궁금한 점이나 함께하고 싶은 일이 있다면 편하게 연락 주세요.</p>
+      <a href="mailto:uni4eber@gmail.com" class="btn btn-lg">이메일 보내기</a>
+    </div>
+  </section>
+
+  <!-- ⑪ FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-top">
+        <div class="foot-brand">
+          <a href="#top" class="logo">놀우의 <span>투자노트</span></a>
+          <p>데이터와 투자를 기록하는 개인 투자자. AI를 곁에 두고 매일의 시장을 정리합니다.</p>
+        </div>
+        <div class="foot-cols">
+          <div class="foot-col">
+            <h5>작업</h5>
+            <a href="#work">투자 리포트 자동화</a>
+            <a href="#work">매크로 브리핑</a>
+            <a href="#work">선반영 점검</a>
+            <a href="#work">경매 분석</a>
+          </div>
+          <div class="foot-col">
+            <h5>둘러보기</h5>
+            <a href="#about">소개</a>
+            <a href="#process">일하는 방식</a>
+            <a href="#contact">연락처</a>
+          </div>
+          <div class="foot-col">
+            <h5>연결</h5>
+            <a href="https://blog.naver.com/uni4eber" target="_blank" rel="noopener">블로그</a>
+            <a href="mailto:uni4eber@gmail.com">이메일</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span class="copy">© 2026 놀우. All rights reserved.</span>
+        <div class="foot-links">
+          <a href="#about">소개</a>
+          <a href="#work">작업</a>
+          <a href="mailto:uni4eber@gmail.com">이메일</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="totop" id="totop" aria-label="맨 위로">↑</button>
+
+  <script>
+    // ── ① Dismissible banner (remembers for 1 day) ──
+    (function () {
+      var bar = document.getElementById('topbar');
+      var KEY = 'nolwoo_banner_hidden_until';
+      var until = +localStorage.getItem(KEY) || 0;
+      if (Date.now() < until) bar.classList.add('hide');
+      document.getElementById('bnDismiss').addEventListener('click', function () {
+        bar.classList.add('hide');
+        localStorage.setItem(KEY, Date.now() + 24 * 60 * 60 * 1000);
+      });
+    })();
+
+    // ── ② Mobile drawer ──
+    (function () {
+      var drawer = document.getElementById('drawer');
+      var scrim = document.getElementById('scrim');
+      function open() { drawer.classList.add('open'); scrim.classList.add('open'); }
+      function close() { drawer.classList.remove('open'); scrim.classList.remove('open'); }
+      document.getElementById('hamburger').addEventListener('click', open);
+      document.getElementById('drawerClose').addEventListener('click', close);
+      scrim.addEventListener('click', close);
+      drawer.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
+    })();
+
+    // ── ③ Scroll reveal ──
+    (function () {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    })();
+
+    // ── ④ Seamless marquee (clone tiles so the -50% loop is gapless) ──
+    (function () {
+      var m = document.getElementById('marquee');
+      m.innerHTML += m.innerHTML; // duplicate the set once → 50% translate loops seamlessly
+    })();
+
+    // ── ⑤ Count-up stats ──
+    (function () {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var el = e.target, target = +el.dataset.count, t0 = null;
+          function tick(t) {
+            if (!t0) t0 = t;
+            var p = Math.min((t - t0) / 1200, 1);
+            el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + (p === 1 ? '+' : '');
+            if (p < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+          io.unobserve(el);
+        });
+      }, { threshold: 0.6 });
+      document.querySelectorAll('.stat .n').forEach(function (el) { io.observe(el); });
+    })();
+
+    // ── ⑥ Back to top ──
+    (function () {
+      var btn = document.getElementById('totop');
+      window.addEventListener('scroll', function () {
+        btn.classList.toggle('show', window.scrollY > 600);
+      });
+      btn.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    })();
+  </script>
+</body>
+</html>
