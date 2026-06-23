@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>아들 육아 상담소 · 최민준 소장 관점</title>
-<meta name="description" content="아들 키우는 부모를 위한 1:1 육아 상담 챗봇. 최민준 소장 영상 내용을 근거로 답합니다." />
+<title>육아 상담소 · 최민준 소장 + 조선미 교수 관점</title>
+<meta name="description" content="아이 키우는 부모를 위한 1:1 육아 상담 챗봇. 최민준 소장·조선미 교수 영상 내용을 근거로 답합니다." />
 <style>
   :root {
     --bg: #f4f1ea;
@@ -158,15 +158,15 @@
 <body>
   <div class="app">
     <header>
-      <h1>아들 육아 상담소 <span class="badge">최민준 소장 관점</span></h1>
-      <p>아들 키우며 "내 훈육 방식이 맞나?" 싶을 때, 내 상황을 들려주세요. 최민준 소장님 영상 내용에 근거해 함께 풀어드려요.</p>
+      <h1>육아 상담소 <span class="badge">최민준 · 조선미</span></h1>
+      <p>"내 훈육 방식이 맞나?" 싶을 때, 내 상황을 들려주세요. 최민준 소장·조선미 교수 영상 내용에 근거해 함께 풀어드려요.</p>
     </header>
 
     <div class="chat" id="chat"></div>
 
     <div class="composer">
       <div class="row">
-        <textarea id="input" rows="1" placeholder="예: 6살 아들이 하지 말라고 하면 꼭 한 번 더 해요. 어떻게 해야 할까요?"></textarea>
+        <textarea id="input" rows="1" placeholder="예: 6살 아이가 하지 말라고 하면 꼭 한 번 더 해요. 어떻게 해야 할까요?"></textarea>
         <button class="send" id="send" title="보내기">➤</button>
       </div>
       <p class="disclaimer">이 상담은 최민준 소장님의 한 관점을 전하는 참고용이며, 의학적·심리학적 진단이 아닙니다.<br>긴급한 위기 상황은 112(아동학대)·119·자살예방상담 109로 연락하세요.</p>
@@ -183,10 +183,11 @@
   let busy = false;
 
   const EXAMPLES = [
-    '6살 아들이 하지 말라고 하면 꼭 한 번 더 해요.',
-    '아이랑 대화하려고 하면 "몰라"만 해요.',
-    '하루 종일 게임만 하려는데 어떻게 줄이죠?',
-    '자꾸 소리 지르게 돼요. 안 그러고 싶어요.',
+    '하지 말라고 하면 꼭 한 번 더 해요.',
+    '아이가 자꾸 "왜 그랬어?"에 대답을 못 해요.',
+    '스마트폰 언제 사주는 게 맞을까요?',
+    '친구를 잘 못 사귀는 것 같아 걱정이에요.',
+    '공부 못하는 과목만 자꾸 시키게 돼요.',
   ];
 
   function addMessage(role, text) {
@@ -262,7 +263,7 @@
 
   // 인사말 + 예시
   async function init() {
-    let greeting = '안녕하세요. 아들 키우는 마음, 참 쉽지 않으시죠. 😊\n어떤 상황이 가장 고민이세요? 아이 나이와 있었던 일을 편하게 적어주세요.';
+    let greeting = '안녕하세요. 아이 키우는 마음, 참 쉽지 않으시죠. 😊\n어떤 상황이 가장 고민이세요? 아이 나이와 있었던 일을 편하게 적어주세요.';
     try {
       const r = await fetch('/api/greeting');
       if (r.ok) greeting = (await r.json()).greeting || greeting;
