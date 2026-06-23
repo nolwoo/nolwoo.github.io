@@ -1,0 +1,14 @@
+{
+  "name": "son-parenting-counselor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "아들 육아 상담 챗봇 — 최민준 소장 영상 기반",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

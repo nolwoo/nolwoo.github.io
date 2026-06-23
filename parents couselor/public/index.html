@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>아들 육아 상담소 · 최민준 소장 관점</title>
+<meta name="description" content="아들 키우는 부모를 위한 1:1 육아 상담 챗봇. 최민준 소장 영상 내용을 근거로 답합니다." />
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --card: #ffffff;
+    --ink: #2b2722;
+    --muted: #8c8579;
+    --line: #e7e1d5;
+    --accent: #c5703b;
+    --accent-soft: #f6e6d8;
+    --user: #2f6f6a;
+    --user-bubble: #e3efed;
+    --shadow: 0 6px 24px rgba(60, 48, 30, 0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+  .app {
+    width: 100%;
+    max-width: 720px;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    box-shadow: var(--shadow);
+  }
+  header {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--card);
+  }
+  header h1 {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  header .badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  header p {
+    margin: 6px 0 0;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    scroll-behavior: smooth;
+  }
+  .msg { display: flex; gap: 10px; max-width: 88%; }
+  .msg .avatar {
+    flex: none;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 15px;
+    background: var(--accent-soft);
+  }
+  .msg .bubble {
+    padding: 11px 14px;
+    border-radius: 14px;
+    font-size: 14.5px;
+    line-height: 1.62;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .msg.bot .bubble { background: #f7f4ee; border: 1px solid var(--line); border-top-left-radius: 4px; }
+  .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+  .msg.user .avatar { background: var(--user-bubble); }
+  .msg.user .bubble { background: var(--user-bubble); color: var(--user); border-top-right-radius: 4px; }
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+  .examples button {
+    font: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 13px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .examples button:hover { border-color: var(--accent); color: var(--accent); }
+  .typing .bubble { color: var(--muted); }
+  .dots span {
+    display: inline-block; width: 6px; height: 6px; margin: 0 1px;
+    background: var(--muted); border-radius: 50%; animation: blink 1.2s infinite both;
+  }
+  .dots span:nth-child(2) { animation-delay: .2s; }
+  .dots span:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+  .composer {
+    border-top: 1px solid var(--line);
+    padding: 12px 14px;
+    background: var(--card);
+  }
+  .composer .row { display: flex; gap: 8px; align-items: flex-end; }
+  textarea {
+    flex: 1;
+    font: inherit;
+    font-size: 15px;
+    resize: none;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 11px 13px;
+    max-height: 140px;
+    outline: none;
+    line-height: 1.5;
+  }
+  textarea:focus { border-color: var(--accent); }
+  .send {
+    flex: none;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .send:disabled { opacity: .4; cursor: default; }
+  .disclaimer {
+    margin: 8px 2px 0;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>아들 육아 상담소 <span class="badge">최민준 소장 관점</span></h1>
+      <p>아들 키우며 "내 훈육 방식이 맞나?" 싶을 때, 내 상황을 들려주세요. 최민준 소장님 영상 내용에 근거해 함께 풀어드려요.</p>
+    </header>
+
+    <div class="chat" id="chat"></div>
+
+    <div class="composer">
+      <div class="row">
+        <textarea id="input" rows="1" placeholder="예: 6살 아들이 하지 말라고 하면 꼭 한 번 더 해요. 어떻게 해야 할까요?"></textarea>
+        <button class="send" id="send" title="보내기">➤</button>
+      </div>
+      <p class="disclaimer">이 상담은 최민준 소장님의 한 관점을 전하는 참고용이며, 의학적·심리학적 진단이 아닙니다.<br>긴급한 위기 상황은 112(아동학대)·119·자살예방상담 109로 연락하세요.</p>
+    </div>
+  </div>
+
+<script>
+  const chatEl = document.getElementById('chat');
+  const inputEl = document.getElementById('input');
+  const sendEl = document.getElementById('send');
+
+  // 대화 기록 (서버로 함께 전송)
+  const history = [];
+  let busy = false;
+
+  const EXAMPLES = [
+    '6살 아들이 하지 말라고 하면 꼭 한 번 더 해요.',
+    '아이랑 대화하려고 하면 "몰라"만 해요.',
+    '하루 종일 게임만 하려는데 어떻게 줄이죠?',
+    '자꾸 소리 지르게 돼요. 안 그러고 싶어요.',
+  ];
+
+  function addMessage(role, text) {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
+    wrap.innerHTML =
+      '<div class="avatar">' + (role === 'user' ? '🙂' : '🧭') + '</div>' +
+      '<div class="bubble"></div>';
+    wrap.querySelector('.bubble').textContent = text;
+    chatEl.appendChild(wrap);
+    chatEl.scrollTop = chatEl.scrollHeight;
+    return wrap;
+  }
+
+  function showExamples() {
+    const wrap = document.createElement('div');
+    wrap.className = 'examples';
+    EXAMPLES.forEach((ex) => {
+      const b = document.createElement('button');
+      b.textContent = ex;
+      b.onclick = () => { wrap.remove(); inputEl.value = ex; send(); };
+      wrap.appendChild(b);
+    });
+    chatEl.appendChild(wrap);
+  }
+
+  function showTyping() {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg bot typing';
+    wrap.innerHTML =
+      '<div class="avatar">🧭</div>' +
+      '<div class="bubble"><span class="dots"><span></span><span></span><span></span></span></div>';
+    chatEl.appendChild(wrap);
+    chatEl.scrollTop = chatEl.scrollHeight;
+    return wrap;
+  }
+
+  async function send() {
+    const text = inputEl.value.trim();
+    if (!text || busy) return;
+    busy = true;
+    sendEl.disabled = true;
+    inputEl.value = '';
+    inputEl.style.height = 'auto';
+
+    addMessage('user', text);
+    history.push({ role: 'user', content: text });
+    const typing = showTyping();
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ messages: history }),
+      });
+      const data = await res.json();
+      typing.remove();
+      if (!res.ok) {
+        addMessage('bot', data.error || '문제가 생겼어요. 잠시 후 다시 시도해 주세요.');
+      } else {
+        addMessage('bot', data.reply);
+        history.push({ role: 'assistant', content: data.reply });
+      }
+    } catch (e) {
+      typing.remove();
+      addMessage('bot', '연결에 문제가 생겼어요. 잠시 후 다시 시도해 주세요.');
+    } finally {
+      busy = false;
+      sendEl.disabled = false;
+      inputEl.focus();
+    }
+  }
+
+  // 인사말 + 예시
+  async function init() {
+    let greeting = '안녕하세요. 아들 키우는 마음, 참 쉽지 않으시죠. 😊\n어떤 상황이 가장 고민이세요? 아이 나이와 있었던 일을 편하게 적어주세요.';
+    try {
+      const r = await fetch('/api/greeting');
+      if (r.ok) greeting = (await r.json()).greeting || greeting;
+    } catch {}
+    addMessage('bot', greeting);
+    showExamples();
+  }
+
+  sendEl.onclick = send;
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  inputEl.addEventListener('input', () => {
+    inputEl.style.height = 'auto';
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 140) + 'px';
+  });
+
+  init();
+</script>
+</body>
+</html>
