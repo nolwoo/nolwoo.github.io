@@ -10,8 +10,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // 지식베이스는 시작할 때 한 번만 읽어 메모리에 둔다.
 const KNOWLEDGE = readFileSync(join(__dirname, '..', 'knowledge.md'), 'utf-8');
 
-// 가장 똑똑한 최신 모델을 기본값으로.
-export const MODEL = 'claude-opus-4-8';
+// 비용 대비 품질이 좋은 Sonnet을 기본값으로. (더 저렴하게: 'claude-haiku-4-5-20251001')
+export const MODEL = 'claude-sonnet-4-6';
 
 function buildSystemPrompt() {
   return `당신은 "육아 상담소"의 상담 챗봇입니다. 아이를 키우는 부모가 자신의 구체적인 상황을
