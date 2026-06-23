@@ -7,6 +7,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, extname, normalize } from 'node:path';
 import { getReply, getGreeting } from './lib/chat.js';
+import { checkRateLimit, clientIp } from './lib/rateLimit.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = join(__dirname, 'public');
@@ -43,6 +44,18 @@ const server = createServer(async (req, res) => {
 });
 
 async function handleChat(req, res) {
+  // 사용량 제한: 같은 IP의 연타·과다 호출 차단 (비용·남용 방어)
+  const limit = checkRateLimit(clientIp(req));
+  if (!limit.allowed) {
+    res.setHeader('Retry-After', String(limit.retryAfterSec || 60));
+    return sendJson(res, 429, {
+      error:
+        limit.reason === 'day'
+          ? '오늘 이용 횟수가 많아 잠시 제한됐어요. 내일 다시 이용해 주세요. 🙏'
+          : '잠깐만요, 너무 빠르게 보내셨어요. 몇 초 뒤 다시 시도해 주세요.',
+    });
+  }
+
   const body = await readBody(req);
   let messages;
   try {
