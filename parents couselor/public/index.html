@@ -194,7 +194,7 @@
     const wrap = document.createElement('div');
     wrap.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
     wrap.innerHTML =
-      '<div class="avatar">' + (role === 'user' ? '🙂' : '🧭') + '</div>' +
+      '<div class="avatar">' + (role === 'user' ? '👨‍👩‍👧' : '💡') + '</div>' +
       '<div class="bubble"></div>';
     wrap.querySelector('.bubble').textContent = text;
     chatEl.appendChild(wrap);
@@ -218,7 +218,7 @@
     const wrap = document.createElement('div');
     wrap.className = 'msg bot typing';
     wrap.innerHTML =
-      '<div class="avatar">🧭</div>' +
+      '<div class="avatar">💡</div>' +
       '<div class="bubble"><span class="dots"><span></span><span></span><span></span></span></div>';
     chatEl.appendChild(wrap);
     chatEl.scrollTop = chatEl.scrollHeight;
