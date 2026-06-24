@@ -65,6 +65,6 @@
 - [x] styleguide 배포 시 숨김 (프로덕션 404, 로컬 dev만 노출)
 
 ## 챕터 5 · 배포
-- [ ] git 커밋·푸시 → GitHub 레포
-- [ ] Vercel Import → 배포
-- [ ] 공개 URL로 4페이지 동작 확인
+- [x] git 커밋·푸시 → GitHub 레포 (nolwoo/bumil-safe-next, 비공개)
+- [x] Vercel Import → 배포 (bumil-safe-next.vercel.app)
+- [x] 공개 URL로 동작 확인 (전 페이지 200·상담폼 종단 테스트·styleguide 404 숨김)

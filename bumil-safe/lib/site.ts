@@ -33,5 +33,6 @@ export const NAV = [
   { label: "제품", href: "/products" },
   { label: "회사소개", href: "/about" },
   { label: "서비스", href: "/service" },
-  { label: "오시는길", href: "/contact" },
+  { label: "상담", href: "/contact" },
+  { label: "오시는길", href: "/location" },
 ] as const;
