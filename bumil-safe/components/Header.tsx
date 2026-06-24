@@ -1,0 +1,88 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { NAV, SITE } from "@/lib/site";
+import { ConsultButtons } from "./ConsultButtons";
+
+/* Apple global-nav + sub-nav-frosted 혼합 — 슬림·프로스티드·지속 CTA */
+export function Header() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-hairline bg-canvas/80 backdrop-blur-md backdrop-saturate-150">
+      <div className="mx-auto flex h-[56px] max-w-[1120px] items-center justify-between px-6">
+        {/* 로고 */}
+        <Link href="/" className="flex items-baseline gap-2">
+          <span className="text-[18px] font-semibold tracking-tight-apple text-ink">
+            BUMIL
+          </span>
+          <span className="text-[13px] text-ink-faint">
+            {SITE.brand} <em className="not-italic text-ink-muted">{SITE.branch}</em>
+          </span>
+        </Link>
+
+        {/* 데스크톱 내비 */}
+        <nav className="hidden items-center gap-1 md:flex">
+          {NAV.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-sm px-3 py-2 text-[14px] text-ink-muted transition-colors hover:text-blue"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* 데스크톱 상담 CTA */}
+        <div className="hidden md:block">
+          <ConsultButtons size="sm" />
+        </div>
+
+        {/* 모바일 햄버거 */}
+        <button
+          className="md:hidden flex flex-col gap-[5px] p-2"
+          aria-label="메뉴 열기"
+          onClick={() => setOpen(true)}
+        >
+          <span className="h-[2px] w-[22px] rounded bg-ink" />
+          <span className="h-[2px] w-[22px] rounded bg-ink" />
+          <span className="h-[2px] w-[22px] rounded bg-ink" />
+        </button>
+      </div>
+
+      {/* 모바일 드로어 */}
+      {open && (
+        <div className="md:hidden">
+          <div
+            className="fixed inset-0 z-40 bg-black/35"
+            onClick={() => setOpen(false)}
+          />
+          <aside className="fixed right-0 top-0 z-50 flex h-full w-[80vw] max-w-[320px] flex-col gap-1 bg-canvas p-6 shadow-2xl">
+            <button
+              className="self-end p-2 text-2xl leading-none text-ink-faint"
+              aria-label="닫기"
+              onClick={() => setOpen(false)}
+            >
+              ×
+            </button>
+            {NAV.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-sm px-3 py-3.5 text-[16px] font-medium text-ink hover:text-blue"
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <div className="mt-3">
+              <ConsultButtons size="md" className="flex-col items-stretch [&>a]:w-full" />
+            </div>
+          </aside>
+        </div>
+      )}
+    </header>
+  );
+}

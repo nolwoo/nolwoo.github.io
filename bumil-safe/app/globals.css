@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────
+   범일금고 디자인 토큰 — Apple 디자인 시스템 이식 (docs/DESIGN.md)
+   단일 액센트 Action Blue · 잉크/파치먼트/다크타일 · 미니멀 크롬
+   ────────────────────────────────────────────────────────────── */
+:root {
+  --background: #ffffff;
+  --foreground: #1d1d1f;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* 액센트 (유일한 인터랙티브 색) */
+  --color-blue: #0066cc;            /* Action Blue — 모든 CTA·링크 */
+  --color-blue-focus: #0071e3;      /* 포커스 링 */
+  --color-blue-on-dark: #2997ff;    /* 다크 타일 위 링크 */
+
+  /* 잉크 / 텍스트 */
+  --color-ink: #1d1d1f;             /* 헤드라인·본문 */
+  --color-ink-muted: #333333;
+  --color-ink-faint: #7a7a7a;       /* 비활성·법적 고지 */
+  --color-on-dark: #ffffff;
+  --color-on-dark-muted: #cccccc;
+
+  /* 서피스 */
+  --color-canvas: #ffffff;
+  --color-parchment: #f5f5f7;       /* 시그니처 오프화이트 — 교차 타일·푸터 */
+  --color-pearl: #fafafc;           /* 고스트 버튼 면 */
+  --color-tile: #272729;            /* 다크 타일 1 */
+  --color-tile-2: #2a2a2c;
+  --color-tile-3: #252527;
+
+  /* 헤어라인 */
+  --color-hairline: #e0e0e0;
+  --color-divider: #f0f0f0;
+
+  /* 기능색 예외 — 카카오 채널 */
+  --color-kakao: #fee500;
+  --color-kakao-ink: #3c1e1e;
+
+  /* radius 스케일 (Apple) */
+  --radius-xs: 5px;
+  --radius-sm: 8px;
+  --radius-md: 11px;
+  --radius-lg: 18px;
+  --radius-pill: 9999px;
+
+  /* Pretendard = 한글판 SF Pro. 시스템 폰트 먼저 → Apple 기기서 진짜 SF Pro */
+  --font-sans: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", sans-serif;
+}
+
+/* 라이트 톤 고정 — 다크모드 자동전환 없음 (다크는 타일로 표현) */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 17px;        /* Apple: 본문 17px ("읽는" 페이스) */
+  line-height: 1.47;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 디스플레이 헤드라인의 "Apple tight" 자간 유틸 */
+.tracking-tight-apple { letter-spacing: -0.022em; }
