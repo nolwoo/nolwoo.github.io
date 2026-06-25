@@ -21,10 +21,7 @@ export function KakaoMap() {
     if (!apiKey) return;
 
     function initMap() {
-      if (!containerRef.current) {
-        setError("컨테이너 없음");
-        return;
-      }
+      if (!containerRef.current) return;
       try {
         const center = new window.kakao.maps.LatLng(LAT, LON);
         const map = new window.kakao.maps.Map(containerRef.current, { center, level: 3 });
@@ -34,8 +31,8 @@ export function KakaoMap() {
         const infoContent = `<div style="padding:8px 12px;font-size:13px;font-family:sans-serif;white-space:nowrap;"><strong>범일금고 영등포대리점</strong><br/><span style="color:#555">영등포로 164</span></div>`;
         const infoWindow = new window.kakao.maps.InfoWindow({ content: infoContent });
         infoWindow.open(map, marker);
-      } catch (e) {
-        setError("지도 초기화 오류: " + String(e));
+      } catch {
+        setError("지도를 불러오지 못했습니다.");
       }
     }
 
@@ -44,11 +41,11 @@ export function KakaoMap() {
     script.onload = () => {
       try {
         window.kakao.maps.load(initMap);
-      } catch (e) {
-        setError("SDK 로드 오류: " + String(e));
+      } catch {
+        setError("지도를 불러오지 못했습니다.");
       }
     };
-    script.onerror = () => setError("SDK 스크립트 로드 실패 (네트워크 또는 도메인 미등록)");
+    script.onerror = () => setError("지도를 불러오지 못했습니다.");
     document.head.appendChild(script);
 
     return () => {
