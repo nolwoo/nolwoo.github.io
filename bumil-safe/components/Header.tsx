@@ -10,8 +10,9 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-hairline bg-canvas/80 backdrop-blur-md backdrop-saturate-150">
-      <div className="mx-auto flex h-[56px] max-w-[1120px] items-center justify-between px-6">
+    <>
+      <header className="sticky top-0 z-50 border-b border-hairline bg-canvas/80 backdrop-blur-md backdrop-saturate-150">
+        <div className="mx-auto flex h-[56px] max-w-[1120px] items-center justify-between px-6">
         {/* 로고 */}
         <Link href="/" className="flex items-baseline gap-2">
           <span className="text-[18px] font-semibold tracking-tight-apple text-ink">
@@ -50,16 +51,19 @@ export function Header() {
           <span className="h-[2px] w-[22px] rounded bg-ink" />
           <span className="h-[2px] w-[22px] rounded bg-ink" />
         </button>
-      </div>
+        </div>
+      </header>
 
-      {/* 모바일 드로어 */}
+      {/* 모바일 드로어 — 헤더 밖에 둔다.
+         헤더의 backdrop-filter가 안쪽 fixed 요소의 기준(containing block)이 되어버려
+         드로어가 헤더 박스 안에 갇히는 문제를 피하기 위함. */}
       {open && (
         <div className="md:hidden">
           <div
-            className="fixed inset-0 z-40 bg-black/35"
+            className="fixed inset-0 z-[60] bg-black/35"
             onClick={() => setOpen(false)}
           />
-          <aside className="fixed right-0 top-0 z-50 flex h-full w-[80vw] max-w-[320px] flex-col gap-1 bg-canvas p-6 shadow-2xl">
+          <aside className="fixed right-0 top-0 z-[70] flex h-full w-[80vw] max-w-[320px] flex-col gap-1 bg-canvas p-6 shadow-2xl">
             <button
               className="self-end p-2 text-2xl leading-none text-ink-faint"
               aria-label="닫기"
@@ -83,6 +87,6 @@ export function Header() {
           </aside>
         </div>
       )}
-    </header>
+    </>
   );
 }
