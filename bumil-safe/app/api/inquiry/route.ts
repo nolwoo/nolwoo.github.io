@@ -1,23 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabase, INQUIRY_TABLE } from "@/lib/supabase";
-
-/* best-effort IP rate limit (서버 인스턴스 메모리 기준).
-   완벽한 분산 제한은 아니지만 단일 IP의 도배를 크게 줄여준다. */
-const WINDOW_MS = 10 * 60 * 1000; // 10분
-const MAX_HITS = 6;
-const hits = new Map<string, number[]>();
-
-function rateLimited(ip: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  if (recent.length >= MAX_HITS) {
-    hits.set(ip, recent);
-    return true;
-  }
-  recent.push(now);
-  hits.set(ip, recent);
-  return false;
-}
+import { rateLimited, clientIp } from "@/lib/rate-limit";
 
 /* 구매자 상담 접수 — 폼 제출을 받아 Supabase에 저장 */
 export async function POST(req: Request) {
@@ -39,10 +22,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  // IP 기준 rate limit
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  if (rateLimited(ip)) {
+  // IP 기준 rate limit (10분에 6회)
+  if (rateLimited("inquiry", clientIp(req), { windowMs: 10 * 60 * 1000, max: 6 })) {
     return NextResponse.json(
       { error: "잠시 후 다시 시도해 주세요. (요청이 너무 많습니다)" },
       { status: 429 },
