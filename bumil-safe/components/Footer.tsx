@@ -1,8 +1,16 @@
 import Link from "next/link";
 import { NAV, SITE } from "@/lib/site";
 
+/* "평일 09:00–18:00 (주말·공휴일 상담 가능)" → 본 시간 / 괄호 부가설명 분리 */
+function splitHours(hours: string): [string, string | null] {
+  const m = hours.match(/^(.*?)\s*(\(.*\))\s*$/);
+  return m ? [m[1], m[2]] : [hours, null];
+}
+
 /* Apple footer — 파치먼트 면, 느슨한 줄간격의 링크 컬럼, 미세 법적 고지 */
 export function Footer() {
+  const [hoursMain, hoursNote] = splitHours(SITE.address.hours);
+
   return (
     <footer className="mt-auto bg-parchment text-ink-muted">
       <div className="mx-auto max-w-[1120px] px-6 py-16">
@@ -40,7 +48,15 @@ export function Footer() {
                     {SITE.phone}
                   </a>
                 </li>
-                <li>{SITE.address.hours}</li>
+                <li>
+                  {hoursMain}
+                  {hoursNote && (
+                    <>
+                      <br />
+                      <span className="text-ink-faint">{hoursNote}</span>
+                    </>
+                  )}
+                </li>
                 <li>{SITE.address.road}</li>
               </ul>
             </div>

@@ -66,6 +66,15 @@ body {
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* 한국어 가독성: 단어(어절) 중간에서 끊지 말고 띄어쓰기에서만 줄바꿈.
+     "둘러보/기", "딱 맞/는" 같은 어색한 줄바꿈을 막는다. */
+  word-break: keep-all;
+  overflow-wrap: break-word;  /* URL 등 띄어쓰기 없는 긴 토큰은 안전하게 넘김 */
+}
+
+/* 제목·문단의 외톨이 단어(예: 줄 끝의 "요.") 줄임 — 지원 브라우저에서만 적용 */
+h1, h2, h3, p {
+  text-wrap: pretty;
 }
 
 /* 디스플레이 헤드라인의 "Apple tight" 자간 유틸 */
