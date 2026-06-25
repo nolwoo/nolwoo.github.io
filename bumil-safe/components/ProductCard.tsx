@@ -32,7 +32,7 @@ export function ProductCard({ product: p }: { product: Product }) {
         </h3>
 
         <div className="mt-auto pt-3">
-          <div className="flex items-baseline gap-2">
+          <div className="flex items-baseline gap-2 whitespace-nowrap">
             {p.discount > 0 && (
               <span className="text-[14px] font-bold text-blue">
                 {p.discount}%
@@ -41,12 +41,12 @@ export function ProductCard({ product: p }: { product: Product }) {
             <span className="text-[17px] font-bold text-ink">
               {p.price}원
             </span>
-            {p.original && (
-              <span className="text-[12px] text-ink-faint line-through">
-                {p.original}
-              </span>
-            )}
           </div>
+          {p.original && (
+            <p className="mt-0.5 text-[12px] text-ink-faint line-through">
+              {p.original}원
+            </p>
+          )}
           {p.reviews > 0 && (
             <p className="mt-1 text-[12px] text-ink-faint">
               ★ {p.rating} · 리뷰 {p.reviews}

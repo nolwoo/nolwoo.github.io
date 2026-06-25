@@ -27,7 +27,7 @@ export default function AboutPage() {
             center
             eyebrow="회사소개"
             title={<>지켜야 할 것이 분명한 사람들의 곁에서</>}
-            lead={`${SITE.brand} ${SITE.branch}는 본사 정품을 영등포에서 직접 설치하고, 구매 후에도 곁에서 챙기는 금고 전문 대리점입니다.`}
+            lead={`${SITE.brand} ${SITE.branch}은 본사 정품을 영등포에서 직접 설치하고, 구매 후에도 곁에서 챙기는 금고 전문 대리점입니다.`}
           />
         </Container>
       </section>
