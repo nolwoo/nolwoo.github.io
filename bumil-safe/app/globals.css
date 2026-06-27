@@ -37,6 +37,9 @@
   --color-hairline: #e0e0e0;
   --color-divider: #f0f0f0;
 
+  /* 별점 */
+  --color-gold: #b88a2e;
+
   /* 기능색 예외 — 카카오 채널 */
   --color-kakao: #fee500;
   --color-kakao-ink: #3c1e1e;

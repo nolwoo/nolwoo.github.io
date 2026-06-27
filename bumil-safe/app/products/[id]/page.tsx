@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/Container";
 import { ConsultButtons } from "@/components/ConsultButtons";
 import { ProductCard } from "@/components/ProductCard";
+import { ReviewSection } from "@/components/ReviewSection";
 import { PRODUCTS } from "@/lib/products";
 import { getProduct } from "@/lib/catalog";
 
@@ -111,6 +112,9 @@ export default async function ProductDetail({
           </div>
         </Container>
       </section>
+
+      {/* 구매 후기 */}
+      <ReviewSection product={p} />
 
       {/* 같은 카테고리 추천 */}
       {related.length > 0 && (
