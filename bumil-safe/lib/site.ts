@@ -14,6 +14,10 @@ export const SITE = {
   // (카카오톡 채널 관리자센터 → 채널 → "채널 홈 URL" 복사)
   kakaoUrl: "",
 
+  // 네이버 스마트스토어 — 실제 구매 후기는 여기서 확인.
+  // 제품에 개별 storeUrl이 없으면 이 스토어 홈으로 연결.
+  storeUrl: "https://smartstore.naver.com/bumilsafeco",
+
   address: {
     road: "서울 영등포구 영등포로 164",
     jibun: "서울 영등포구 당산동1가 6",

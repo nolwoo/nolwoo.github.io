@@ -16,6 +16,7 @@ export type Product = {
   rating: number;
   best: boolean;
   img: string;
+  storeUrl?: string; // 네이버 스마트스토어 개별 제품 URL (없으면 스토어 홈으로)
 };
 
 export const PRODUCTS: Product[] = [
@@ -31,7 +32,8 @@ export const PRODUCTS: Product[] = [
     "reviews": 1074,
     "rating": 4.9,
     "best": true,
-    "img": "https://shop-phinf.pstatic.net/20240703_55/1719994973530TrLpu_JPEG/3823964399535633_1711775406.jpg?type=f750_750"
+    "img": "https://shop-phinf.pstatic.net/20240703_55/1719994973530TrLpu_JPEG/3823964399535633_1711775406.jpg?type=f750_750",
+    "storeUrl": "https://smartstore.naver.com/bumilsafeco/products/11190840665"
   },
   {
     "id": "stl70fx",
