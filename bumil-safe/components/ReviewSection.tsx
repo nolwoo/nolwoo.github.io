@@ -4,8 +4,6 @@ import { SITE } from "@/lib/site";
 export function ReviewSection({ product: p }: { product: Product }) {
   if (p.reviews === 0) return null;
 
-  const storeUrl = p.storeUrl ?? SITE.storeUrl;
-
   return (
     <section className="bg-canvas">
       <div className="mx-auto max-w-[820px] px-6 py-16">
@@ -25,7 +23,7 @@ export function ReviewSection({ product: p }: { product: Product }) {
 
           {/* 스토어로 연결 */}
           <a
-            href={storeUrl}
+            href={SITE.storeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-7 inline-flex items-center gap-1.5 rounded-pill bg-blue px-6 py-3 text-[15px] font-semibold text-white transition-opacity hover:opacity-90"
