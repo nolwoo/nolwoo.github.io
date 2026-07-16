@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────────────────
-   범일금고 디자인 토큰 — Apple 디자인 시스템 이식 (docs/DESIGN.md)
-   단일 액센트 Action Blue · 잉크/파치먼트/다크타일 · 미니멀 크롬
+   범일금고 디자인 토큰 — Apple 레이아웃 문법 + 프리미엄 골드 액센트
+   세리프 디스플레이(Noto Serif KR) · 골드 포인트 · 잉크/파치먼트/다크타일
+   (금고 = 안전·고급 — CLAUDE.md 디자인 규칙의 프리미엄·신뢰·차분 톤)
    ────────────────────────────────────────────────────────────── */
 :root {
   --background: #ffffff;
@@ -37,8 +38,10 @@
   --color-hairline: #e0e0e0;
   --color-divider: #f0f0f0;
 
-  /* 별점 */
-  --color-gold: #b88a2e;
+  /* 골드 액센트 — 포인트 색 (별점·아이브로·강조) */
+  --color-gold: #b88a2e;            /* 장식·별점·다크 면 위 보더 */
+  --color-gold-deep: #8f6a1f;       /* 밝은 면 위 골드 텍스트 (대비 확보) */
+  --color-gold-on-dark: #d8b56c;    /* 다크 타일 위 골드 텍스트 */
 
   /* 기능색 예외 — 카카오 채널 */
   --color-kakao: #fee500;
@@ -54,6 +57,8 @@
   /* Pretendard = 한글판 SF Pro. 시스템 폰트 먼저 → Apple 기기서 진짜 SF Pro */
   --font-sans: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", sans-serif;
+  /* 디스플레이 세리프 — 헤드라인 전용 (next/font가 --font-noto-serif 주입) */
+  --font-serif: var(--font-noto-serif), "Noto Serif KR", ui-serif, serif;
 }
 
 /* 라이트 톤 고정 — 다크모드 자동전환 없음 (다크는 타일로 표현) */
@@ -82,3 +87,12 @@ h1, h2, h3, p {
 
 /* 디스플레이 헤드라인의 "Apple tight" 자간 유틸 */
 .tracking-tight-apple { letter-spacing: -0.022em; }
+
+/* 다크 히어로의 골드 글로우 — 토큰(--color-gold) 기반, 임의 hex 금지 규칙 준수 */
+.hero-gold-glow {
+  background: radial-gradient(
+    90% 70% at 50% -10%,
+    color-mix(in srgb, var(--color-gold) 24%, transparent),
+    transparent 65%
+  );
+}

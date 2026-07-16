@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 
-/* Apple 버튼 문법 — pill(액션) / dark-utility(8px) / kakao(기능색 예외) */
-type Variant = "primary" | "ghost" | "dark" | "kakao";
+/* 프리미엄 버튼 문법 — 잉크 pill(액션) / 라이트(다크 면 위) / kakao(기능색 예외) */
+type Variant = "primary" | "ghost" | "dark" | "kakao" | "light";
 type Size = "sm" | "md" | "lg";
 
 const base =
@@ -10,16 +10,18 @@ const base =
   "transition-transform duration-150 active:scale-95 select-none";
 
 const variants: Record<Variant, string> = {
-  // 블루 알약 — 유일한 1차 액션
-  primary: "bg-blue text-white rounded-pill hover:bg-blue-focus",
+  // 잉크 알약 — 1차 액션 (프리미엄 톤)
+  primary: "bg-ink text-white rounded-pill hover:bg-black",
   // 고스트 알약 — 두 번째 CTA
   ghost:
-    "bg-transparent text-blue border border-blue rounded-pill hover:bg-pearl",
+    "bg-transparent text-ink border border-ink/25 rounded-pill hover:border-ink hover:bg-pearl",
   // 다크 유틸 — 8px 라운드
   dark: "bg-ink text-white rounded-sm hover:bg-black",
   // 카카오 — 기능색 예외, pill 문법 유지
   kakao:
     "bg-kakao text-kakao-ink rounded-pill hover:brightness-95",
+  // 라이트 알약 — 다크 타일 위의 1차 액션
+  light: "bg-white text-ink rounded-pill hover:bg-parchment",
 };
 
 const sizes: Record<Size, string> = {

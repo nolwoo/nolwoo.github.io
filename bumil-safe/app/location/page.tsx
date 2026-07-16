@@ -44,7 +44,7 @@ export default function LocationPage() {
                 <Row
                   label="전화"
                   value={
-                    <a href={SITE.phoneHref} className="font-semibold text-blue">
+                    <a href={SITE.phoneHref} className="font-semibold text-gold-deep">
                       {SITE.phone}
                     </a>
                   }
@@ -81,10 +81,10 @@ export default function LocationPage() {
             lead="전화·카카오톡으로도 상담해 드려요. 온라인 상담 신청도 가능합니다."
           />
           <div className="mt-9 flex justify-center">
-            <ConsultButtons size="lg" showPhoneNumber />
+            <ConsultButtons size="lg" showPhoneNumber className="justify-center" />
           </div>
           <p className="mt-6 text-[14px]">
-            <a href="/contact" className="font-medium text-blue hover:underline">
+            <a href="/contact" className="font-medium text-gold-deep hover:underline">
               온라인 상담 신청하기 →
             </a>
           </p>

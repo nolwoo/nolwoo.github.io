@@ -22,7 +22,7 @@ export default function ContactPage() {
             lead="설치 환경(어디에·무엇을 보관)만 알려주시면 딱 맞는 금고를 추천해 드려요."
           />
           <div className="mt-9 flex justify-center">
-            <ConsultButtons size="lg" showPhoneNumber />
+            <ConsultButtons size="lg" showPhoneNumber className="justify-center" />
           </div>
         </Container>
       </section>
@@ -36,7 +36,7 @@ export default function ContactPage() {
           </p>
           <p className="mt-6 text-center text-[14px] text-ink-muted">
             매장에 직접 방문하고 싶으세요?{" "}
-            <a href="/location" className="font-medium text-blue hover:underline">
+            <a href="/location" className="font-medium text-gold-deep hover:underline">
               오시는길 보기 →
             </a>
           </p>

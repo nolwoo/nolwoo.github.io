@@ -15,21 +15,21 @@ export function Header() {
         <div className="mx-auto flex h-[56px] max-w-[1120px] items-center justify-between px-6">
         {/* 로고 */}
         <Link href="/" className="flex items-baseline gap-2">
-          <span className="text-[18px] font-semibold tracking-tight-apple text-ink">
+          <span className="font-serif text-[19px] font-bold tracking-[0.06em] text-ink">
             BUMIL
           </span>
-          <span className="text-[13px] text-ink-faint">
+          <span className="whitespace-nowrap text-[13px] text-ink-faint">
             {SITE.brand} <em className="not-italic text-ink-muted">{SITE.branch}</em>
           </span>
         </Link>
 
         {/* 데스크톱 내비 */}
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-sm px-3 py-2 text-[14px] text-ink-muted transition-colors hover:text-blue"
+              className="rounded-sm px-3 py-2 text-[14px] text-ink-muted transition-colors hover:text-gold-deep"
             >
               {item.label}
             </Link>
@@ -37,13 +37,13 @@ export function Header() {
         </nav>
 
         {/* 데스크톱 상담 CTA */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <ConsultButtons size="sm" />
         </div>
 
         {/* 모바일 햄버거 */}
         <button
-          className="md:hidden flex flex-col gap-[5px] p-2"
+          className="lg:hidden flex flex-col gap-[5px] p-2"
           aria-label="메뉴 열기"
           onClick={() => setOpen(true)}
         >
@@ -58,7 +58,7 @@ export function Header() {
          헤더의 backdrop-filter가 안쪽 fixed 요소의 기준(containing block)이 되어버려
          드로어가 헤더 박스 안에 갇히는 문제를 피하기 위함. */}
       {open && (
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <div
             className="fixed inset-0 z-[60] bg-black/35"
             onClick={() => setOpen(false)}
@@ -75,7 +75,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-sm px-3 py-3.5 text-[16px] font-medium text-ink hover:text-blue"
+                className="rounded-sm px-3 py-3.5 text-[16px] font-medium text-ink hover:text-gold-deep"
                 onClick={() => setOpen(false)}
               >
                 {item.label}

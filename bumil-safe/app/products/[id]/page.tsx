@@ -44,7 +44,7 @@ export default async function ProductDetail({
   return (
     <>
       <Container className="py-8">
-        <Link href="/products" className="text-[14px] text-blue hover:underline">
+        <Link href="/products" className="text-[14px] text-gold-deep hover:underline">
           ← 전체 금고로
         </Link>
       </Container>
@@ -54,7 +54,7 @@ export default async function ProductDetail({
           {/* 이미지 — 파치먼트 면 위 제품 그림자 */}
           <div className="relative flex items-center justify-center rounded-lg bg-parchment p-10">
             {p.best && (
-              <span className="absolute left-5 top-5 rounded-pill bg-ink px-3 py-1 text-[12px] font-semibold text-white">
+              <span className="absolute left-5 top-5 rounded-pill bg-gold-deep px-3 py-1 text-[12px] font-semibold tracking-[0.08em] text-white">
                 BEST
               </span>
             )}
@@ -71,13 +71,13 @@ export default async function ProductDetail({
             <p className="text-[14px] text-ink-faint">
               {p.catLabel} · {p.lock}
             </p>
-            <h1 className="tracking-tight-apple mt-2 text-[clamp(24px,3.4vw,34px)] font-semibold leading-snug text-ink">
+            <h1 className="mt-2 font-serif text-[clamp(24px,3.4vw,34px)] font-semibold leading-snug text-ink">
               {p.name}
             </h1>
 
             <div className="mt-5 flex items-baseline gap-3">
               {p.discount > 0 && (
-                <span className="text-[20px] font-bold text-blue">
+                <span className="text-[20px] font-bold text-gold-deep">
                   {p.discount}%
                 </span>
               )}

@@ -38,7 +38,7 @@ export function TopBanner() {
         <p>
           범일금고 <strong className="font-semibold text-on-dark">본사 정품</strong>을
           영등포에서 직접 설치해 드립니다 · 상담{" "}
-          <a href={SITE.phoneHref} className="font-semibold text-blue-on-dark">
+          <a href={SITE.phoneHref} className="font-semibold text-gold-on-dark">
             {SITE.phone}
           </a>
         </p>

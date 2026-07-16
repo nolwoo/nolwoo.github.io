@@ -38,7 +38,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
             {STATS.map((s) => (
               <div key={s.l}>
-                <p className="tracking-tight-apple text-[clamp(28px,4vw,44px)] font-semibold text-on-dark">
+                <p className="font-serif text-[clamp(28px,4vw,44px)] font-semibold text-gold-on-dark">
                   {s.n}
                 </p>
                 <p className="mt-2 text-[14px] text-on-dark-muted">{s.l}</p>
@@ -79,14 +79,14 @@ export default function AboutPage() {
       {/* 매장 한 줄 + CTA — 밝은 */}
       <section className="bg-canvas">
         <Container className="py-24 text-center">
-          <h2 className="tracking-tight-apple text-[clamp(26px,4vw,38px)] font-semibold leading-tight">
+          <h2 className="font-serif text-[clamp(25px,3.8vw,36px)] font-semibold leading-[1.3]">
             영등포에서, 직접 보고 상담하세요.
           </h2>
           <p className="mx-auto mt-4 max-w-[44ch] text-[17px] text-ink-muted">
             {SITE.address.road} · {SITE.address.hours}
           </p>
           <div className="mt-8 flex justify-center">
-            <ConsultButtons size="lg" showPhoneNumber />
+            <ConsultButtons size="lg" showPhoneNumber className="justify-center" />
           </div>
         </Container>
       </section>
