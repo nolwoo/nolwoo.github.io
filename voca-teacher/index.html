@@ -72,6 +72,11 @@
   .hero:after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;
               background:radial-gradient(circle,rgba(139,124,246,.35),transparent 70%)}
   .hero .lbl{font-size:13px;color:var(--sub);margin-bottom:4px}
+  .scoperow{display:flex;align-items:center;gap:9px;margin-bottom:16px;position:relative;z-index:1}
+  .scoperow span{font-size:12px;color:var(--sub);flex:none}
+  .scoperow select{flex:1;min-width:0;padding:9px 11px;border-radius:11px;font-size:13.5px;
+    font-weight:600;font-family:inherit;color:var(--txt);
+    background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16)}
   .hero .big{font-size:30px;font-weight:800;letter-spacing:-.03em;margin-bottom:14px}
   .hero .big small{font-size:15px;font-weight:600;color:var(--sub)}
   .split{display:flex;gap:10px;margin-bottom:18px}
@@ -203,6 +208,10 @@
     </div>
 
     <div class="hero">
+      <div class="scoperow">
+        <span>학습 범위</span>
+        <select id="scopeSel" onchange="changeScope(this.value)"></select>
+      </div>
       <div class="lbl" id="heroLbl">오늘의 학습</div>
       <div class="big" id="heroBig">0 <small>표현</small></div>
       <div class="split">
@@ -339,11 +348,22 @@ let S = load();
 function load(){
   try{
     const raw = JSON.parse(localStorage.getItem(KEY));
-    if(raw && raw.progress){ if(raw.autoSpeak === undefined) raw.autoSpeak = true; return raw; }
+    if(raw && raw.progress){
+      if(raw.autoSpeak === undefined) raw.autoSpeak = true;
+      if(!raw.scope || (raw.scope !== "all" && !CATEGORY_LABEL[raw.scope])) raw.scope = "all";
+      return raw;
+    }
   }catch(e){}
-  return { progress:{}, history:{}, streak:0, lastDay:null, goal:10, autoSpeak:true };
+  return { progress:{}, history:{}, streak:0, lastDay:null, goal:10, autoSpeak:true, scope:"all" };
 }
 function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
+
+/* 받침 유무에 따라 조사를 골라 붙인다 — "취미·주말은", "숙소는" */
+function josa(word, withBatchim, without){
+  const c = word.charCodeAt(word.length - 1);
+  const hasBatchim = c >= 0xAC00 && c <= 0xD7A3 ? (c - 0xAC00) % 28 !== 0 : true;
+  return word + (hasBatchim ? withBatchim : without);
+}
 
 const today = () => new Date().toLocaleDateString("sv-SE");      // YYYY-MM-DD (로컬)
 const addDays = (d,n) => { const t=new Date(d+"T00:00:00"); t.setDate(t.getDate()+n); return t.toLocaleDateString("sv-SE"); };
@@ -365,8 +385,12 @@ function schedule(p, q){                     // q: 5=바로 정답, 3=고생 끝
   return p.iv;
 }
 const state = w => { const p=S.progress[w]; return !p ? "new" : p.iv >= MASTER_IV ? "mastered" : "learning"; };
-const dueList = () => WORDS.filter(x => S.progress[x.w] && S.progress[x.w].due <= today());
-const newList = () => WORDS.filter(x => !S.progress[x.w]);
+
+/* 학습 범위 — "all" 이거나 특정 상황(cat) 하나. 홈에서 고른 값이 세션에 그대로 적용된다. */
+const inScope   = x => S.scope === "all" || x.cat === S.scope;
+const scopeList = () => WORDS.filter(inScope);
+const dueList   = () => scopeList().filter(x => S.progress[x.w] && S.progress[x.w].due <= today());
+const newList   = () => scopeList().filter(x => !S.progress[x.w]);
 
 /* =========================================================
    화면 전환
@@ -395,32 +419,53 @@ function renderHome(){
   document.getElementById("heroBig").innerHTML = total + ' <small>표현</small>';
   const doneToday = (S.history[today()] || {}).words || 0;
   document.getElementById("heroLbl").textContent =
-    total === 0        ? "오늘 학습을 모두 마쳤어요 🎉"
+    total === 0 && S.scope !== "all" ? `${josa(CATEGORY_LABEL[S.scope], "은", "는")} 오늘 학습할 게 없어요`
+  : total === 0        ? "오늘 학습을 모두 마쳤어요 🎉"
   : doneToday >= S.goal ? `오늘 ${doneToday}개 완료! 더 해볼까요?`
   : dl.length          ? "복습할 단어가 있어요"
                        : "오늘의 학습";
   document.getElementById("startBtn").disabled = total === 0;
-  document.getElementById("startBtn").textContent = total === 0 ? "내일 다시 만나요" : "학습 시작하기";
+  document.getElementById("startBtn").textContent =
+    total > 0        ? "학습 시작하기"
+  : S.scope === "all" ? "내일 다시 만나요"
+                      : "다른 범위를 골라 보세요";
   document.getElementById("streakN").textContent = S.streak;
   document.getElementById("goalN").textContent = S.goal;
   document.getElementById("autoSpeakBtn").textContent = S.autoSpeak ? "켜짐" : "꺼짐";
   renderVoicePicker();
 
-  const learned = Object.keys(S.progress).length;
-  const master = WORDS.filter(x => state(x.w) === "mastered").length;
+  renderScope();
+
+  const scoped  = scopeList();
+  const learned = scoped.filter(x => S.progress[x.w]).length;
+  const master  = scoped.filter(x => state(x.w) === "mastered").length;
   let seen=0, right=0;
-  Object.values(S.progress).forEach(p => { seen += p.seen; right += p.right; });
+  scoped.forEach(x => { const p = S.progress[x.w]; if(p){ seen += p.seen; right += p.right; } });
   document.getElementById("hLearned").textContent = learned;
   document.getElementById("hMaster").textContent = master;
   document.getElementById("hAcc").textContent = seen ? Math.round(right/seen*100)+"%" : "-";
 
-  const pct = Math.round(learned / WORDS.length * 100);
-  document.getElementById("totalW").textContent = WORDS.length;
+  const pct = Math.round(learned / scoped.length * 100);
+  document.getElementById("totalW").textContent = scoped.length;
   document.getElementById("progPct").textContent = pct + "%";
   document.getElementById("progBar").style.width = pct + "%";
   document.getElementById("progHint").textContent =
-    learned === WORDS.length ? "모든 표현을 한 번씩 만났어요. 이제 복습이 핵심입니다."
-                             : `아직 만나지 않은 표현 ${WORDS.length - learned}개가 남았어요.`;
+    learned === scoped.length ? "이 범위의 표현을 모두 만났어요. 이제 복습이 핵심입니다."
+                              : `아직 만나지 않은 표현 ${scoped.length - learned}개가 남았어요.`;
+}
+
+/* 학습 범위 드롭다운 — 상황별로 남은 새 표현 수를 함께 보여 준다. */
+function renderScope(){
+  const sel = document.getElementById("scopeSel");
+  const left = cat => WORDS.filter(x => x.cat === cat && !S.progress[x.w]).length;
+  const opt = (v, label, n) =>
+    `<option value="${v}"${S.scope === v ? " selected" : ""}>${label} · 남은 ${n}개</option>`;
+  sel.innerHTML =
+    opt("all", "전체", WORDS.filter(x => !S.progress[x.w]).length) +
+    Object.entries(CATEGORY_LABEL).map(([k, l]) => opt(k, l, left(k))).join("");
+}
+function changeScope(v){
+  S.scope = v; save(); renderHome();
 }
 function toggleAutoSpeak(){
   S.autoSpeak = !S.autoSpeak; save();
@@ -432,7 +477,8 @@ function changeGoal(d){
 }
 function resetAll(){
   if(!confirm("모든 학습 기록과 복습 일정이 삭제됩니다. 계속할까요?")) return;
-  S = { progress:{}, history:{}, streak:0, lastDay:null, goal:S.goal, autoSpeak:S.autoSpeak, voiceName:S.voiceName };
+  S = { progress:{}, history:{}, streak:0, lastDay:null, goal:S.goal,
+        autoSpeak:S.autoSpeak, voiceName:S.voiceName, scope:S.scope };
   save(); renderHome();
 }
 
@@ -441,10 +487,11 @@ function resetAll(){
    ========================================================= */
 let Q = [], qi = 0, session = null;
 
+/* 오답 후보는 같은 상황 + 같은 품사를 우선한다.
+   범위를 좁혀 학습할 때 엉뚱한 상황의 단어가 섞여 답이 티나는 것을 막는다. */
 function pickWrong(word, n, key){
-  const pool = WORDS.filter(x => x.w !== word.w && x.pos === word.pos);
-  const rest = WORDS.filter(x => x.w !== word.w && x.pos !== word.pos);
-  const src = shuffle(pool).concat(shuffle(rest));
+  const rank = x => (x.cat === word.cat ? 2 : 0) + (x.pos === word.pos ? 1 : 0);
+  const src = shuffle(WORDS.filter(x => x.w !== word.w)).sort((a, b) => rank(b) - rank(a));
   const out = [], used = new Set([word[key]]);
   for(const c of src){ if(used.has(c[key])) continue; used.add(c[key]); out.push(c); if(out.length===n) break; }
   return out;

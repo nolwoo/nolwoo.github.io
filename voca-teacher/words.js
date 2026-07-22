@@ -429,7 +429,76 @@ const WORDS = [
   { w:"or something",      pos:"phr", ko:"~라든가, 뭐 그런 거",     cat:"say", ex:"Let's get pizza ___ .",                                 exKo:"피자나 뭐 그런 거 시키죠." },
   { w:"my bad",            pos:"phr", ko:"내 잘못이야",            cat:"say", ex:"He just said, \"___ ,\" and moved on.",                 exKo:"그는 “내 잘못이야”라고만 하고 넘어갔어요.", tip:"아주 캐주얼. 제대로 사과해야 할 자리에선 I'm sorry." },
   { w:"for real",          pos:"phr", ko:"진짜야?, 진심이야",       cat:"say", ex:"Are you ___ ?",                                         exKo:"진짜예요?" },
-  { w:"chill",             pos:"v",   ko:"쉬다, 느긋하게 있다",     cat:"say", ex:"We just want to ___ at home tonight.",                  exKo:"오늘 밤은 그냥 집에서 쉬고 싶어요." }
+  { w:"chill",             pos:"v",   ko:"쉬다, 느긋하게 있다",     cat:"say", ex:"We just want to ___ at home tonight.",                  exKo:"오늘 밤은 그냥 집에서 쉬고 싶어요." },
+
+  /* ===== 회사 · 업무 일상 ===== */
+  { w:"day off",           pos:"n",   ko:"쉬는 날, 휴가",          cat:"work", ex:"I'm taking a ___ on Friday.",                          exKo:"금요일에 하루 쉬려고요." },
+  { w:"call in sick",      pos:"phr", ko:"아파서 못 간다고 연락하다", cat:"work", ex:"He had to ___ this morning.",                        exKo:"그는 오늘 아침 아파서 못 온다고 연락했어요." },
+  { w:"work from home",    pos:"phr", ko:"재택근무하다",            cat:"work", ex:"I usually ___ on Wednesdays.",                         exKo:"저는 보통 수요일에 재택근무해요." },
+  { w:"swamped",           pos:"adj", ko:"일에 파묻힌",            cat:"work", ex:"I'm totally ___ this week.",                           exKo:"이번 주는 일에 완전히 파묻혀 있어요.", tip:"very busy를 더 실감 나게. I'm swamped. 한마디면 충분." },
+  { w:"heads-up",          pos:"n",   ko:"미리 알려주는 것",        cat:"work", ex:"Thanks for the ___ .",                                 exKo:"미리 알려줘서 고마워요.", tip:"Give me a heads-up = 미리 좀 알려줘." },
+  { w:"lunch break",       pos:"n",   ko:"점심시간",               cat:"work", ex:"I'll call you during my ___ .",                        exKo:"점심시간에 전화할게요." },
+  { w:"overtime",          pos:"n",   ko:"야근, 초과근무",          cat:"work", ex:"I did a lot of ___ last month.",                       exKo:"지난달에 야근을 많이 했어요." },
+  { w:"deadline",          pos:"n",   ko:"마감일",                 cat:"work", ex:"The ___ is Friday at noon.",                           exKo:"마감은 금요일 정오예요." },
+  { w:"meeting",           pos:"n",   ko:"회의",                   cat:"work", ex:"I'm in a ___ right now.",                              exKo:"지금 회의 중이에요." },
+  { w:"commute",           pos:"n",   ko:"통근, 출퇴근길",          cat:"work", ex:"My ___ takes about an hour.",                          exKo:"출퇴근에 한 시간쯤 걸려요." },
+  { w:"coworker",          pos:"n",   ko:"직장 동료",              cat:"work", ex:"A ___ of mine recommended it.",                        exKo:"제 직장 동료가 추천해 줬어요." },
+  { w:"boss",              pos:"n",   ko:"상사",                   cat:"work", ex:"I have to ask my ___ first.",                          exKo:"먼저 상사에게 물어봐야 해요." },
+  { w:"get off work",      pos:"phr", ko:"퇴근하다",               cat:"work", ex:"What time do you ___ ?",                               exKo:"몇 시에 퇴근해요?" },
+  { w:"take a break",      pos:"phr", ko:"잠깐 쉬다",              cat:"work", ex:"Let's ___ for ten minutes.",                           exKo:"10분만 쉬었다 하죠." },
+  { w:"keep me posted",    pos:"phr", ko:"계속 알려줘",            cat:"work", ex:"Sounds good — ___ .",                                  exKo:"좋아요. 계속 알려주세요." },
+  { w:"follow up",         pos:"phr", ko:"후속으로 챙기다",         cat:"work", ex:"I'll ___ with them tomorrow.",                         exKo:"내일 그쪽에 다시 확인해 볼게요." },
+  { w:"check with",        pos:"phr", ko:"~에게 확인해 보다",       cat:"work", ex:"Let me ___ my manager first.",                         exKo:"먼저 매니저에게 확인해 볼게요." },
+  { w:"busy",              pos:"adj", ko:"바쁜",                   cat:"work", ex:"Are you ___ right now?",                               exKo:"지금 바쁘세요?" },
+
+  /* ===== 의견 말하기 · 대화 이어가기 ===== */
+  { w:"I think",           pos:"phr", ko:"내 생각엔",              cat:"view", ex:"Honestly, ___ it's too expensive.",                    exKo:"솔직히 제 생각엔 너무 비싼 것 같아요." },
+  { w:"it depends",        pos:"phr", ko:"상황에 따라 달라요",      cat:"view", ex:"\"Is it cheaper?\" \"___ .\"",                         exKo:"“그게 더 싸요?” “상황에 따라 달라요.”" },
+  { w:"to be honest",      pos:"phr", ko:"솔직히 말하면",           cat:"view", ex:"I liked the food, but ___ , the service was slow.",    exKo:"음식은 좋았는데 솔직히 서비스가 느렸어요." },
+  { w:"personally",        pos:"adv", ko:"개인적으로는",            cat:"view", ex:"I know it's popular, but ___ , I prefer the other one.", exKo:"인기 있는 건 아는데 개인적으로는 다른 게 더 좋아요." },
+  { w:"agree",             pos:"v",   ko:"동의하다",               cat:"view", ex:"I totally ___ with you.",                              exKo:"완전히 동감이에요." },
+  { w:"not really",        pos:"phr", ko:"딱히 그렇진 않아요",      cat:"view", ex:"\"Do you like it?\" \"___ .\"",                        exKo:"“마음에 들어요?” “딱히요.”", tip:"No라고 딱 자르기 뭐할 때 부드럽게 부정하는 말." },
+  { w:"on the other hand", pos:"phr", ko:"반면에",                 cat:"view", ex:"It's cheap; ___ , it's pretty far.",                   exKo:"싸긴 한데 반면에 꽤 멀어요." },
+  { w:"the thing is",      pos:"phr", ko:"문제는 말이죠",           cat:"view", ex:"I want to go, but ___ , I'm working that day.",        exKo:"가고 싶은데 문제는 그날 일을 해요." },
+  { w:"point",             pos:"n",   ko:"요점, 일리 있는 말",      cat:"view", ex:"That's a good ___ .",                                  exKo:"그거 일리 있는 말이네요." },
+  { w:"how come",          pos:"phr", ko:"어째서, 왜",             cat:"view", ex:"I wonder ___ you didn't call.",                        exKo:"왜 전화 안 했는지 궁금하네요.", tip:"why보다 캐주얼. 뒤에 평서문 어순이 온다 — how come you didn't." },
+  { w:"no idea",           pos:"phr", ko:"전혀 모르겠어요",         cat:"view", ex:"I have ___ where it is.",                              exKo:"그게 어디 있는지 전혀 모르겠어요." },
+  { w:"sounds like",       pos:"phr", ko:"~인 것 같네요",          cat:"view", ex:"That ___ a good plan.",                                exKo:"그거 좋은 계획인 것 같네요." },
+  { w:"make up your mind", pos:"phr", ko:"마음을 정하다",           cat:"view", ex:"Take your time and ___ .",                             exKo:"천천히 생각하고 마음을 정하세요." },
+  { w:"as far as I know",  pos:"phr", ko:"내가 알기로는",           cat:"view", ex:"It opens at nine, ___ .",                              exKo:"제가 알기로는 9시에 열어요." },
+  { w:"that's why",        pos:"phr", ko:"그래서 ~한 거예요",       cat:"view", ex:"It rained — ___ we stayed in.",                        exKo:"비가 왔어요. 그래서 집에 있었죠." },
+
+  /* ===== 배달 · 온라인 쇼핑 ===== */
+  { w:"delivery",          pos:"n",   ko:"배달, 배송",             cat:"deli", ex:"The ___ should arrive by six.",                        exKo:"배송은 6시까지 올 거예요." },
+  { w:"place an order",    pos:"phr", ko:"주문을 넣다",            cat:"deli", ex:"I'll ___ right now.",                                  exKo:"지금 바로 주문 넣을게요." },
+  { w:"free shipping",     pos:"n",   ko:"무료 배송",              cat:"deli", ex:"They offer ___ over fifty dollars.",                   exKo:"50달러 넘으면 무료 배송이에요." },
+  { w:"track",             pos:"v",   ko:"(배송을) 조회하다",       cat:"deli", ex:"You can ___ your package online.",                     exKo:"온라인에서 배송 조회할 수 있어요." },
+  { w:"out for delivery",  pos:"phr", ko:"배송 출발한",            cat:"deli", ex:"It says the box is ___ .",                             exKo:"택배가 배송 출발했다고 나오네요." },
+  { w:"return",            pos:"v",   ko:"반품하다",               cat:"deli", ex:"I need to ___ these shoes.",                           exKo:"이 신발 반품해야 해요." },
+  { w:"in stock",          pos:"adj", ko:"재고가 있는",            cat:"deli", ex:"Is this ___ in blue?",                                 exKo:"이거 파란색 재고 있나요?" },
+  { w:"doorstep",          pos:"n",   ko:"문 앞",                  cat:"deli", ex:"They left it on my ___ .",                             exKo:"문 앞에 두고 갔어요." },
+  { w:"courier",           pos:"n",   ko:"택배 기사",              cat:"deli", ex:"The ___ called me twice.",                             exKo:"택배 기사님이 두 번 전화했어요." },
+  { w:"order number",      pos:"n",   ko:"주문번호",               cat:"deli", ex:"Can you tell me your ___ ?",                           exKo:"주문번호를 알려주시겠어요?" },
+  { w:"arrive",            pos:"v",   ko:"도착하다",               cat:"deli", ex:"When will it ___ ?",                                   exKo:"언제 도착할까요?" },
+  { w:"review",            pos:"n",   ko:"후기, 리뷰",             cat:"deli", ex:"The ___ said it runs small.",                          exKo:"후기에 작게 나온다고 돼 있었어요." },
+  { w:"add to cart",       pos:"phr", ko:"장바구니에 담다",         cat:"deli", ex:"Just ___ and pay later.",                              exKo:"일단 장바구니에 담고 나중에 결제해요." },
+  { w:"deal",              pos:"n",   ko:"특가, 좋은 조건",         cat:"deli", ex:"That's a really good ___ .",                           exKo:"그거 진짜 잘 산 거예요." },
+
+  /* ===== 취미 · 주말 ===== */
+  { w:"binge-watch",       pos:"v",   ko:"몰아 보다",              cat:"fun",  ex:"We ___ the whole season last weekend.",                exKo:"지난 주말에 시즌 전체를 몰아 봤어요." },
+  { w:"go for a walk",     pos:"phr", ko:"산책하러 가다",           cat:"fun",  ex:"Let's ___ after dinner.",                              exKo:"저녁 먹고 산책하러 가요." },
+  { w:"catch a movie",     pos:"phr", ko:"영화 한 편 보다",         cat:"fun",  ex:"Do you want to ___ tonight?",                          exKo:"오늘 밤에 영화 한 편 볼래요?" },
+  { w:"hobby",             pos:"n",   ko:"취미",                   cat:"fun",  ex:"Cooking is my new ___ .",                              exKo:"요리가 제 새 취미예요." },
+  { w:"board game",        pos:"n",   ko:"보드게임",               cat:"fun",  ex:"We played a ___ with the kids.",                       exKo:"애들이랑 보드게임 했어요." },
+  { w:"hiking",            pos:"n",   ko:"등산, 하이킹",           cat:"fun",  ex:"We're going ___ on Saturday.",                         exKo:"토요일에 등산 가요." },
+  { w:"playlist",          pos:"n",   ko:"재생목록",               cat:"fun",  ex:"She made a ___ for the drive.",                        exKo:"드라이브용 재생목록을 만들었어요." },
+  { w:"weekend plans",     pos:"n",   ko:"주말 계획",              cat:"fun",  ex:"Do you have any ___ ?",                                exKo:"주말에 무슨 계획 있어요?" },
+  { w:"sleep in",          pos:"phr", ko:"늦잠 자다",              cat:"fun",  ex:"I like to ___ on Sundays.",                            exKo:"일요일엔 늦잠 자는 걸 좋아해요." },
+  { w:"day trip",          pos:"n",   ko:"당일치기 여행",           cat:"fun",  ex:"We took a ___ to the coast.",                          exKo:"바닷가로 당일치기 다녀왔어요." },
+  { w:"take up",           pos:"phr", ko:"(취미를) 시작하다",       cat:"fun",  ex:"I want to ___ tennis.",                                exKo:"테니스를 시작해 보고 싶어요." },
+  { w:"good at",           pos:"phr", ko:"~를 잘하는",             cat:"fun",  ex:"He's really ___ drawing.",                             exKo:"그는 그림을 정말 잘 그려요." },
+  { w:"show",              pos:"n",   ko:"방송 프로그램, 공연",     cat:"fun",  ex:"That ___ is really funny.",                            exKo:"그 프로그램 진짜 웃겨요." },
+  { w:"camping",           pos:"n",   ko:"캠핑",                   cat:"fun",  ex:"We're going ___ next month.",                          exKo:"다음 달에 캠핑 가요." }
 ];
 
 const CATEGORY_LABEL = {
@@ -439,7 +508,8 @@ const CATEGORY_LABEL = {
   see:"관광", help:"문제상황", care:"건강·약국",
   // 일상
   home:"집·집안일", cook:"장보기·요리", kids:"육아·가족", call:"전화·연락",
-  task:"은행·관공서", town:"동네·이웃", tech:"인터넷·기기",
+  task:"은행·관공서", town:"동네·이웃", tech:"인터넷·기기", deli:"배달·온라인쇼핑",
+  work:"회사·업무", view:"의견 말하기", fun:"취미·주말",
   sky:"날씨", mood:"감정·컨디션", plan:"약속·일정", talk:"대화", life:"일상 기타"
 };
 const POS_LABEL = { v:"동사", n:"명사", adj:"형용사", adv:"부사", phr:"표현" };
