@@ -1,6 +1,6 @@
 /* 보카 티처 서비스워커 — 오프라인 사용을 위한 캐시.
    앱을 고칠 때마다 CACHE 버전을 올리면 폰에서 새 버전을 받아 간다. */
-const CACHE = "voca-teacher-v1";
+const CACHE = "voca-teacher-v2";
 const ASSETS = [
   "./",
   "./index.html",

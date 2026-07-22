@@ -510,6 +510,8 @@ function voiceScore(v){
   if(/google/i.test(v.name))            s += 40;
   if(/microsoft/i.test(v.name))         s += 25;
   if(NAMED_HUMAN.test(v.name))          s += 20;
+  if(/english/i.test(v.name))           s += 15;   // 안드로이드는 "English (United States)" 식 이름
+  if(/network|neural/i.test(v.name))    s += 30;   // 삼성·구글 TTS의 고품질 음성 표기
   if(v.lang === "en-US")                s += 10;
   if(v.default)                         s += 5;
   if(BAD_VOICE.test(v.name))            s -= 200;  // Bells·Boing 같은 효과음 음성
@@ -540,11 +542,20 @@ function renderVoicePicker(){
     const tag = /premium|enhanced/i.test(v.name) ? " ⭐" : !v.localService ? " ☁️" : "";
     return `<option value="${esc(v.name)}"${VOICE && v.name === VOICE.name ? " selected" : ""}>${esc(v.name)}${tag}</option>`;
   }).join("") || `<option>영어 음성 없음</option>`;
-  document.getElementById("voiceHint").innerHTML = hasGoodVoice()
-    ? `⭐ 고품질 음성 사용 중`
-    : `기계음처럼 들리나요? 맥에 <b>향상된 음성</b>을 설치하면 훨씬 자연스러워집니다 —
-       시스템 설정 → 손쉬운 사용 → 콘텐츠 말하기 → 시스템 음성 → <b>음성 관리</b>에서
-       <b>Ava·Zoe·Evan (프리미엄)</b> 을 내려받고 이 목록에서 골라 주세요.`;
+  const ua = navigator.userAgent;
+  document.getElementById("voiceHint").innerHTML =
+    !vs.length     ? `영어 음성이 하나도 없습니다. 안드로이드라면 <b>설정 → 접근성 → 텍스트 음성 변환</b>에서
+                      엔진(삼성/구글)을 고르고 <b>영어 음성 데이터</b>를 내려받아야 합니다.`
+  : hasGoodVoice() ? `⭐ 고품질 음성 사용 중`
+  : /Android/i.test(ua)
+      ? `기계음처럼 들리나요? <b>설정 → 접근성 → 텍스트 음성 변환 출력</b>에서
+         엔진을 <b>구글 TTS</b>로 바꾸고 <b>영어(미국) 음성 데이터</b>를 내려받으면 훨씬 자연스러워집니다.`
+  : /iPhone|iPad|iPod/i.test(ua)
+      ? `더 자연스러운 발음을 원하면 <b>설정 → 손쉬운 사용 → 음성 콘텐츠 → 음성</b>에서
+         영어 음성의 <b>고품질</b> 버전을 내려받아 보세요.`
+      : `기계음처럼 들리나요? 맥에 <b>향상된 음성</b>을 설치하면 훨씬 자연스러워집니다 —
+         시스템 설정 → 손쉬운 사용 → 콘텐츠 말하기 → 시스템 음성 → <b>음성 관리</b>에서
+         <b>Ava·Zoe·Evan (프리미엄)</b> 을 내려받고 이 목록에서 골라 주세요.`;
 }
 function changeVoice(name){
   S.voiceName = name; save();
@@ -554,31 +565,62 @@ function changeVoice(name){
 
 function speak(t, btn){
   if(!("speechSynthesis" in window)) return toast("이 브라우저는 발음 재생을 지원하지 않아요.");
-  try{
-    speechSynthesis.cancel();               // 막힌 큐 비우기
-    setTimeout(() => {
-      const u = new SpeechSynthesisUtterance(t);
-      u.lang = "en-US"; u.rate = .9; u.volume = 1;
-      if(!VOICE) VOICE = pickVoice();
-      if(VOICE) u.voice = VOICE;
-      let started = false;
-      u.onstart = () => { started = true; if(btn) btn.classList.add("playing"); };
-      u.onend   = () => { if(btn) btn.classList.remove("playing"); };
-      u.onerror = e => {
-        if(btn) btn.classList.remove("playing");
-        if(e.error !== "interrupted" && e.error !== "canceled")
-          toast("발음을 재생하지 못했어요 (" + e.error + ")");
-      };
-      speechSynthesis.resume();             // 사파리에서 일시정지로 멈춰 있는 경우 대비
+
+  const fire = () => {
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = "en-US"; u.rate = .9; u.volume = 1;
+    if(!VOICE) VOICE = pickVoice();
+    if(VOICE) u.voice = VOICE;
+    let started = false;
+    u.onstart = () => { started = true; if(btn) btn.classList.add("playing"); };
+    u.onend   = () => { if(btn) btn.classList.remove("playing"); };
+    u.onerror = e => {
+      if(btn) btn.classList.remove("playing");
+      if(e.error !== "interrupted" && e.error !== "canceled")
+        toast("발음을 재생하지 못했어요 (" + e.error + ")");
+    };
+    try{
+      speechSynthesis.resume();            // 사파리에서 일시정지로 멈춰 있는 경우 대비
       speechSynthesis.speak(u);
-      setTimeout(() => {
-        if(!started && !audioWarned){
-          audioWarned = true;
-          toast("소리가 안 나면 크롬·사파리에서 index.html 을 직접 열어 주세요. 기기 음소거도 확인!");
-        }
-      }, 1800);
-    }, 60);
-  }catch(e){ toast("발음 재생 중 오류가 발생했어요."); }
+    }catch(e){ toast("발음 재생 중 오류가 발생했어요."); return; }
+    setTimeout(() => { if(!started) warnNoAudio(); }, 1800);
+  };
+
+  // 모바일 브라우저(iOS 사파리·삼성 인터넷 등)는 "사용자가 누른 그 흐름"에서
+  // speak() 를 불러야 재생을 허용한다. 그래서 평소엔 지연 없이 바로 재생하고,
+  // 이전 발화가 남아 있을 때만 큐를 비우고 한 틱 뒤에 재생한다.
+  if(speechSynthesis.speaking || speechSynthesis.pending){
+    speechSynthesis.cancel();
+    setTimeout(fire, 60);
+  }else{
+    fire();
+  }
+}
+
+/* 첫 탭에서 음성 엔진을 깨워 둔다 — 이후의 자동 발음까지 허용된다. */
+let speechUnlocked = false;
+function unlockSpeech(){
+  if(speechUnlocked || !("speechSynthesis" in window)) return;
+  speechUnlocked = true;
+  try{
+    const u = new SpeechSynthesisUtterance(" ");
+    u.volume = 0; u.lang = "en-US";
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+document.addEventListener("touchend", unlockSpeech, { once:true, passive:true });
+document.addEventListener("click",    unlockSpeech, { once:true });
+
+function warnNoAudio(){
+  if(audioWarned) return;
+  audioWarned = true;
+  const ua = navigator.userAgent;
+  if(/Android/i.test(ua))
+    toast("소리가 안 나면: 설정 → 접근성 → 텍스트 음성 변환에서 엔진(삼성/구글)과 영어 음성 데이터가 설치돼 있는지 확인해 주세요.");
+  else if(/iPhone|iPad|iPod/i.test(ua))
+    toast("소리가 안 나면 아이폰 측면의 무음 스위치와 미디어 볼륨을 확인해 주세요.");
+  else
+    toast("소리가 안 나면 브라우저 탭 음소거와 기기 볼륨을 확인해 주세요.");
 }
 
 let toastTimer = null;
@@ -594,7 +636,9 @@ function toast(msg){
 
 function testVoice(){
   VOICE = pickVoice();
-  toast(VOICE ? `음성: ${VOICE.name} (${VOICE.lang})` : "사용 가능한 영어 음성을 찾지 못했어요.");
+  const n = enVoices().length;
+  toast(VOICE ? `음성: ${VOICE.name} (${VOICE.lang}) · 영어 음성 ${n}개 사용 가능`
+              : "사용 가능한 영어 음성을 찾지 못했어요.");
   speak("Hello, this is your vocabulary teacher.");
 }
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
