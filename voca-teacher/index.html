@@ -465,21 +465,35 @@ function makeItem(type, word){
   return { type:"w2m", word, opts, label:opts.map(o=>o.ko), answer:opts.indexOf(word) };
 }
 
+/* 같은 표현의 문제가 연달아 나오지 않도록 벌려 놓는다.
+   바로 앞에서 본 답을 그대로 고르는 것을 막아 실제로 기억을 끄집어내게 만든다. */
+function spread(items){
+  const pool = items.slice(), out = [];
+  while(pool.length){
+    let i = pool.findIndex(x => !out.length || x.word.w !== out[out.length-1].word.w);
+    if(i === -1) i = 0;                       // 남은 게 전부 같은 표현이면 어쩔 수 없이 이어 붙인다
+    out.push(pool.splice(i, 1)[0]);
+  }
+  return out;
+}
+
 function startStudy(){
   const dl = shuffle(dueList());
   const nl = newList().slice(0, S.goal);
   if(!dl.length && !nl.length){ go("home"); return; }
 
-  const blocks = [];
-  nl.forEach(w => blocks.push([ makeItem("intro",w), makeItem("w2m",w), makeItem("cloze",w) ]));
-  dl.forEach(w => {
-    const t = ["w2m","m2w","cloze"][Math.random()*3|0];
-    blocks.push([ makeItem(t, w) ]);
-  });
+  // 1단계 — 새 표현을 먼저 쭉 훑어본다 (문제 없이 눈에 익히기만)
+  const intro = shuffle(nl).map(w => makeItem("intro", w));
 
-  Q = shuffle(blocks).flat();
+  // 2단계 — 훑어본 것과 복습할 것을 전부 섞어서 문제로 낸다
+  const quiz = [];
+  nl.forEach(w => quiz.push(makeItem("w2m", w), makeItem("cloze", w)));
+  dl.forEach(w => quiz.push(makeItem(["w2m","m2w","cloze"][Math.random()*3|0], w)));
+
+  Q = intro.concat(spread(shuffle(quiz)));
   qi = 0;
-  session = { right:0, wrong:0, first:{}, words:new Set([...nl,...dl].map(w=>w.w)), sched:[] };
+  session = { right:0, wrong:0, first:{}, words:new Set([...nl,...dl].map(w=>w.w)),
+              sched:[], introCount:intro.length };
   go("study");
   renderQ();
 }
@@ -499,7 +513,7 @@ const TYPE_LABEL = { intro:"새 표현", w2m:"뜻 고르기", m2w:"영어 표현
    알려진 버그가 있어 한 틱 쉬었다가 재생한다.                             */
 const BAD_VOICE = /bells|boing|bubbles|cellos|jester|organ|bad news|good news|wobble|whisper|zarvox|trinoids|albert|bahh|superstar|junior|ralph|fred|kathy|deranged|hysterical|bruce|princess|grandma|grandpa/i;
 const NAMED_HUMAN = /^(ava|allison|samantha|susan|tom|nicky|aaron|zoe|evan|nathan|joelle|karen|daniel|serena|tessa|moira|alex)\b/i;
-let VOICE = null, audioWarned = false;
+let VOICE = null;
 
 /* 음성 품질 점수 — 높을수록 원어민에 가깝다.
    Premium/Enhanced > 네트워크 음성(Google·Microsoft 온라인) > 기본 compact 음성 */
@@ -563,8 +577,8 @@ function changeVoice(name){
   speak("This is how I will read your words.");
 }
 
-function speak(t, btn){
-  if(!("speechSynthesis" in window)) return toast("이 브라우저는 발음 재생을 지원하지 않아요.");
+function speak(t, btn, onFail){
+  if(!("speechSynthesis" in window)){ if(onFail) onFail(); return; }
 
   const fire = () => {
     const u = new SpeechSynthesisUtterance(t);
@@ -574,16 +588,14 @@ function speak(t, btn){
     let started = false;
     u.onstart = () => { started = true; if(btn) btn.classList.add("playing"); };
     u.onend   = () => { if(btn) btn.classList.remove("playing"); };
-    u.onerror = e => {
-      if(btn) btn.classList.remove("playing");
-      if(e.error !== "interrupted" && e.error !== "canceled")
-        toast("발음을 재생하지 못했어요 (" + e.error + ")");
-    };
+    // 재생 실패해도 화면에는 아무것도 띄우지 않는다. 학습을 방해하지 않는 게 우선이고,
+    // 진단이 필요하면 설정의 [🔊 테스트] 버튼에서 확인한다.
+    u.onerror = () => { if(btn) btn.classList.remove("playing"); };
     try{
       speechSynthesis.resume();            // 사파리에서 일시정지로 멈춰 있는 경우 대비
       speechSynthesis.speak(u);
-    }catch(e){ toast("발음 재생 중 오류가 발생했어요."); return; }
-    setTimeout(() => { if(!started) warnNoAudio(); }, 1800);
+    }catch(e){ return; }
+    if(onFail) setTimeout(() => { if(!started) onFail(); }, 1800);
   };
 
   // 모바일 브라우저(iOS 사파리·삼성 인터넷 등)는 "사용자가 누른 그 흐름"에서
@@ -611,9 +623,8 @@ function unlockSpeech(){
 document.addEventListener("touchend", unlockSpeech, { once:true, passive:true });
 document.addEventListener("click",    unlockSpeech, { once:true });
 
+/* 설정의 [🔊 테스트] 를 눌렀을 때만 호출된다 — 학습 중에는 절대 뜨지 않는다. */
 function warnNoAudio(){
-  if(audioWarned) return;
-  audioWarned = true;
   const ua = navigator.userAgent;
   if(/Android/i.test(ua))
     toast("소리가 안 나면: 설정 → 접근성 → 텍스트 음성 변환에서 엔진(삼성/구글)과 영어 음성 데이터가 설치돼 있는지 확인해 주세요.");
@@ -639,7 +650,7 @@ function testVoice(){
   const n = enVoices().length;
   toast(VOICE ? `음성: ${VOICE.name} (${VOICE.lang}) · 영어 음성 ${n}개 사용 가능`
               : "사용 가능한 영어 음성을 찾지 못했어요.");
-  speak("Hello, this is your vocabulary teacher.");
+  speak("Hello, this is your vocabulary teacher.", null, warnNoAudio);
 }
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
@@ -649,7 +660,10 @@ function renderQ(){
   document.getElementById("qBar").style.width = (qi / Q.length * 100) + "%";
   document.getElementById("qCount").textContent = (qi+1) + "/" + Q.length;
 
-  const head = `<div class="qtype">${TYPE_LABEL[it.type]}</div>`;
+  const n = session.introCount;
+  const head = it.type === "intro"
+    ? `<div class="qtype">1단계 · 훑어보기 ${qi+1}/${n}</div>`
+    : `<div class="qtype">${n ? "2단계 · " : ""}${TYPE_LABEL[it.type]}</div>`;
   const W = it.word;
 
   if(it.type === "intro"){
@@ -665,8 +679,11 @@ function renderQ(){
         <div class="en">${sentence(W, true)}</div>
         <div class="kr">${esc(W.exKo)}</div>
         ${tipLine(W)}
-      </div>`;
-    foot.innerHTML = `<button class="btn" onclick="next()">외웠어요 · 다음</button>`;
+      </div>
+      ${qi === 0 ? `<p class="center dim" style="font-size:12px;line-height:1.6;margin:18px 0 0">
+        ${n}개를 먼저 쭉 훑어본 뒤,<br>순서를 섞어서 문제를 풉니다.</p>` : ""}`;
+    foot.innerHTML = `<button class="btn" onclick="next()">${
+      qi + 1 >= n ? "다 봤어요 · 문제 풀기" : "외웠어요 · 다음"}</button>`;
     return;
   }
 
