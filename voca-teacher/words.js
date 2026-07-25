@@ -513,3 +513,21 @@ const CATEGORY_LABEL = {
   sky:"날씨", mood:"감정·컨디션", plan:"약속·일정", talk:"대화", life:"일상 기타"
 };
 const POS_LABEL = { v:"동사", n:"명사", adj:"형용사", adv:"부사", phr:"표현" };
+
+// 시작 화면 상황 고르기용 — 아이콘 + 그룹. 나열 순서가 화면 노출 순서.
+const CATEGORY_META = {
+  say:  { icon:"💬", group:"basic" },
+  air:  { icon:"✈️", group:"travel" }, stay:{ icon:"🏨", group:"travel" },
+  move: { icon:"🚌", group:"travel" }, food:{ icon:"🍽️", group:"travel" },
+  shop: { icon:"🛍️", group:"travel" }, see:{ icon:"📸", group:"travel" },
+  help: { icon:"🆘", group:"travel" }, care:{ icon:"💊", group:"travel" },
+  work: { icon:"💼", group:"daily" }, view:{ icon:"🗣️", group:"daily" },
+  home: { icon:"🧹", group:"daily" }, cook:{ icon:"🛒", group:"daily" },
+  kids: { icon:"👶", group:"daily" }, call:{ icon:"📞", group:"daily" },
+  task: { icon:"🏦", group:"daily" }, town:{ icon:"🏘️", group:"daily" },
+  tech: { icon:"📱", group:"daily" }, deli:{ icon:"📦", group:"daily" },
+  fun:  { icon:"🎮", group:"daily" }, sky:{ icon:"🌤️", group:"daily" },
+  mood: { icon:"🙂", group:"daily" }, plan:{ icon:"📅", group:"daily" },
+  talk: { icon:"👋", group:"daily" }, life:{ icon:"✨", group:"daily" }
+};
+const GROUP_LABEL = { basic:"기초 회화", travel:"여행", daily:"일상생활" };
