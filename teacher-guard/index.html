@@ -160,6 +160,11 @@
   .meter i { display: block; height: 100%; border-radius: 5px; transition: width .5s ease; }
   .meter-scale { display: flex; justify-content: space-between; font-size: 11px; color: var(--sub); }
 
+  .confbar { display: flex; align-items: center; gap: 7px; margin-top: 14px; font-size: 13px; }
+  .confdot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .confnote { font-size: 12.5px; color: #3d4a5c; line-height: 1.6; margin-top: 5px;
+    background: rgba(255,255,255,.55); border-radius: 8px; padding: 8px 11px; }
+
   .flist { list-style: none; }
   .flist li {
     border-left: 3px solid var(--line); padding: 10px 0 10px 13px; margin-bottom: 10px;
@@ -351,6 +356,25 @@
 <!-- ══════════ 점검 ══════════ -->
 <section class="tab on" id="tab-check">
 
+  <div class="card" id="freeCard">
+    <h2>상황을 글로 적어 시작하기 <span style="font-size:12px;font-weight:500;color:var(--sub)">(선택)</span></h2>
+    <p class="lead">문항을 고르기 전에, 무슨 일이 있었는지 편하게 적어도 됩니다.
+      적은 글에서 위험 신호와 지도 유형을 짚어 아래 항목에 자동 반영해 드립니다.</p>
+    <div class="field">
+      <textarea id="freeText" style="min-height:120px" placeholder="예) 5교시 수학 시간에 A가 옆 친구 필통을 계속 던졌다. 두세 번 주의를 줬는데도 멈추지 않아서, 반 애들이 다 보는 앞에서 큰 소리로 혼내고 교실 뒤 복도로 내보냈다. 반성문을 쓰게 했고, 화가 나서 &quot;너 같은 애는 처음 본다&quot;고 말했다."></textarea>
+    </div>
+    <div class="btnrow">
+      <button class="btn sm" id="scanBtn">글에서 짚어보기</button>
+      <button class="btn ghost sm" id="scanClear">지우기</button>
+    </div>
+    <div id="scanResult" class="hidden" style="margin-top:14px"></div>
+    <div class="srcnote" style="margin-top:12px">
+      <b>주의</b> — 이건 AI가 뜻을 이해하는 게 아니라 <b>단어를 훑어 표시</b>하는 기능입니다.
+      놓치거나 잘못 잡는 표현이 있을 수 있으니, 반영한 뒤 아래 문항을 꼭 직접 확인하세요.
+      적은 글은 서버로 전송되지 않고, 저장할 때 메모에 함께 남습니다.
+    </div>
+  </div>
+
   <div class="card">
     <h2><span class="num">1</span>어떤 지도였습니까?</h2>
     <p class="lead">해당하는 것을 모두 고르세요. 고른 유형별로 추가 질문이 나타납니다.</p>
@@ -429,6 +453,20 @@
 
 <!-- ══════════ 신고 대응 ══════════ -->
 <section class="tab" id="tab-report">
+  <div class="card">
+    <h2>먼저 — 도움받을 곳</h2>
+    <p class="lead">신고 여부와 관계없이, 걱정되는 상황이면 지금 연결할 수 있는 창구입니다.
+      혼자 판단하지 말고 여기부터 쓰십시오.</p>
+    <div id="contactBox"></div>
+  </div>
+
+  <div class="card">
+    <h2>내 상황은 어느 트랙입니까</h2>
+    <p class="lead">교사가 겪는 문제는 성격이 다른 두 갈래로 나뉘고, 대응 창구와 절차가 다릅니다.
+      섞이면 엉뚱한 곳에 힘을 씁니다.</p>
+    <div id="trackBox"></div>
+  </div>
+
   <div class="card">
     <h2>이미 신고가 들어왔다면</h2>
     <p class="lead">2023년 이후 교원을 위한 절차적 보호장치가 여럿 생겼습니다.
@@ -597,6 +635,13 @@
   </div>
 
   <div class="card">
+    <h2>공식 자료 — 이 도구가 대체하지 않습니다</h2>
+    <p class="lead">이 도구는 공식 매뉴얼·창구를 <b>보완</b>할 뿐입니다. 실제 대응은 아래 원자료와
+      본인 교육청 최신 안내를 함께 확인하십시오.</p>
+    <div id="officialBox"></div>
+  </div>
+
+  <div class="card">
     <h2>한계</h2>
     <div class="note" style="font-size:13px">
       <p style="margin-bottom:8px">· 이 도구의 점수는 <b>법적 효력이 없습니다.</b> 판례가 열거한 고려요소를
@@ -656,6 +701,9 @@ const SOURCES = {
   adm_gosi: { tier:'admin', cite:'교원의 학생생활지도에 관한 고시', note:'교육부고시 제2023-28호(2023. 9. 1. 시행), 이후 개정. 조언·상담·주의·훈육·훈계 단계와 요건' },
   adm_1395: { tier:'admin', cite:'교권침해 직통번호 1395 (2024. 3. 4. 개통)', note:'전화·카카오톡으로 교육활동 침해 신고, 심리상담·법률지원·교원보호공제·통합민원팀 연계를 안내. 평일 09~18시, 카카오톡 상시', via:'대한민국 정책브리핑 2024. 2. 보도' },
   adm_gongje: { tier:'admin', cite:'교원보호공제사업(교원배상책임보험)', note:'민·형사 소송비용 심급별 최대 660만원, 교원배상책임보험 1사고당 2억원 내 손해배상 지원. 시·도교육청이 전 교원 대상으로 가입', via:'교육부 안내 및 2026년 교원보호공제 약관' },
+  adm_opinion_flow: { tier:'admin', cite:'교육감 의견 제출 제도 처리 절차', note:'지자체·수사기관이 신고 접수 시 1일 이내 교육지원청에 정보 공유 → 교육지원청 3일 이내 학교 방문·사안 확인 → 교육감이 인지일로부터 7일 이내(1회 7일 연장 가능) 서면 의견 제출', via:'대한민국 정책브리핑 2024. 보도' },
+  law_kbw: { tier:'law', cite:'교원지위법 제19조·제25조 등(교육활동 침해·지역교권보호위원회)', note:'학생·보호자의 교육활동 침해행위는 아동학대 신고와 별개 트랙. 지역교권보호위원회가 심의(사안 인지 후 절차 진행)' },
+  adm_1395b: { tier:'admin', cite:'교육청 교육활동보호센터', note:'시·도교육청이 운영하는 심리상담·법률자문·교원치유 지원. 지역마다 명칭·연락처가 다름', via:'한국교육개발원 교육활동보호센터 등' },
 
   /* ── tier 2 ── */
   stat_moe_report: { tier:'stat', cite:'교육부 집계 (2023. 9.~2026. 2.)',
@@ -707,7 +755,7 @@ function srcLine(id) {
   if (!s) return '';
   const m = TIER_META[s.tier];
   return `<div class="tierline"><span class="tier t${m.rank}">${m.label}</span>
-    ${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.cite)}</a>` : esc(s.cite)}
+    ${safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener">${esc(s.cite)}</a>` : esc(s.cite)}
     ${s.note ? ' — ' + esc(s.note) : ''}
     ${s.via ? ` <span style="color:#94a1b2">(${esc(s.via)})</span>` : ''}
     ${s.caveat ? `<br><span style="color:var(--yellow)">⚠ ${esc(s.caveat)}</span>` : ''}</div>`;
@@ -719,7 +767,7 @@ function srcLineCompact(id) {
   if (!s) return '';
   const m = TIER_META[s.tier];
   return `<div class="tierline"><span class="tier t${m.rank}">${m.label}</span>
-    ${s.via ? esc(s.via) : (s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">원문</a>` : '')}
+    ${s.via ? esc(s.via) : (safeUrl(s.url) ? `<a href="${safeUrl(s.url)}" target="_blank" rel="noopener">원문</a>` : '')}
     ${s.caveat ? `<br><span style="color:var(--yellow)">⚠ ${esc(s.caveat)}</span>` : ''}</div>`;
 }
 
@@ -788,6 +836,37 @@ const REDLINES = [
     law:'공개성 + 반복성이 겹치면 법원이 학대를 인정하는 전형적 조합입니다(서울동부지법 2018고단2633 참조).' },
   { id:'r_ignore',lv:'soft',t:'학생이 다치거나 위험한 상황을 알고도 필요한 조치를 하지 않았다',
     law:'아동복지법 제17조 제6호(방임). 작위가 아니라 부작위로도 학대가 성립합니다.' },
+];
+
+/* ═══════════════════════════════════════════════════════
+   자유서술 → 키워드 신호 매핑 (클라이언트 단순 매칭)
+   kind: 'redline'|'act' 는 자동 반영 가능,
+         'hint' 는 확인 필요 표시만 (자동 선택하지 않음)
+   ═══════════════════════════════════════════════════════ */
+const SIGNALS = [
+  // ── 레드라인 ──
+  { re:/때리|때렸|때린|손바닥|회초리|매질|자로 |막대기?로|밀치|꿀밤|등짝|머리를 (치|때|쥐)/, kind:'redline', target:'r_hit' },
+  { re:/성희롱|성적 수치|몸을 만지|가슴을 (만|주무|치)|엉덩이를 (만|치|때|툭)|속옷/, kind:'redline', target:'r_sex' },
+  { re:/가두|가둠|창고에 (넣|가)|못 나가게|감금|문을 잠|갇/, kind:'redline', target:'r_lock' },
+  { re:/굶기|밥을? (못 먹게|안 먹게|못 먹게 하)|급식.{0,4}(못 먹게|안 주|금지|제외)|화장실.{0,6}(못 가게|안 보내|못 가|금지)|집에 (못|안) (가|보내)|귀가.{0,4}(못|안) (시|하게|보내)/, kind:'redline', target:'r_basic' },
+  { re:/욕설|욕을 (하|했|퍼)|씨발|새끼|쓰레기 같|병신|멍청(이|한 놈)|닥쳐|꺼져|인간 안 되|사람 안 되/, kind:'redline', target:'r_word' },
+  { re:/가정.{0,5}(환경|형편|들먹)|부모.{0,6}(들먹|탓|난리)|이혼(했|한|가정)|한부모|외모|몸매|못생|기초수급|장애.{0,4}(비하|들먹|놀)/, kind:'redline', target:'r_fam' },
+  { re:/반 (전체|애들|아이들|친구들).{0,4}앞|다 보는 (앞|데|곳)|공개적으로|망신|창피를 (줬|주)|본보기/, kind:'redline', target:'r_shame' },
+  { re:/다쳤는데.{0,8}(그냥|방치|안|무시|모른)|피(가|를) 나는데|아프다는데.{0,6}(무시|안|그냥)|모른 척|방치했/, kind:'redline', target:'r_ignore' },
+  // ── 지도 유형 ──
+  { re:/말했|혼냈|혼내|꾸중|꾸짖|훈계|야단|소리(를|쳤|질)|지적했|다그/, kind:'act', target:'speech' },
+  { re:/붙잡|잡아|끌고|끌어|팔을 (잡|끌)|손목을|밀었|밀쳐|몸으로 막|들어 올/, kind:'act', target:'contact' },
+  { re:/복도|뒤로 보내|뒤에 세워|뒤에 서|나가 있|나가라|분리|교실 (밖|뒤)|상담실로|다른 (반|교실)로/, kind:'act', target:'separate' },
+  { re:/휴대폰|핸드폰|폰을 (걷|압수|뺏)|압수|소지품|가방을 (열|뒤|검)|물건을 (걷|뺏)/, kind:'act', target:'item' },
+  { re:/반성문|성찰문|글쓰기|글을 쓰|베껴|100번|백 번|청소(를|시)|남겨|남게|손들고|엎드려|벌(을| )서/, kind:'act', target:'task' },
+  { re:/수업.{0,4}(빼|제외|배제)|모둠.{0,4}(제외|빼)|참여.{0,4}(못|안 시|금지)|활동.{0,4}(제외|배제)|행사.{0,4}(빼|제외)/, kind:'act', target:'exclude' },
+  { re:/그냥 (뒀|둠|놔)|조치.{0,4}안 (했|함)|연락.{0,4}안 (했|함)|신고.{0,4}안 (했|함)|못 본 척/, kind:'act', target:'neglect' },
+  // ── 확인 필요(자동선택 안 함) ──
+  { re:/화가 나|화나|열받|열 받|짜증|참다 (못|가)|화를 (냈|내|참)|욱해|감정이/, kind:'hint', target:'q_emo', label:'감정이 격했던 정황' },
+  { re:/여러 번|여러차례|몇 번(이고)?|계속|자꾸|번번이|반복|매번/, kind:'hint', target:'q_repeat', label:'반복된 정황' },
+  { re:/매일|날마다|한 달|몇 주|몇달|몇 달|학기 내내/, kind:'hint', target:'q_repeat', label:'장기간 반복 정황' },
+  { re:/반 (전체|애들|친구들).{0,4}앞|다 보는|공개적|모두 (보는|앞에)|여러 학생 앞/, kind:'hint', target:'q_public', label:'공개적으로 이루어진 정황' },
+  { re:/울(었|음|며|먹)|겁(을|에)|무서워|등교.{0,3}거부|학교.{0,3}안 (오|가)|상담.{0,3}(받|의뢰)|치료|위축/, kind:'hint', target:'q_react', label:'학생 상태 변화 정황' },
 ];
 
 /* ═══════════════════════════════════════════════════════
@@ -1183,10 +1262,11 @@ const REPORT_STEPS = [
        '함께 확보할 것: 수업 시간표, 좌석 배치도, 그날 알림장·학급 SNS 기록, 상담일지, 이전 생활지도 이력, 목격 가능한 교사·학생 명단, 학교 학생생활규정 중 해당 조치의 근거 조항.'],
     cite:'이 앱의 “점검 → 메모 → 기록으로 저장”을 쓰면 작성 시각이 함께 남습니다.' },
   { h:'교육감 의견 제출 제도를 반드시 활용합니다',
-    p:['교원이 아동학대범죄로 신고된 경우, 교육감은 해당 시·도, 시·군·구 또는 수사기관에 그 사안에 대한 의견을 신속히 제출하여야 합니다. 조사·수사 기관은 이 의견을 참고하게 됩니다.',
+    p:['교원이 아동학대범죄로 신고된 경우, 교육감은 해당 시·도, 시·군·구 또는 수사기관에 그 사안에 대한 의견을 제출하여야 하고, 조사·수사 기관은 이 의견을 참고하게 됩니다. 절차에는 정해진 기한이 있습니다:',
+       '· 지자체·수사기관이 신고를 접수하면 <b>1일 이내</b> 관할 교육지원청에 정보를 공유합니다.<br>· 교육지원청은 <b>3일 이내</b> 학교를 방문해 사안을 확인합니다.<br>· 교육감은 인지일로부터 <b>7일 이내</b>(부득이하면 7일 범위에서 1회 연장) 정당한 생활지도인지에 대한 의견서를 서면으로 제출합니다.',
        '제도 운영 결과, 교육감이 정당한 생활지도로 판단해 의견을 제출한 비율이 약 70%였고, 의견이 제출된 사안의 85.4%가 수사 개시 전 종결되거나 불기소로 마무리된 것으로 보고되었습니다. 다만 경찰 단계에서 종결된 비율은 28.2%에 그쳐, 상당수는 검찰까지 이어집니다.',
-       '학교를 통해 교육청에 의견 제출을 요청하고, 위 2단계에서 정리한 자료를 함께 제출하십시오.'],
-    src:['law_teacher', 'stat_nars_opinion'] },
+       '이 기한이 지켜지는지 학교·교육청에 확인하고, 위 2단계에서 정리한 자료를 의견서 작성에 쓰이도록 함께 제출하십시오.'],
+    src:['law_teacher', 'adm_opinion_flow', 'stat_nars_opinion'] },
   { h:'직위해제는 당연한 절차가 아닙니다',
     p:['교원이 아동학대범죄로 신고되었다는 이유만으로 임용권자가 직위해제 처분을 하는 것은 제한됩니다. 정당한 사유가 있어야 합니다.',
        '직위해제 통보를 받았다면 그 사유를 서면으로 확인하고, 소청심사 등 불복 절차를 검토하십시오.'],
@@ -1200,6 +1280,29 @@ const REPORT_STEPS = [
        '“그럴 의도는 없었다”는 답변은 행위 자체를 인정하는 것으로 정리될 수 있습니다. 인정할 사실과 다툴 사실을 미리 구분해 두십시오.'] },
   { h:'무고·명예훼손 대응은 신중하게 판단합니다',
     p:['허위 신고임이 명백하다면 무고죄나 교육활동 침해로 대응할 여지가 있습니다. 다만 맞대응은 진행 중인 사건의 양형과 인상에 영향을 줄 수 있으므로, 본 사건이 정리된 뒤에 판단하는 편이 일반적으로 낫습니다.'] },
+];
+
+/* 도움받을 곳 — 신고대응 탭 상단과 후속 대응 계획에서 공용 */
+const CONTACTS = [
+  { s:'adm_1395', t:'교권침해 직통번호 1395', d:'전화·카카오톡으로 신고·심리상담·법률지원·통합민원팀 연계를 한 번에 안내받습니다. 위험도와 관계없이 가장 먼저 걸 번호입니다.' },
+  { s:'adm_gongje', t:'교원보호공제 · 교원배상책임보험', d:'소송비용(심급별 최대 660만원)과 손해배상(1사고당 2억원 내) 지원. 신고를 인지한 초기에 학교·교육청을 통해 신청 절차를 확인하십시오.' },
+  { s:'adm_1395b', t:'교육청 교육활동보호센터', d:'시·도교육청이 운영. 심리상담·법률자문·교원치유 프로그램을 제공합니다. 지역마다 명칭·연락처가 다르니 본인 교육청 것을 확인하십시오.' },
+  { s:'law_teacher', t:'소속 교원단체 법률지원', d:'가입 단체(교총·교사노조·전교조 등)의 법률지원과 변호사 연계를 신청하십시오.' },
+];
+
+/* 두 갈래 대응 트랙 */
+const TRACKS = [
+  { k:'abuse', t:'① 아동학대 신고 트랙', d:'교사의 행위가 학대인지가 쟁점일 때. 지자체 아동학대전담공무원 조사 또는 경찰 수사로 진행되며, 여기에 교육감 의견 제출 제도가 붙습니다.', pts:['이 도구의 판정과 “신고 대응” 절차가 대응하는 트랙입니다.','핵심은 사실관계 → 학대 정도 → 정당한 생활지도 → 증거 적법성.'], src:['law_teacher'] },
+  { k:'infringe', t:'② 교육활동 침해 트랙 (악성·허위 민원)', d:'신고 자체가 보복성·허위이거나, 학부모의 반복 민원·폭언 등 교권 침해가 쟁점일 때. 아동학대 트랙과 별개로 움직입니다.', pts:['학교·교육지원청에 교육활동 침해로 사안을 접수하면 지역교권보호위원회가 심의합니다.','허위 신고가 명백하면 무고죄·명예훼손 대응 여지가 있으나, 시점은 본 사건 정리 후가 일반적입니다.'], src:['law_kbw'] },
+];
+
+/* 공식 자료 — 이 도구가 대체하지 않는 원자료 */
+const OFFICIAL_LINKS = [
+  { t:'교권침해 직통번호 1395', d:'전화·카카오톡 통합 상담 창구', u:'' },
+  { t:'한국교육개발원 교육활동보호센터', d:'대응 절차·상담·법률자문 안내', u:'https://forteacher.kedi.re.kr/' },
+  { t:'교육부·교육청 「아동학대 예방 및 대처요령」 가이드북', d:'신고 대응 절차와 판단 기준 공식 문서 (매년 갱신, 본인 교육청 최신본 확인)', u:'https://www.goe.go.kr/' },
+  { t:'「교원의 학생생활지도에 관한 고시」 및 해설서', d:'조언·상담·주의·훈육·훈계 단계와 분리·물품조사 요건의 원문', u:'https://www.law.go.kr/' },
+  { t:'찾기쉬운 생활법령정보 — 교권보호', d:'교육활동 침해·아동학대 대응 법령 안내', u:'https://easylaw.go.kr/CSP/CnpClsMain.laf?csmSeq=1891' },
 ];
 
 const STMT_TIPS = [
@@ -1240,6 +1343,12 @@ const LS_KEY = 'teacherGuardLog_v1';
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* href 살균 — http(s)만 허용하고 속성 이탈 문자 인코딩 (사용자 입력 URL용) */
+const safeUrl = u => {
+  u = String(u || '').trim();
+  if (!/^https?:\/\//i.test(u)) return '';
+  return u.replace(/[<>"'`]/g, c => '%' + c.charCodeAt(0).toString(16).toUpperCase());
+};
 
 /* ── tabs ── */
 $$('nav.tabs button').forEach(b => b.onclick = () => {
@@ -1252,12 +1361,64 @@ $$('nav.tabs button').forEach(b => b.onclick = () => {
 $('#actChips').innerHTML = ACTS.map(a =>
   `<button class="chip" data-act="${a.id}"><div class="t">${a.t}</div><div class="d">${a.d}</div></button>`
 ).join('');
+function clearActAnswers(actId) {
+  (ACT_QS[actId] || []).forEach(q => { delete state.ans[q.id]; });
+}
 $$('#actChips .chip').forEach(c => c.onclick = () => {
   const id = c.dataset.act;
-  state.acts.has(id) ? state.acts.delete(id) : state.acts.add(id);
+  if (state.acts.has(id)) { state.acts.delete(id); clearActAnswers(id); }  // 해제 시 하위 답변도 제거
+  else state.acts.add(id);
   c.classList.toggle('on', state.acts.has(id));
   renderActQs();
 });
+
+/* ── 자유서술 스캔 ── */
+function selectRedline(id) {
+  state.redlines.add(id);
+  const el = $(`#redlineOpts .opt[data-rl="${id}"]`);
+  if (el) el.classList.add('on');
+}
+function selectAct(id) {
+  state.acts.add(id);
+  const el = $(`#actChips .chip[data-act="${id}"]`);
+  if (el) el.classList.add('on');
+  renderActQs();
+}
+function runScan() {
+  const txt = $('#freeText').value.trim();
+  if (txt.length < 5) { alert('상황을 조금 더 적어 주세요.'); return; }
+  const hits = SIGNALS.filter(s => s.re.test(txt));
+  const rls = [...new Set(hits.filter(h => h.kind === 'redline').map(h => h.target))];
+  const acts = [...new Set(hits.filter(h => h.kind === 'act').map(h => h.target))];
+  const hints = [];
+  hits.filter(h => h.kind === 'hint').forEach(h => { if (!hints.find(x => x.target === h.target)) hints.push(h); });
+
+  rls.forEach(selectRedline);
+  acts.forEach(selectAct);
+  if (!$('#mBody').value.trim()) $('#mBody').value = txt;  // 메모가 비었으면 채움
+
+  const box = $('#scanResult');
+  if (!rls.length && !acts.length && !hints.length) {
+    box.innerHTML = `<div class="srcnote">뚜렷한 신호를 못 찾았습니다. 아래 1·2번 항목을 직접 골라 주세요.
+      (짧게 적으면 못 잡을 수 있습니다.)</div>`;
+    box.classList.remove('hidden');
+    return;
+  }
+  const chip = (label, col) => `<span style="display:inline-block;font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px;background:${col};color:#fff">${esc(label)}</span>`;
+  box.innerHTML = `
+    ${(rls.length || acts.length) ? `<div style="font-size:13.5px;font-weight:700;margin-bottom:8px">아래 항목을 자동 반영했습니다 ✓</div>` : ''}
+    ${rls.length ? `<div style="margin-bottom:10px"><div class="cd" style="margin-bottom:5px">먼저 확인할 것(2번)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">${rls.map(id => chip((REDLINES.find(r => r.id === id) || {}).t, 'var(--red)')).join('')}</div></div>` : ''}
+    ${acts.length ? `<div style="margin-bottom:10px"><div class="cd" style="margin-bottom:5px">지도 유형(1번)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">${acts.map(id => chip((ACTS.find(a => a.id === id) || {}).t, 'var(--accent)')).join('')}</div></div>` : ''}
+    ${hints.length ? `<div style="margin-bottom:6px"><div class="cd" style="margin-bottom:5px;color:var(--yellow)">이런 정황이 보입니다 — 아래 4번 문항에서 직접 확인하세요</div>
+      <ul class="flist">${hints.map(h => `<li class="bad" style="border-left-color:var(--yellow)"><div class="ftxt" style="font-size:13.5px;font-weight:600">${esc(h.label)}</div></li>`).join('')}</ul></div>` : ''}
+    <div class="srcnote">반영은 <b>제안일 뿐</b>입니다. 아래 1·2번에서 잘못 잡힌 건 다시 해제하고, 4번 문항은 직접 답하세요.</div>`;
+  box.classList.remove('hidden');
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+$('#scanBtn').onclick = runScan;
+$('#scanClear').onclick = () => { $('#freeText').value = ''; $('#scanResult').classList.add('hidden'); $('#scanResult').innerHTML = ''; };
 
 /* ── 진행 단계 ── */
 $('#stageOpts').innerHTML = STAGES.map((s, i) =>
@@ -1327,20 +1488,32 @@ function renderActQs() {
 function evaluate() {
   const risks = [], goods = [];
   let sum = 0, wsum = 0;
+  let peak = 0;          // 답변 중 가장 심각한 단일 요인(정규화 0~1)
+  let severeCount = 0;   // w>=3 (심각) 답변 수
+  let applicable = 0, answered = 0;  // 신뢰도(완성도)용
 
   const consume = (q, weight) => {
+    applicable++;
     const a = state.ans[q.id];
     if (a === undefined || (Array.isArray(a) && a.length === 0)) return;
+    answered++;
     const maxW = Math.max(...q.o.map(o => o.w), 1);
     const picked = Array.isArray(a) ? a : [a];
     const gotRaw = Array.isArray(a)
       ? picked.reduce((s, i) => s + q.o[i].w, 0)
       : q.o[a].w;
     const got = Math.min(gotRaw, maxW * 1.5);
-    sum += (got / maxW) * weight;
+    const norm = got / maxW;
+    sum += norm * weight;
     wsum += weight;
+    // 최저선(floor)은 '교사의 행위·결과' 요인만 반영한다.
+    // 학생 취약성(child)·기록 유무(record)는 위험을 키우는 정황일 뿐,
+    // 그 자체가 교사의 잘못은 아니므로 단일 요인 하한을 만들지 않는다.
+    const floorEligible = q.tag !== 'child' && q.tag !== 'record';
+    if (floorEligible && norm > peak) peak = norm;
     picked.forEach(i => {
       const o = q.o[i];
+      if (floorEligible && o.w >= 3) severeCount++;
       const entry = { txt: o.t, tag: q.tag, alt: o.alt, q: q.q };
       if (o.w >= 2) risks.push({ ...entry, w: o.w });
       else if (o.w === 0) goods.push(entry);
@@ -1352,11 +1525,27 @@ function evaluate() {
 
   let score = wsum > 0 ? Math.round((sum / wsum) * 100) : 0;
 
+  // ── 단일 심각 요인 최저선 ──
+  // 법원은 요소를 평균내지 않는다. 하나의 심각한 요인이 다른 무난한 답변에
+  // 희석돼 과소평가되지 않도록, 가장 심각한 요인에 근거한 하한을 둔다.
+  if (severeCount >= 2) score = Math.max(score, 55);        // 심각 요인 2개+ → 최소 🟠
+  else if (peak >= 1.0) score = Math.max(score, 46);        // 최악의 단일 요인 → 최소 🟡
+  else if (peak >= 0.75) score = Math.max(score, 36);       // 심각한 단일 요인 → 🟡
+
   const hard = REDLINES.filter(r => state.redlines.has(r.id) && r.lv === 'hard');
   const soft = REDLINES.filter(r => state.redlines.has(r.id) && r.lv === 'soft');
   if (soft.length) score = Math.max(score, 58 + (soft.length - 1) * 6);
   if (hard.length) score = Math.max(score, 84 + (hard.length - 1) * 5);
   score = Math.min(score, 100);
+
+  // ── 신뢰도 ──
+  // 정황 답변이 적으면 근거가 얇지만, 레드라인(법령상 금지선/학대 인정 전형)을
+  // 직접 표시한 경우엔 그 자체가 결정적 근거이므로 신뢰도를 끌어내리지 않는다.
+  const coverage = applicable > 0 ? answered / applicable : 0;
+  let conf, confBasis;
+  if (hard.length) { conf = 'high'; confBasis = 'redline'; }
+  else if (soft.length && coverage < 0.4) { conf = 'mid'; confBasis = 'redline'; }
+  else { conf = coverage >= 0.7 ? 'high' : coverage >= 0.4 ? 'mid' : 'low'; confBasis = 'coverage'; }
 
   risks.sort((a, b) => b.w - a.w);
 
@@ -1374,7 +1563,7 @@ function evaluate() {
   ];
   const band = BANDS.find(b => score <= b.max);
 
-  return { score, band, risks, goods, hard, soft };
+  return { score, band, risks, goods, hard, soft, conf, confBasis, answered, applicable };
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1449,12 +1638,8 @@ function actionPlan(r) {
   else
     now.push('학교 관리자와 <b>교육청 교권보호 담당</b>에게 상황을 알리고, 대응을 학교 차원으로 올리십시오. 개인 대응으로 두지 마십시오.');
 
-  // 연락할 곳
-  const contacts = [
-    { s:'adm_1395', t:'교권침해 직통번호 1395', d:'전화·카카오톡으로 신고·심리상담·법률지원·통합민원팀 연계를 한 번에 안내받습니다. 가장 먼저 걸 번호입니다.' },
-    { s:'adm_gongje', t:'교원보호공제 · 교원배상책임보험', d:'소송비용(심급별 최대 660만원)과 손해배상 지원. 신고를 인지한 초기에 학교·교육청을 통해 신청 절차를 확인하십시오.' },
-    { s:'law_teacher', t:'소속 교원단체 법률지원', d:'가입 단체(교총·교사노조·전교조 등)의 법률지원과 변호사 연계를 신청하십시오.' },
-  ];
+  // 연락할 곳 (공용 CONTACTS)
+  const contacts = CONTACTS;
 
   // 하지 말아야 할 것
   const donts = [
@@ -1523,6 +1708,22 @@ function renderResult() {
     ? r.goods.map(x => `<li class="good"><span class="ftag" style="background:var(--green-soft);color:var(--green)">${FACTORS[x.tag].name}</span><div class="ftxt">${x.txt}</div></li>`).join('')
     : '<li><div class="fbasis">아직 유리한 요소로 잡힌 항목이 없습니다. 질문에 더 답해 보세요.</div></li>';
 
+  const CONF_COL = { high: 'var(--green)', mid: 'var(--yellow)', low: 'var(--red)' };
+  const CONF_LABEL = { high: '신뢰도 높음', mid: '신뢰도 보통', low: '신뢰도 낮음' };
+  let confNote;
+  if (r.confBasis === 'redline') {
+    confNote = '법령상 금지선 또는 판례가 학대로 본 항목을 직접 표시하셨습니다. 이 판정은 정황 문항에 얼마나 답했는지와 무관하게 근거가 분명합니다. 그래도 사실관계·증거는 별개로 다투어야 합니다.';
+  } else if (r.conf === 'high') {
+    confNote = '정황 문항 대부분에 답해 이 판정의 근거가 충분합니다. 그래도 실제 결론은 증거에 따라 달라집니다.';
+  } else if (r.conf === 'mid') {
+    confNote = '일부 문항이 비어 있습니다. 4번 “상황을 알려주세요”에 더 답하면 판정이 정확해집니다.';
+  } else {
+    confNote = '답한 정황이 적어 이 판정의 근거가 얇습니다.' + ((r.band.k === 'blue' || r.band.k === 'green')
+      ? ' 특히 지금처럼 낮은 위험으로 나온 것은 <b>정보가 부족해서일 수 있으니 안심의 근거로 삼지 마십시오.</b> 4번 문항에 더 답한 뒤 다시 판정하세요.'
+      : ' 4번 “상황을 알려주세요”에 더 답한 뒤 다시 판정하세요.');
+  }
+  const CONF = { label: CONF_LABEL[r.conf], col: CONF_COL[r.conf], note: confNote };
+
   box.innerHTML = `
     <div class="verdict v-${r.band.k}">
       <div class="badge">${r.band.badge}</div>
@@ -1530,6 +1731,12 @@ function renderResult() {
       <p>${r.band.p}</p>
       <div class="meter"><i style="width:${r.score}%;background:${BAND_COLOR[r.band.k]}"></i></div>
       <div class="meter-scale"><span>지도 범위</span><span>위험도 ${r.score}</span><span>학대 인정</span></div>
+      <div class="confbar">
+        <span class="confdot" style="background:${CONF.col}"></span>
+        <b style="color:${CONF.col}">${CONF.label}</b>
+        <span style="color:var(--sub)">· 정황 ${r.answered}/${r.applicable} 문항 응답</span>
+      </div>
+      <div class="confnote">${CONF.note}</div>
     </div>
 
     ${rlHtml ? `<div class="card"><h2 style="color:var(--red)">먼저 확인한 항목</h2>
@@ -1589,7 +1796,7 @@ $('#runBtn').onclick = () => {
   const answered = COMMON_QS.filter(q => state.ans[q.id] !== undefined
     && !(Array.isArray(state.ans[q.id]) && state.ans[q.id].length === 0)).length;
   if (answered < 4 && state.redlines.size === 0) {
-    alert('판정하려면 3번 항목에서 최소 4개 정도는 답해 주세요.');
+    alert('판정하려면 4번 “상황을 알려주세요”에서 최소 4개 정도는 답해 주세요.');
     return;
   }
   renderResult();
@@ -1630,21 +1837,25 @@ function fmt(iso) {
 
 function renderLog() {
   const logs = loadLog();
-  $('#logList').innerHTML = logs.length ? logs.map(l => `
+  $('#logList').innerHTML = logs.length ? logs.map(l => {
+    const acts = Array.isArray(l.acts) ? l.acts : [];
+    const risks = Array.isArray(l.risks) ? l.risks : [];
+    const redlines = Array.isArray(l.redlines) ? l.redlines : [];
+    return `
     <div class="logitem">
       <div class="lh">
         <div>
-          <div class="ld">${l.date ? l.date + ' · ' : ''}${l.who ? esc(l.who) + ' · ' : ''}저장 ${fmt(l.savedAt)}</div>
-          <div class="lt">${l.band} <span style="font-weight:500;color:var(--sub);font-size:13px">위험도 ${l.score}</span></div>
+          <div class="ld">${l.date ? esc(l.date) + ' · ' : ''}${l.who ? esc(l.who) + ' · ' : ''}저장 ${esc(fmt(l.savedAt))}</div>
+          <div class="lt">${esc(l.band || '')} <span style="font-weight:500;color:var(--sub);font-size:13px">위험도 ${esc(l.score ?? '')}</span></div>
         </div>
-        <button class="btn danger sm" data-del="${l.id}">삭제</button>
+        <button class="btn danger sm" data-del="${esc(l.id)}">삭제</button>
       </div>
-      ${l.acts.length ? `<div class="lmeta">지도 유형 · ${l.acts.map(esc).join(', ')}</div>` : ''}
+      ${acts.length ? `<div class="lmeta">지도 유형 · ${acts.map(esc).join(', ')}</div>` : ''}
       ${l.body ? `<div class="lb" style="margin-top:8px">${esc(l.body)}</div>` : ''}
       ${l.wit ? `<div class="lmeta">목격자·자료 · ${esc(l.wit)}</div>` : ''}
-      ${l.redlines.length ? `<div class="lmeta" style="color:var(--red)">확인 항목 · ${l.redlines.map(esc).join(' / ')}</div>` : ''}
-      ${l.risks.length ? `<div class="lmeta">위험 요인 · ${l.risks.slice(0, 4).map(esc).join(' / ')}${l.risks.length > 4 ? ` 외 ${l.risks.length - 4}건` : ''}</div>` : ''}
-    </div>`).join('')
+      ${redlines.length ? `<div class="lmeta" style="color:var(--red)">확인 항목 · ${redlines.map(esc).join(' / ')}</div>` : ''}
+      ${risks.length ? `<div class="lmeta">위험 요인 · ${risks.slice(0, 4).map(esc).join(' / ')}${risks.length > 4 ? ` 외 ${risks.length - 4}건` : ''}</div>` : ''}
+    </div>`; }).join('')
     : `<div class="card"><div class="empty">아직 저장된 기록이 없습니다.<br>“점검” 탭에서 판정한 뒤 저장하면 여기에 쌓입니다.</div></div>`;
 
   $$('#logList [data-del]').forEach(b => b.onclick = () => {
@@ -1672,9 +1883,20 @@ $('#impFile').onchange = e => {
     try {
       const inc = JSON.parse(rd.result);
       if (!Array.isArray(inc)) throw 0;
+      // 스키마 정규화 — 배열 필드 누락 등 손상된 항목이 렌더를 깨뜨리지 않도록
+      const arr = v => Array.isArray(v) ? v : [];
+      const clean = inc
+        .filter(x => x && typeof x === 'object' && x.id != null)
+        .map(x => ({
+          ...x,
+          savedAt: x.savedAt || new Date().toISOString(),
+          date: x.date || '', who: x.who || '', stage: x.stage || '',
+          body: x.body || '', wit: x.wit || '', band: x.band || '', score: x.score || 0,
+          acts: arr(x.acts), risks: arr(x.risks), goods: arr(x.goods), redlines: arr(x.redlines),
+        }));
       const cur = loadLog();
       const ids = new Set(cur.map(x => x.id));
-      const merged = [...cur, ...inc.filter(x => !ids.has(x.id))].sort((a, b) => b.id - a.id);
+      const merged = [...cur, ...clean.filter(x => !ids.has(x.id))].sort((a, b) => b.id - a.id);
       writeLog(merged);
       alert(`${merged.length - cur.length}건을 가져왔습니다.`);
     } catch (err) { alert('가져오기에 실패했습니다. 이 앱에서 내보낸 JSON 파일인지 확인하세요.'); }
@@ -1685,8 +1907,9 @@ $('#impFile').onchange = e => {
 $('#txtBtn').onclick = () => {
   const logs = loadLog();
   if (!logs.length) return alert('복사할 기록이 없습니다.');
+  const j = v => (Array.isArray(v) ? v : []);
   const txt = logs.map(l =>
-    `[${l.date || '일자 미기재'}] ${l.who || ''}\n저장 시각: ${fmt(l.savedAt)}\n판정: ${l.band} (위험도 ${l.score})\n지도 유형: ${l.acts.join(', ') || '-'}\n경위: ${l.body || '-'}\n목격자·자료: ${l.wit || '-'}\n확인 항목: ${l.redlines.join(' / ') || '-'}\n위험 요인: ${l.risks.join(' / ') || '-'}`
+    `[${l.date || '일자 미기재'}] ${l.who || ''}\n저장 시각: ${fmt(l.savedAt)}\n판정: ${l.band || '-'} (위험도 ${l.score ?? '-'})\n지도 유형: ${j(l.acts).join(', ') || '-'}\n경위: ${l.body || '-'}\n목격자·자료: ${l.wit || '-'}\n확인 항목: ${j(l.redlines).join(' / ') || '-'}\n위험 요인: ${j(l.risks).join(' / ') || '-'}`
   ).join('\n\n────────────────\n\n');
   navigator.clipboard.writeText(txt)
     .then(() => alert('클립보드에 복사했습니다.'))
@@ -1766,7 +1989,7 @@ function renderUserSources() {
     ? list.map(s => `<div class="law">
         <h3>${esc(s.cite)} <span class="tier t2">${TIER_META[s.tier].label}</span></h3>
         <div class="src">${s.date ? esc(s.date) + ' · ' : ''}직접 추가</div>
-        <div class="tierline">${esc(s.note)}${s.url ? ` — <a href="${esc(s.url)}" target="_blank" rel="noopener">링크</a>` : ''}</div>
+        <div class="tierline">${esc(s.note)}${safeUrl(s.url) ? ` — <a href="${safeUrl(s.url)}" target="_blank" rel="noopener">링크</a>` : ''}</div>
         <div style="margin-top:9px"><button class="btn danger sm" data-usdel="${s.id}">삭제</button></div>
       </div>`).join('')
     : `<div class="empty" style="padding:20px 8px">아직 직접 추가한 근거가 없습니다.</div>`;
@@ -1788,6 +2011,27 @@ $('#usAdd').onclick = () => {
   renderUserSources();
 };
 renderUserSources();
+
+$('#contactBox').innerHTML = CONTACTS.map(c => `
+  <div class="contact">
+    <div class="ct">${c.t}</div>
+    <div class="cd">${c.d}</div>
+    ${srcLineCompact(c.s)}
+  </div>`).join('');
+
+$('#trackBox').innerHTML = TRACKS.map(t => `
+  <div class="law" style="border-left:3px solid ${t.k === 'abuse' ? 'var(--accent)' : 'var(--gold)'}">
+    <h3>${t.t}</h3>
+    <div class="src" style="color:#3d4a5c;font-size:13.5px;line-height:1.6">${t.d}</div>
+    <ul class="flist" style="margin-top:8px">${t.pts.map(p => `<li class="good"><div class="ftxt" style="font-weight:500;font-size:13.5px">${p}</div></li>`).join('')}</ul>
+    ${t.src.map(srcLine).join('')}
+  </div>`).join('');
+
+$('#officialBox').innerHTML = OFFICIAL_LINKS.map(o => `
+  <div class="contact">
+    <div class="ct">${o.u ? `<a href="${esc(o.u)}" target="_blank" rel="noopener">${esc(o.t)}</a>` : esc(o.t)}</div>
+    <div class="cd">${esc(o.d)}</div>
+  </div>`).join('');
 
 $('#reportSteps').innerHTML = REPORT_STEPS.map(s => `
   <li>
