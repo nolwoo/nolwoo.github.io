@@ -30,8 +30,9 @@ const server = createServer(async (req, res) => {
     if (req.method === 'POST' && req.url === '/api/chat') {
       return await handleChat(req, res);
     }
-    if (req.method === 'GET' && req.url === '/api/greeting') {
-      return sendJson(res, 200, { greeting: getGreeting() });
+    if (req.method === 'GET' && req.url.startsWith('/api/greeting')) {
+      const mode = new URL(req.url, 'http://localhost').searchParams.get('mode') || 'chat';
+      return sendJson(res, 200, { greeting: getGreeting(mode) });
     }
     if (req.method === 'GET') {
       return serveStatic(req, res);
@@ -58,13 +59,16 @@ async function handleChat(req, res) {
 
   const body = await readBody(req);
   let messages;
+  let mode = 'chat';
   try {
-    messages = JSON.parse(body).messages;
+    const parsed = JSON.parse(body);
+    messages = parsed.messages;
+    if (['urgent', 'reflection', 'chat'].includes(parsed.mode)) mode = parsed.mode;
   } catch {
     return sendJson(res, 400, { error: '잘못된 요청 형식이에요.' });
   }
   try {
-    const reply = await getReply(messages, process.env.ANTHROPIC_API_KEY);
+    const reply = await getReply(messages, process.env.ANTHROPIC_API_KEY, mode);
     sendJson(res, 200, { reply });
   } catch (err) {
     console.error(err);
