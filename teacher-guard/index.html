@@ -372,6 +372,13 @@
 <!-- ══════════ 점검 ══════════ -->
 <section class="tab on" id="tab-check">
 
+  <div class="card" style="border-color:var(--gold);background:var(--gold-soft)">
+    <h2>먼저, 소속을 알려주세요</h2>
+    <p class="lead">이 도구가 근거로 삼는 면책 조항(초·중등교육법 제20조의2)은 <b>초·중·고등학교에만</b> 적용됩니다.
+      유치원·어린이집은 판정 방식 자체가 달라져, 아래 결과 화면에 표시되는 경고와 안내도 함께 바뀝니다.</p>
+    <div class="opts" id="levelOpts"></div>
+  </div>
+
   <div class="card" id="freeCard">
     <h2>상황을 글로 적어 시작하기 <span style="font-size:12px;font-weight:500;color:var(--sub)">(선택)</span></h2>
     <p class="lead">문항을 고르기 전에, 무슨 일이 있었는지 편하게 적어도 됩니다.
@@ -843,6 +850,17 @@ const FACTORS = {
 };
 
 /* ═══════════════════════════════════════════════════════
+   소속 — 초·중등교육법 제20조의2 면책이 적용되는지를 가른다.
+   점수 계산식 자체는 바꾸지 않는다(유아 대상 적정 위험도를 이 도구가
+   검증할 근거가 없음). 대신 'early'일 때는 이 도구의 2단계 판단(면책)
+   전제가 깨진다는 것을 결과 화면 최상단 경고와 대응계획 문구로 알린다.
+   ═══════════════════════════════════════════════════════ */
+const LEVELS = [
+  { id:'k12',   t:'초·중·고등학교',   d:'초·중등교육법 제20조의2 면책 적용 대상' },
+  { id:'early', t:'유치원·어린이집', d:'유아교육법·영유아보육법 체계 — 위 면책 미적용' },
+];
+
+/* ═══════════════════════════════════════════════════════
    진행 단계 (점수 미반영, 후속 대응 시점 선택용)
    ═══════════════════════════════════════════════════════ */
 const STAGES = [
@@ -1096,6 +1114,15 @@ const ACT_QS = {
         { t:'즉시 물리적으로 막는 것 외에 방법이 없었다', w:0 },
         { t:'말로 더 시도해 볼 여지가 있었다', w:3,
           alt:'“다른 수단이 없었는가”는 정당행위 판단의 핵심입니다. 신체 접촉 전에 <b>구두 경고 → 다른 학생 대피 → 다른 교사 호출</b> 순서를 밟았다는 사실이 남아야 합니다.' },
+      ] },
+    { id:'c4', tag:'child', multi:false,
+      q:'[신체 접촉] 자신·타인에게 위해를 가할 위험이 있어 반복적으로 제지가 필요한 특성이 있는 학생입니까? (특수교육대상자 등)',
+      h:'고시는 특수교육대상자의 특성을 고려한 지도를 요구합니다. 반복적 제지가 필요한 사정 자체는 위험을 낮추지 않지만, 사전에 정해둔 대응 방법을 따랐는지가 핵심입니다. 학생 특성은 교사의 잘못이 아니므로 이 답은 점수를 올리지 않습니다.',
+      o:[
+        { t:'해당 없음 — 일반적인 상황이었다', w:0 },
+        { t:'그렇다 — 개별화교육계획(IEP)·행동중재계획에 정해진 대응 방법대로 했다', w:0 },
+        { t:'그렇다 — 그런데 정해진 대응 방법이 없거나 따르지 않았다', w:2,
+          alt:'반복적 물리적 개입이 필요한 학생일수록 특수교사·보호자와 함께 <b>행동중재계획을 문서로 미리 마련</b>해 두면, 같은 대응도 근거를 갖추게 됩니다.' },
       ] },
   ],
   separate: [
@@ -1419,7 +1446,7 @@ const LAWS = [
 /* ═══════════════════════════════════════════════════════
    상태
    ═══════════════════════════════════════════════════════ */
-const state = { acts: new Set(), redlines: new Set(), ans: {}, stage: 'before' };
+const state = { acts: new Set(), redlines: new Set(), ans: {}, stage: 'before', level: 'k12' };
 const LS_KEY = 'teacherGuardLog_v1';
 
 const $ = s => document.querySelector(s);
@@ -1501,6 +1528,15 @@ function runScan() {
 }
 $('#scanBtn').onclick = runScan;
 $('#scanClear').onclick = () => { $('#freeText').value = ''; $('#scanResult').classList.add('hidden'); $('#scanResult').innerHTML = ''; };
+
+/* ── 소속 ── */
+$('#levelOpts').innerHTML = LEVELS.map((l, i) =>
+  `<div class="opt${i === 0 ? ' on' : ''}" data-level="${l.id}"><span class="mark"></span><span>${l.t} <span style="color:var(--sub)">— ${l.d}</span></span></div>`
+).join('');
+$$('#levelOpts .opt').forEach(o => o.onclick = () => {
+  state.level = o.dataset.level;
+  $$('#levelOpts .opt').forEach(x => x.classList.toggle('on', x === o));
+});
 
 /* ── 진행 단계 ── */
 $('#stageOpts').innerHTML = STAGES.map((s, i) =>
@@ -1769,10 +1805,13 @@ function actionPlan(r) {
   ];
 
   // 방어 논리 4단계 — 법령상 금지선(🔴)에서는 방어가 아니라 원칙으로 대체한다 (원칙 1)
+  const isEarly = state.level === 'early';
   const defenseSteps = [
     { h:'① 사실관계', p:'신고 내용 중 실제 있었던 일과 과장·왜곡된 부분을 나눕니다. 있었던 일은 인정하고, 없었던 일은 근거를 들어 다툽니다.' },
     { h:'② 학대의 정도', p:'있었던 행위가 “아동의 정신건강·발달을 저해할 정도 또는 그 위험”에 이르렀는지. 상태 변화의 증거가 없으면 여기서 다툽니다.', s:'prec_2015do13488' },
-    { h:'③ 정당한 생활지도', p:'학칙 근거·단계적 지도·긴급성·인권 존중을 들어, 초·중등교육법 제20조의2 제2항의 면책 범위임을 주장합니다.', s:'law_ese20_2', s2:'prec_2020do12920' },
+    isEarly
+      ? { h:'③ 정당한 보육·교육활동 — 주의', p:'이 도구가 근거로 삼는 면책(초·중등교육법 제20조의2)은 <b>유치원·어린이집에는 적용되지 않습니다.</b> 여기서부터는 이 도구가 다루지 못하는 영역이니, 유아교육법·영유아보육법 체계를 아는 변호사 또는 관할 교육청(유아교육)·육아종합지원센터를 통해 별도로 검토하십시오.' }
+      : { h:'③ 정당한 생활지도', p:'학칙 근거·단계적 지도·긴급성·인권 존중을 들어, 초·중등교육법 제20조의2 제2항의 면책 범위임을 주장합니다.', s:'law_ese20_2', s2:'prec_2020do12920' },
   ];
   // 법원이 이미 학대 인정 전형으로 보는 패턴(소프트 레드라인)이 걸린 경우,
   // "몰래 녹음은 증거능력이 부정된 사례가 있다"는 문구는 증거 은폐를 코칭하는 것으로 읽힐 수 있어 뺀다.
@@ -1855,12 +1894,17 @@ function studentBlock(r) {
 
 function limitationsFor(r) {
   const items = [];
+  const isEarly = state.level === 'early';
+  if (isEarly) {
+    items.push('<b>소속을 유치원·어린이집으로 선택하셨습니다.</b> 위 점수와 판정은 초·중등교육법 제20조의2 면책을 전제로 계산되는데, 이 면책은 유치원·어린이집에 적용되지 않습니다. 위 판정을 그대로 신뢰하지 말고 참고 자료로만 보십시오.');
+  }
   items.push('실제 결론은 <b>증거</b>(CCTV·녹음·목격자 진술)에 크게 좌우됩니다. 이 도구는 증거를 평가하지 않습니다.');
   if (r.risks.some(x => x.tag === 'procedure'))
     items.push('"학칙에 근거가 있는가"를 물은 문항은 학교마다 학생생활규정이 달라, <b>본인 학교 규정을 직접 확인</b>해야 정확해집니다.');
   if (state.acts.has('contact'))
-    items.push('신체 접촉이 포함된 상황입니다. 위험한 행동을 막기 위한 <b>불가피한 물리적 제지</b>(특수교육 대상 학생 등)는 이 문항 체계가 세밀하게 다루지 못합니다.');
-  items.push('유치원·어린이집 교사는 유아교육법·영유아보육법 체계가 적용되어 초·중등교육법 제20조의2의 면책이 그대로 적용되지 않습니다. 해당된다면 이 판정을 그대로 적용하지 마십시오.');
+    items.push('신체 접촉이 포함된 상황입니다. 반복적 제지가 필요한 특성(5번 문항)은 물었지만, 실제 행동중재계획의 적정성까지는 이 도구가 평가하지 못합니다.');
+  if (!isEarly)
+    items.push('유치원·어린이집 교사라면 유아교육법·영유아보육법 체계가 적용되어 초·중등교육법 제20조의2의 면책이 그대로 적용되지 않습니다. 위 "먼저, 소속을 알려주세요"에서 선택을 바꿔 다시 확인하십시오.');
   items.push('아래 "비슷한 사례의 전국 통계" 카드의 유형 매칭은 <b>이 도구가 정한 근사치</b>이며 법적 분류가 아닙니다.');
   return `<div class="card" style="background:var(--accent-soft);border-color:var(--line2)">
     <h2>이 판정이 다루지 못하는 것</h2>
@@ -1909,7 +1953,17 @@ function renderResult() {
   }
   const CONF = { label: CONF_LABEL[r.conf], col: CONF_COL[r.conf], note: confNote };
 
+  const earlyWarning = state.level === 'early' ? `
+    <div class="card" style="border-color:var(--red);background:var(--red-soft)">
+      <h2 style="color:var(--red)">이 판정, 그대로 믿지 마십시오</h2>
+      <p class="lead" style="color:#7f1d1d">아래 위험도 점수는 <b>초·중등교육법 제20조의2 면책</b>을 전제로 계산됩니다.
+        이 면책은 유치원·어린이집에는 적용되지 않아, 점수와 판정 문구가 실제 법적 위험을 낮게 보여줄 수 있습니다.
+        아래 결과는 <b>참고용 위험 신호 목록</b>으로만 보고, 유아교육법·영유아보육법을 아는 변호사 또는
+        관할 교육청(유아교육)·육아종합지원센터를 통해 별도로 확인하십시오.</p>
+    </div>` : '';
+
   box.innerHTML = `
+    ${earlyWarning}
     <div class="verdict v-${r.band.k}">
       <div class="badge">${r.band.badge}</div>
       <h3>${r.band.h}</h3>
