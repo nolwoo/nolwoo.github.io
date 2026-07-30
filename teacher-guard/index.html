@@ -314,6 +314,21 @@
   .outlook p { font-size: 13.5px; color: #22456e; line-height: 1.65; }
   .outlook .sep { height: 1px; background: #d9e6f7; margin: 11px 0; }
 
+  /* ── 전국 현황 표 ── */
+  .stattbl-wrap { overflow-x: auto; }
+  .stattbl { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 480px; }
+  .stattbl th, .stattbl td { padding: 7px 9px; text-align: right; border-bottom: 1px solid var(--line2); white-space: nowrap; }
+  .stattbl th:first-child, .stattbl td:first-child { text-align: left; font-weight: 650; }
+  .stattbl thead th { color: var(--sub); font-weight: 700; font-size: 11.5px; border-bottom: 1.5px solid var(--line); }
+  .stattbl tbody tr:last-child td { font-weight: 700; background: var(--accent-soft); }
+  .stattbl .hi { color: var(--accent); font-weight: 700; }
+
+  .nearcat { border: 1.5px solid var(--gold); background: var(--gold-soft); border-radius: 12px; padding: 15px; }
+  .nearcat .nc-badge { display: inline-block; font-size: 12px; font-weight: 800; color: #6b4a05;
+    background: #fdf0d0; border-radius: 6px; padding: 3px 9px; margin-bottom: 8px; }
+  .nearcat h4 { font-size: 15px; font-weight: 700; color: #5c400a; margin-bottom: 6px; }
+  .nearcat p { font-size: 13.5px; color: #5c400a; line-height: 1.65; }
+
   .planh { font-size: 14px; font-weight: 700; color: var(--red); margin-bottom: 8px; }
   .contact { border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 9px; background: #fff; }
   .contact .ct { font-size: 14px; font-weight: 700; }
@@ -337,7 +352,8 @@
   <p class="tagline">내가 한 생활지도가 아동복지법상 학대에 해당할 수 있는지,
     법령과 대법원 판례가 실제로 쓰는 기준으로 짚어봅니다.</p>
   <div class="disclaimer">
-    <b>법률자문이 아닙니다.</b> 이 도구는 공개된 법령·판례의 판단 기준을 정리해 스스로 점검하도록 돕는 자료입니다.
+    <b>법률자문이 아니고, 결과는 법적 효력이 없습니다.</b> 이 도구는 유·무죄를 "판정"하지 않습니다 —
+    공개된 법령·판례가 실제로 쓰는 <b>기준이 어디 있는지</b>를 스스로 점검하도록 돕는 자료입니다.
     실제 사건의 결론은 증거와 구체적 사정에 따라 달라지며, 신고·수사가 진행 중이라면
     반드시 변호사와 소속 교원단체·교육청 교권보호 담당의 조력을 받으십시오.
     입력한 내용은 <b>이 브라우저에만</b> 저장되고 어디로도 전송되지 않습니다.
@@ -512,7 +528,37 @@
   </div>
 
   <div class="card">
-    <h2>숫자로 보는 현재</h2>
+    <h2>최근 5년 전국 아동학대 현황</h2>
+    <p class="lead">전체 아동(가정 포함, 교원에 한정되지 않음)을 대상으로 한 정부 공식 통계입니다.
+      <b>신고가 곧 학대로 확정된 것이 아니라는 점</b>이 5년째 뚜렷해지고 있습니다.</p>
+    <div class="stattbl-wrap">
+      <table class="stattbl" id="natMainTbl"></table>
+    </div>
+    <div id="natMainSrc" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card">
+    <h2>학대로 판단된 사례의 유형별 분류</h2>
+    <p class="lead">신고접수가 아니라 <b>실제로 학대로 판단된 사례</b>만을 유형별로 나눈 것입니다.
+      정서학대 비중이 5년 내내 가장 크고 계속 늘고 있습니다.</p>
+    <div class="stattbl-wrap">
+      <table class="stattbl" id="natTypeTbl"></table>
+    </div>
+    <div id="natTypeSrc" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card">
+    <h2>학대행위자가 초·중·고교 직원이었던 사례</h2>
+    <p class="lead">위 전체 판단 건수(24,492건 등) 중 학대행위자가 <b>초·중·고교 직원</b>으로 분류된
+      건수만 따로 뽑았습니다. 유치원·보육교직원은 별도 항목이라 포함되지 않습니다.</p>
+    <div class="bars" id="natTeacherBars"></div>
+    <div id="natTeacherSrc" style="margin-top:8px"></div>
+  </div>
+
+  <div class="card">
+    <h2>숫자로 보는 현재 <span style="font-size:12px;font-weight:500;color:var(--sub)">— 교원 대상 신고만</span></h2>
+    <p class="lead">위 표는 전체 아동 대상 통계이고, 아래는 <b>교원이 신고당한 사건만</b> 따로 집계한
+      별도 자료입니다. 모집단이 다르니 서로 비교하지 마세요.</p>
     <div class="kpis" id="kpiBox"></div>
     <div id="kpiSrc" style="margin-top:12px"></div>
   </div>
@@ -706,6 +752,9 @@ const SOURCES = {
   adm_1395b: { tier:'admin', cite:'교육청 교육활동보호센터', note:'시·도교육청이 운영하는 심리상담·법률자문·교원치유 지원. 지역마다 명칭·연락처가 다름', via:'한국교육개발원 교육활동보호센터 등' },
 
   /* ── tier 2 ── */
+  stat_ncrc_annual: { tier:'stat', cite:'보건복지부·아동권리보장원 「아동학대 주요통계」(2020~2024년판)',
+    note:'전국 신고접수·판단 건수, 유형별 판단건수, 학대행위자-피해아동 관계별 현황(표 1-4-1·1-4-5·1-4-6). 전체 아동(가정 포함) 대상 — 교원에 한정된 통계가 아님',
+    via:'국가승인통계 제117064호 · e-나라지표 경유 원문 PDF' },
   stat_moe_report: { tier:'stat', cite:'교육부 집계 (2023. 9.~2026. 2.)',
     note:'교원 대상 아동학대 신고 1,870건 · 교육감 “정당한 교육활동” 의견서 1,352건(72%) · 종결 993건 중 무혐의·불기소 898건(90.4%)',
     via:'한국일보 2026. 6. 18. 보도' },
@@ -1216,6 +1265,39 @@ const CASES = [
 ];
 
 /* ═══════════════════════════════════════════════════════
+   전국 아동학대 현황 (최근 5년) — 전체 아동 대상, 교원에 한정되지 않음
+   출처: 보건복지부·아동권리보장원 「아동학대 주요통계」 각 연도판, 표 1-4-1·1-4-5·1-4-6
+   ═══════════════════════════════════════════════════════ */
+const NATIONAL_ABUSE = [
+  { y:2020, report:42251, confirmed:30905, physical:3807, emotional:8732, sexual:695, neglect:2737, multi:14934, teacher:882 },
+  { y:2021, report:53932, confirmed:37605, physical:5780, emotional:12351, sexual:655, neglect:2793, multi:16026, teacher:1089 },
+  { y:2022, report:46103, confirmed:27971, physical:4911, emotional:10632, sexual:609, neglect:2044, multi:9775, teacher:1602 },
+  { y:2023, report:48522, confirmed:25739, physical:4698, emotional:11094, sexual:585, neglect:1979, multi:7383, teacher:793 },
+  { y:2024, report:50242, confirmed:24492, physical:4625, emotional:11466, sexual:619, neglect:1800, multi:5982, teacher:572 },
+];
+const ABUSE_TYPE_LABEL = { physical:'신체학대', emotional:'정서학대', sexual:'성학대', neglect:'방임' };
+const fmtN = n => n.toLocaleString('ko-KR');
+
+/* 이 도구의 지도유형·레드라인 → 통계상 가장 가까운 학대유형.
+   법적 분류가 아니라 근사 매칭입니다 — 실제 사건이 어느 유형으로 판단될지는 다릅니다. */
+const NEAREST_TYPE_MAP = {
+  r_hit:'physical', r_sex:'sexual', r_lock:'emotional', r_basic:'neglect',
+  r_word:'emotional', r_fam:'emotional', r_shame:'emotional', r_ignore:'neglect',
+  speech:'emotional', contact:'physical', separate:'emotional', item:'emotional',
+  task:'emotional', exclude:'emotional', neglect:'neglect',
+};
+const TYPE_PRIORITY = ['sexual', 'physical', 'neglect', 'emotional'];
+
+function nearestAbuseType() {
+  const hits = [];
+  state.redlines.forEach(id => { if (NEAREST_TYPE_MAP[id]) hits.push({ label: (REDLINES.find(r => r.id === id) || {}).t, type: NEAREST_TYPE_MAP[id] }); });
+  state.acts.forEach(id => { if (NEAREST_TYPE_MAP[id]) hits.push({ label: (ACTS.find(a => a.id === id) || {}).t, type: NEAREST_TYPE_MAP[id] }); });
+  let type = 'emotional', matched = false;
+  for (const t of TYPE_PRIORITY) { if (hits.some(h => h.type === t)) { type = t; matched = true; break; } }
+  return { type, matched, hits: hits.filter(h => h.type === type) };
+}
+
+/* ═══════════════════════════════════════════════════════
    2차 근거 — 통계·여론·입법동향
    판정 점수에는 반영하지 않고, 맥락과 실무 전망에만 씁니다.
    ═══════════════════════════════════════════════════════ */
@@ -1613,6 +1695,43 @@ function outlookFor(r) {
 }
 
 /* ═══════════════════════════════════════════════════════
+   가장 가까운 전국 통계 범주 — 입력한 지도유형·레드라인을
+   국가 통계상 학대유형에 근사 매칭해 보여준다. 점수에는 영향 없음.
+   ═══════════════════════════════════════════════════════ */
+function nearestCategoryBlock() {
+  const { type, matched, hits } = nearestAbuseType();
+  const latest = NATIONAL_ABUSE[NATIONAL_ABUSE.length - 1];
+  const label = ABUSE_TYPE_LABEL[type];
+  const cnt = latest[type];
+  const pct = (cnt / latest.confirmed * 100).toFixed(1);
+  const series = NATIONAL_ABUSE.map(d => `${d.y}년 ${fmtN(d[type])}건`).join(' → ');
+  const teacherSeries = NATIONAL_ABUSE.map(d => `${d.y}년 ${fmtN(d.teacher)}건`).join(' → ');
+
+  const matchLine = matched
+    ? `선택하신 항목 중 <b>${hits.map(h => `“${h.label}”`).join(', ')}</b>이(가) 통계상 <b>${label}</b>에 가장 가깝습니다.`
+    : `구체적인 지도유형·레드라인을 고르지 않으셨습니다. 이 도구가 다루는 교사 사건 대부분이 <b>${label}</b> 범주에 속해 기본값으로 보여드립니다.`;
+
+  return `
+    <div class="nearcat">
+      <span class="nc-badge">가장 가까운 전국 통계 범주</span>
+      <h4>${label} — ${latest.y}년 전국 ${fmtN(cnt)}건 (판단 사례의 ${pct}%)</h4>
+      <p>${matchLine}</p>
+      <p style="margin-top:8px">5년 추이: ${series}</p>
+    </div>
+    ${srcLine('stat_ncrc_annual')}
+    <div class="srcnote">
+      <b>같은 기간 학대행위자가 초·중·고교 직원이었던 사례</b>(전체 유형 합산, 유형별로는 세분되어 있지
+      않습니다): ${teacherSeries}
+    </div>
+    <div class="srcnote">
+      <b>주의</b> — 이 매칭은 이 도구가 임의로 정한 근사치일 뿐, 아동복지법상 법적 유형 분류가 아닙니다.
+      실제 사건이 신체·정서·성·방임 중 어디로 판단될지는 조사·수사 결과에 따라 다릅니다.
+      국가 통계는 <b>가정 내 학대를 포함한 전체 아동</b>을 대상으로 하며, 교원 사건만 따로 집계한
+      것이 아니라는 점도 함께 고려하십시오.
+    </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
    후속 대응 계획 — 위험도 높음(🟠·🔴)일 때 단계별로
    ═══════════════════════════════════════════════════════ */
 function actionPlan(r) {
@@ -1649,13 +1768,30 @@ function actionPlan(r) {
     '학생에게 사과가 필요하다고 판단되더라도, 문구는 <b>변호인과 상의한 뒤</b> 전달하십시오. 진심 어린 사과와 자백은 종이 한 장 차이입니다.',
   ];
 
-  // 방어 논리 4단계
-  const defense = [
+  // 방어 논리 4단계 — 법령상 금지선(🔴)에서는 방어가 아니라 원칙으로 대체한다 (원칙 1)
+  const defenseSteps = [
     { h:'① 사실관계', p:'신고 내용 중 실제 있었던 일과 과장·왜곡된 부분을 나눕니다. 있었던 일은 인정하고, 없었던 일은 근거를 들어 다툽니다.' },
     { h:'② 학대의 정도', p:'있었던 행위가 “아동의 정신건강·발달을 저해할 정도 또는 그 위험”에 이르렀는지. 상태 변화의 증거가 없으면 여기서 다툽니다.', s:'prec_2015do13488' },
     { h:'③ 정당한 생활지도', p:'학칙 근거·단계적 지도·긴급성·인권 존중을 들어, 초·중등교육법 제20조의2 제2항의 면책 범위임을 주장합니다.', s:'law_ese20_2', s2:'prec_2020do12920' },
-    { h:'④ 증거의 적법성', p:'제출된 증거가 적법하게 수집됐는지. 학부모의 몰래 녹음은 증거능력이 부정된 사례가 있습니다.', s:'prec_2020do1538' },
   ];
+  // 법원이 이미 학대 인정 전형으로 보는 패턴(소프트 레드라인)이 걸린 경우,
+  // "몰래 녹음은 증거능력이 부정된 사례가 있다"는 문구는 증거 은폐를 코칭하는 것으로 읽힐 수 있어 뺀다.
+  if (r.soft.length === 0) {
+    defenseSteps.push({ h:'④ 증거의 적법성', p:'제출된 증거가 적법하게 수집됐는지. 학부모의 몰래 녹음은 증거능력이 부정된 사례가 있습니다.', s:'prec_2020do1538' });
+  }
+
+  const honestPath = [
+    { h:'① 사실관계를 나눈다', p:'있었던 일과 과장·왜곡된 부분을 나눕니다. 있었던 일 자체를 부인하지 마십시오 — 정서적 학대는 미필적 인식만으로 성립해, 의도를 부인해도 행위는 인정한 셈이 될 수 있습니다.', s:'prec_2015do13488' },
+    { h:'② 학생 보호는 학교 공식 절차로', p:'학생 상담·보호 조치는 개인적으로 나서지 말고 학교 상담팀·교육청을 통해 진행하십시오. 지금 상황에서도, 학생에게도 이 편이 안전합니다.' },
+    { h:'③ 은폐·회유를 시도하지 않는다', p:'교사는 아동학대 신고의무자입니다. 신고의무자가 저지른 학대는 형이 2분의 1까지 가중되고, 사실을 숨기거나 목격자·학생에게 진술을 맞추라고 요청하면 그 자체로 별도 혐의(증거인멸·강요)가 더해질 수 있습니다.', s:'law_cap7' },
+    { h:'④ 소명은 변호인을 통해서만', p:'유리하게 보이려는 개인적 해명은 오히려 불리하게 쓰일 수 있습니다. 모든 소명은 변호인을 통해, 문서로 진행하십시오.' },
+  ];
+
+  const defenseHeading = isRed ? '⚖ 지금부터 지켜야 할 원칙' : '🛡 방어는 이 순서로 (변호인과 함께)';
+  const defenseLead = isRed
+    ? '법령이 정면으로 금지하는 행위이거나 학대 인정 요소가 집중된 상태입니다. 지금은 방어 논리를 짜는 단계가 아니라, 상황을 더 악화시키지 않는 단계입니다.'
+    : '진술과 소명은 네 단계를 뒤섞지 말고 순서대로 세우는 편이 강합니다.';
+  const defense = isRed ? honestPath : defenseSteps;
 
   return `<div class="outlook" style="border-color:#f3d0d0;background:#fffbfb">
       <h4 style="color:var(--red)">${HEAD.t}</h4>
@@ -1675,12 +1811,61 @@ function actionPlan(r) {
     <div style="margin-top:16px"><div class="planh">🚫 하지 말아야 할 것</div>
       <ul class="flist">${donts.map(d=>`<li class="bad"><div class="ftxt" style="font-weight:500;font-size:13.5px">${d}</div></li>`).join('')}</ul></div>
 
-    <div style="margin-top:16px"><div class="planh">🛡 방어는 이 순서로 (변호인과 함께)</div>
-      <p class="lead">진술과 소명은 네 단계를 뒤섞지 말고 순서대로 세우는 편이 강합니다.</p>
+    <div style="margin-top:16px"><div class="planh">${defenseHeading}</div>
+      <p class="lead">${defenseLead}</p>
       <ol class="steps">${defense.map(d=>`<li><h4>${d.h}</h4><p>${d.p}</p>${d.s?`<div style="margin-top:4px">${srcLine(d.s)}${d.s2?srcLine(d.s2):''}</div>`:''}</li>`).join('')}</ol></div>
 
     <div class="srcnote" style="margin-top:14px">이 계획은 일반적 대응 순서를 정리한 것이며 <b>개별 사건의 법률자문을 대신하지 않습니다.</b>
       구체적 판단은 반드시 변호인과 하십시오. 창구·지원 내용은 지역·연도에 따라 다를 수 있으니 1395로 최신 안내를 확인하십시오.</div>`;
+}
+
+function studentBlock(r) {
+  const k = r.band.k;
+  if (k === 'blue' || k === 'green') {
+    return `<div class="card">
+      <h2>그 학생은 어떻습니까</h2>
+      <p class="lead">지도 자체는 범위 안에 있어 보여도, 학생이 그 순간을 어떻게 받아들였는지는 별개입니다.</p>
+      <ul class="flist">
+        <li><div class="ftxt">시간을 내어 그 학생과 짧게 대화해 보십시오 — 지도 이유를 이해했는지, 위축되지는 않았는지.</div></li>
+        <li><div class="ftxt">위축된 기색이 있다면, 지도 방식 자체는 정당해도 <b>전달 방식</b>은 조정할 수 있습니다.</div></li>
+      </ul>
+    </div>`;
+  }
+  if (k === 'yellow') {
+    return `<div class="card">
+      <h2>그 학생은 어떻습니까</h2>
+      <p class="lead">위험 요인이 잡혔다는 건 이 지도가 학생에게도 부담이었을 가능성을 뜻합니다.</p>
+      <ul class="flist">
+        <li><div class="ftxt">학생 상태(표정·말수·등교 기피 등)를 가까운 며칠간 눈여겨보십시오.</div></li>
+        <li><div class="ftxt">필요하면 담임·상담교사와 상태를 공유해, 학생 쪽 조치(상담 연계 등)도 함께 검토하십시오.</div></li>
+        <li><div class="ftxt">사과가 필요하다고 판단되면, 사실관계를 인정하는 방식보다 <b>과정에 대한 유감</b> 표현이 안전합니다.</div></li>
+      </ul>
+    </div>`;
+  }
+  return `<div class="card" style="border-color:#f3d0d0">
+    <h2 style="color:var(--red)">지금 가장 먼저 확인할 것 — 그 학생</h2>
+    <p class="lead">아래는 사건 대응 절차보다 먼저, 오늘 안에 확인해야 합니다.</p>
+    <ul class="flist">
+      <li class="bad"><div class="ftxt"><b>학생의 지금 상태</b>를 확인하십시오 — 몸 상태, 등교 여부. 보건교사·상담교사와 함께 확인하는 방법이 안전합니다.</div></li>
+      <li class="bad"><div class="ftxt">학생이나 보호자를 <b>직접 회유하거나 진술을 맞추려 하지 마십시오.</b> 그 자체가 별도 혐의(증거인멸·강요)가 될 수 있고, 정당한 지도였다는 주장도 함께 무너집니다.</div></li>
+      <li class="bad"><div class="ftxt">학생에게 필요한 조치(상담·보호)는 <b>학교 공식 절차</b>로 진행하십시오. 개인적으로 나서면 의도와 무관하게 회유로 비칠 수 있습니다.</div></li>
+    </ul>
+  </div>`;
+}
+
+function limitationsFor(r) {
+  const items = [];
+  items.push('실제 결론은 <b>증거</b>(CCTV·녹음·목격자 진술)에 크게 좌우됩니다. 이 도구는 증거를 평가하지 않습니다.');
+  if (r.risks.some(x => x.tag === 'procedure'))
+    items.push('"학칙에 근거가 있는가"를 물은 문항은 학교마다 학생생활규정이 달라, <b>본인 학교 규정을 직접 확인</b>해야 정확해집니다.');
+  if (state.acts.has('contact'))
+    items.push('신체 접촉이 포함된 상황입니다. 위험한 행동을 막기 위한 <b>불가피한 물리적 제지</b>(특수교육 대상 학생 등)는 이 문항 체계가 세밀하게 다루지 못합니다.');
+  items.push('유치원·어린이집 교사는 유아교육법·영유아보육법 체계가 적용되어 초·중등교육법 제20조의2의 면책이 그대로 적용되지 않습니다. 해당된다면 이 판정을 그대로 적용하지 마십시오.');
+  items.push('아래 "비슷한 사례의 전국 통계" 카드의 유형 매칭은 <b>이 도구가 정한 근사치</b>이며 법적 분류가 아닙니다.');
+  return `<div class="card" style="background:var(--accent-soft);border-color:var(--line2)">
+    <h2>이 판정이 다루지 못하는 것</h2>
+    <ul class="flist">${items.map(t => `<li><div class="ftxt">${t}</div></li>`).join('')}</ul>
+  </div>`;
 }
 
 function renderResult() {
@@ -1743,17 +1928,19 @@ function renderResult() {
       <p class="lead">아래는 목적과 무관하게 위험을 크게 높이는 항목입니다.</p>
       <ul class="flist">${rlHtml}</ul></div>` : ''}
 
+    ${studentBlock(r)}
+
     <div class="card">
       <h2>위험을 높인 요인</h2>
       <p class="lead">각 항목 아래는 그 요인이 어느 판례 기준에 걸리는지, 어떻게 바꾸면 되는지입니다.</p>
       <ul class="flist">${riskHtml || '<li><div class="fbasis">위험 요인으로 잡힌 항목이 없습니다.</div></li>'}</ul>
     </div>
 
-    <div class="card">
+    ${r.band.k !== 'red' ? `<div class="card">
       <h2>방어에 유리한 요인</h2>
       <p class="lead">신고가 들어왔을 때 그대로 주장할 수 있는 부분입니다.</p>
       <ul class="flist">${goodHtml}</ul>
-    </div>
+    </div>` : ''}
 
     ${(r.band.k === 'orange' || r.band.k === 'red') ? `
     <div class="card" style="border-color:#f3d0d0">
@@ -1771,9 +1958,18 @@ function renderResult() {
     </div>
 
     <div class="card">
+      <h2>비슷한 사례의 전국 통계 <span class="tier t2">통계</span></h2>
+      <p class="lead">입력하신 지도유형·항목을 국가 아동학대 통계의 유형 분류에 근사 매칭한 것입니다.
+        <b>점수에는 반영되지 않았습니다.</b></p>
+      ${nearestCategoryBlock()}
+    </div>
+
+    <div class="card">
       <h2>지금 할 일</h2>
       <ul class="todo">${todosFor(r).map((t, i) => `<li><span class="n">${i + 1}</span><span>${t}</span></li>`).join('')}</ul>
     </div>
+
+    ${limitationsFor(r)}
 
     <div class="card">
       <h2>기록으로 남기기</h2>
@@ -1935,7 +2131,54 @@ $('#caseList').innerHTML = CASES.map(c => `
     <div style="margin-top:10px">${srcLine(c.src)}</div>
   </div>`).join('');
 
-/* ── 동향 탭 ── */
+/* ── 동향 탭: 전국 아동학대 현황 (5년) ── */
+$('#natMainTbl').innerHTML = `
+  <thead><tr><th>연도</th><th>신고접수</th><th>학대 판단</th><th>판단율</th></tr></thead>
+  <tbody>
+    ${NATIONAL_ABUSE.map(d => `<tr>
+      <td>${d.y}</td><td>${fmtN(d.report)}건</td><td>${fmtN(d.confirmed)}건</td>
+      <td class="hi">${(d.confirmed / d.report * 100).toFixed(1)}%</td>
+    </tr>`).join('')}
+  </tbody>`;
+$('#natMainSrc').innerHTML = srcLine('stat_ncrc_annual') +
+  `<div class="srcnote">판단율(신고 대비 실제 학대로 판단된 비율)은 2020년 73.1%에서 2024년 48.7%로
+    5년째 낮아지고 있습니다. 신고 자체는 국민 인식 개선으로 계속 늘지만, 그중 학대로 확정되는 비율은
+    줄고 있다는 뜻입니다 — <b>신고됐다는 사실만으로 학대가 있었다고 볼 수 없습니다.</b></div>`;
+
+$('#natTypeTbl').innerHTML = `
+  <thead><tr><th>연도</th><th>신체학대</th><th>정서학대</th><th>성학대</th><th>방임</th><th>중복학대</th><th>계</th></tr></thead>
+  <tbody>
+    ${NATIONAL_ABUSE.map(d => `<tr>
+      <td>${d.y}</td>
+      <td>${fmtN(d.physical)} (${(d.physical / d.confirmed * 100).toFixed(1)}%)</td>
+      <td class="hi">${fmtN(d.emotional)} (${(d.emotional / d.confirmed * 100).toFixed(1)}%)</td>
+      <td>${fmtN(d.sexual)} (${(d.sexual / d.confirmed * 100).toFixed(1)}%)</td>
+      <td>${fmtN(d.neglect)} (${(d.neglect / d.confirmed * 100).toFixed(1)}%)</td>
+      <td>${fmtN(d.multi)} (${(d.multi / d.confirmed * 100).toFixed(1)}%)</td>
+      <td>${fmtN(d.confirmed)}</td>
+    </tr>`).join('')}
+  </tbody>`;
+$('#natTypeSrc').innerHTML = srcLine('stat_ncrc_annual') +
+  `<div class="srcnote">2020~2021년은 중복학대(2개 이상 유형이 겹친 경우)가 가장 컸지만,
+    2022년부터는 정서학대 단독 비중이 가장 크고 계속 늘고 있습니다. 이 도구가 다루는 교사 발언·훈육
+    관련 사건 대부분이 속하는 범주이기도 합니다.</div>`;
+
+(function () {
+  const max = Math.max(...NATIONAL_ABUSE.map(d => d.teacher));
+  $('#natTeacherBars').innerHTML = NATIONAL_ABUSE.map(d =>
+    `<div class="b">
+      <div class="n">${fmtN(d.teacher)}</div>
+      <div class="bar" style="height:${Math.round((d.teacher / max) * 100)}%;background:var(--gold)"></div>
+      <div class="x">${d.y}</div>
+    </div>`).join('');
+  $('#natTeacherSrc').innerHTML = srcLine('stat_ncrc_annual') +
+    `<div class="srcnote">2022년 1,602건(전체 판단 사례의 5.7%)을 정점으로,
+      2023년 793건 → 2024년 572건(2.3%)까지 <b>2년 새 64% 줄었습니다.</b>
+      이 도구의 “동향” 타임라인에 있는 2023년 9월 교권보호 5법 시행 시점과 겹칩니다.
+      다만 이 통계는 유형별로 세분되어 있지 않아, 이 중 정서학대가 몇 건인지는 알 수 없습니다.</div>`;
+})();
+
+/* ── 동향 탭: 교원 대상 신고(별도 모집단) ── */
 $('#kpiBox').innerHTML = KPIS.map(k =>
   `<div class="kpi"><div class="v">${k.v}</div><div class="k">${k.k}</div><div class="s">${k.s}</div></div>`).join('');
 $('#kpiSrc').innerHTML = srcLine('stat_moe_report') + srcLine('stat_nars_opinion');
