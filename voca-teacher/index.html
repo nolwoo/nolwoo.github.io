@@ -320,9 +320,16 @@
         <div class="card"><div class="n" id="rRight">0</div><div class="t">맞힌 문제</div></div>
         <div class="card"><div class="n" id="rWrong">0</div><div class="t">틀린 문제</div></div>
       </div>
-      <div class="card" style="margin-top:14px">
+      <div class="card" id="rSchedBox" style="margin-top:14px">
         <div class="dim" style="font-size:12px;margin-bottom:8px">다음 복습 일정</div>
         <div id="rSched" style="font-size:13px;line-height:1.9"></div>
+      </div>
+      <div class="card reviewbox" id="rReviewBox" style="margin-top:14px;display:none">
+        <div style="font-weight:700;margin-bottom:3px" id="rReviewMsg"></div>
+        <div class="dim" style="font-size:12px;margin-bottom:13px">
+          지금 바로 그 표현만 모아서 다시 풀어볼까요? 원치 않으면 그냥 아래로 넘어가셔도 돼요.
+        </div>
+        <button class="btn" id="rReviewBtn" onclick="startReview()" style="padding:12px">틀린 것만 바로 복습하기</button>
       </div>
     </div>
     <div class="row" style="margin-top:18px">
@@ -551,7 +558,7 @@ function resetAll(){
 /* =========================================================
    세션 만들기
    ========================================================= */
-let Q = [], qi = 0, session = null;
+let Q = [], qi = 0, session = null, reviewQueue = [];
 
 /* 오답 후보는 같은 상황 + 같은 품사를 우선한다.
    범위를 좁혀 학습할 때 엉뚱한 상황의 단어가 섞여 답이 티나는 것을 막는다. */
@@ -611,6 +618,19 @@ function startStudy(){
   renderQ();
 }
 function quitStudy(){ if(confirm("학습을 중단할까요? 지금까지 푼 내용은 저장되지 않습니다.")) go("home"); }
+
+/* 방금 세션에서 틀렸던 표현만 모아 별도 라운드로 다시 푼다.
+   학습 스케줄(SM-2 복습일)에는 손대지 않는다 — 그건 이미 finish()에서
+   정해졌고, 이 라운드는 그 자리에서 한 번 더 다지는 순수 연습이다. */
+function startReview(){
+  if(!reviewQueue.length) return;
+  const words = reviewQueue;
+  Q = shuffle(words).map(w => makeItem(["w2m","m2w","cloze"][Math.random()*3|0], w));
+  qi = 0;
+  session = { right:0, wrong:0, first:{}, words:new Set(words.map(w => w.w)), isReview:true };
+  go("study");
+  renderQ();
+}
 
 /* =========================================================
    문제 렌더링
@@ -865,7 +885,45 @@ document.addEventListener("keydown", e => {
 /* =========================================================
    세션 종료 → 채점 & 저장
    ========================================================= */
+function wrongWordsOf(sess){
+  return [...new Set(Object.keys(sess.first).filter(w => sess.first[w] === false))]
+    .map(w => WORDS.find(x => x.w === w))
+    .filter(Boolean);
+}
+
+/* 방금 튼 것만 다시 푸는 라운드 결과 — SM-2 스케줄은 건드리지 않고
+   정답률만 보여준 뒤, 여전히 헷갈리는 게 있으면 한 번 더 돌 수 있게 한다. */
+function finishReview(){
+  reviewQueue = wrongWordsOf(session);
+  const totalQ = session.right + session.wrong;
+  const pct = totalQ ? Math.round(session.right / totalQ * 100) : 0;
+
+  document.getElementById("rPct").textContent  = pct + "%";
+  document.getElementById("rRing").style.setProperty("--p", pct + "%");
+  document.getElementById("rWords").textContent = session.words.size;
+  document.getElementById("rRight").textContent = session.right;
+  document.getElementById("rWrong").textContent = session.wrong;
+  document.getElementById("rSub").textContent   = "틀린 표현 복습 결과";
+  document.getElementById("rTitle").textContent =
+    reviewQueue.length ? "조금 더 다지면 되겠어요" : "이제 확실히 아네요!";
+  document.getElementById("rSchedBox").style.display = "none";
+  renderReviewOffer();
+  go("result");
+}
+
+function renderReviewOffer(){
+  const box = document.getElementById("rReviewBox");
+  if(!reviewQueue.length){ box.style.display = "none"; return; }
+  box.style.display = "";
+  document.getElementById("rReviewMsg").textContent =
+    `이번에 헷갈린 표현이 ${reviewQueue.length}개 있어요.`;
+  document.getElementById("rReviewBtn").textContent =
+    session && session.isReview ? "다시 한 번 더 복습하기" : "틀린 것만 바로 복습하기";
+}
+
 function finish(){
+  if(session.isReview) return finishReview();
+
   const d = today();
   session.words.forEach(w => {
     const p = S.progress[w] || (S.progress[w] = newCard());
@@ -899,7 +957,10 @@ function finish(){
   document.getElementById("rSched").innerHTML = Object.keys(g).sort((a,b)=>a-b)
     .map(iv => `<div style="display:flex;justify-content:space-between">
       <span class="muted">${iv === "1" ? "내일" : iv + "일 뒤"}</span><b>${g[iv]}개</b></div>`).join("");
+  document.getElementById("rSchedBox").style.display = "";
 
+  reviewQueue = wrongWordsOf(session);
+  renderReviewOffer();
   go("result");
 }
 
