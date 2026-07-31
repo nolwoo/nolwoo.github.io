@@ -71,7 +71,7 @@ export default function ServicePage() {
           <div className="grid gap-10 md:grid-cols-4">
             {STEPS.map((s) => (
               <div key={s.no}>
-                <span className="font-serif text-[17px] font-semibold text-gold-deep">{s.no}</span>
+                <span className="text-[15px] font-semibold text-blue">{s.no}</span>
                 <h3 className="mt-3 text-[21px] font-semibold text-ink">
                   {s.title}
                 </h3>
@@ -104,7 +104,7 @@ export default function ServicePage() {
       {/* CTA — 다크 타일 */}
       <section className="bg-tile">
         <Container className="py-20 text-center">
-          <h2 className="font-serif text-[clamp(25px,3.8vw,36px)] font-semibold text-on-dark">
+          <h2 className="tracking-tight-apple text-[clamp(25px,3.8vw,36px)] font-semibold text-on-dark">
             궁금한 건 편하게 물어보세요.
           </h2>
           <p className="mx-auto mt-4 max-w-[40ch] text-[17px] text-on-dark-muted">

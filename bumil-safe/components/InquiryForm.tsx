@@ -43,7 +43,7 @@ export function InquiryForm() {
         </p>
         <button
           onClick={() => setStatus("idle")}
-          className="mt-6 text-[15px] font-medium text-gold-deep hover:underline"
+          className="mt-6 text-[15px] font-medium text-blue hover:underline"
         >
           새 상담 신청하기
         </button>
@@ -92,7 +92,7 @@ export function InquiryForm() {
             required
             rows={4}
             placeholder="설치 장소·보관할 물건·예산 등을 알려주시면 더 정확히 추천해 드려요."
-            className="mt-1.5 w-full rounded-md border border-hairline bg-canvas px-4 py-3 text-[15px] text-ink outline-none focus:border-gold"
+            className="mt-1.5 w-full rounded-md border border-hairline bg-canvas px-4 py-3 text-[15px] text-ink outline-none focus:border-blue-focus"
           />
         </label>
       </div>
@@ -133,7 +133,7 @@ function Field({
         type={type}
         required={required}
         placeholder={placeholder}
-        className="mt-1.5 w-full rounded-md border border-hairline bg-canvas px-4 py-3 text-[15px] text-ink outline-none focus:border-gold"
+        className="mt-1.5 w-full rounded-md border border-hairline bg-canvas px-4 py-3 text-[15px] text-ink outline-none focus:border-blue-focus"
       />
     </label>
   );

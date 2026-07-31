@@ -15,7 +15,7 @@ export function Header() {
         <div className="mx-auto flex h-[56px] max-w-[1120px] items-center justify-between px-6">
         {/* 로고 */}
         <Link href="/" className="flex items-baseline gap-2">
-          <span className="font-serif text-[19px] font-bold tracking-[0.06em] text-ink">
+          <span className="text-[19px] font-bold tracking-[-0.01em] text-ink">
             BUMIL
           </span>
           <span className="whitespace-nowrap text-[13px] text-ink-faint">
@@ -29,7 +29,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-sm px-3 py-2 text-[14px] text-ink-muted transition-colors hover:text-gold-deep"
+              className="rounded-sm px-3 py-2 text-[14px] text-ink-muted transition-colors hover:text-blue"
             >
               {item.label}
             </Link>
@@ -75,7 +75,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-sm px-3 py-3.5 text-[16px] font-medium text-ink hover:text-gold-deep"
+                className="rounded-sm px-3 py-3.5 text-[16px] font-medium text-ink hover:text-blue"
                 onClick={() => setOpen(false)}
               >
                 {item.label}

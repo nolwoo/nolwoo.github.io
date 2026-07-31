@@ -13,13 +13,12 @@ export function TrustItem({
   return (
     <div>
       <span
-        className={`font-serif text-[18px] font-semibold tracking-[0.1em] ${
-          dark ? "text-gold-on-dark" : "text-gold-deep"
+        className={`text-[15px] font-semibold ${
+          dark ? "text-blue-on-dark" : "text-blue"
         }`}
       >
         {no}
       </span>
-      <div className={`mt-3 h-px w-8 ${dark ? "bg-gold/50" : "bg-gold/40"}`} />
       <h4 className={`mt-3 text-[21px] font-semibold ${dark ? "text-on-dark" : "text-ink"}`}>
         {title}
       </h4>

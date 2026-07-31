@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Noto_Serif_KR } from "next/font/google";
 import "./globals.css";
 import { TopBanner } from "@/components/TopBanner";
 import { Header } from "@/components/Header";
@@ -14,21 +13,13 @@ export const metadata: Metadata = {
     "범일금고 본사 정품을 영등포에서. 가정용·사무용 금고 상담부터 전문 설치, 사후관리까지 함께합니다.",
 };
 
-/* 디스플레이 세리프 — 헤드라인 전용. 본문은 Pretendard 유지 */
-const notoSerif = Noto_Serif_KR({
-  weight: ["500", "600", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-noto-serif",
-});
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`h-full antialiased ${notoSerif.variable}`}>
+    <html lang="ko" className="h-full antialiased">
       <head>
         {/* Pretendard — 기존 사이트와 동일하게 CDN 로드 */}
         <link

@@ -13,21 +13,15 @@ export default function Home() {
 
   return (
     <>
-      {/* ① Hero — 다크 타일 + 골드 글로우 (프리미엄 금고 무드) */}
-      <section className="relative overflow-hidden bg-tile">
-        {/* 은은한 골드 라디얼 글로우 — 금고의 금속 광택 느낌 */}
-        <div
-          aria-hidden
-          className="hero-gold-glow pointer-events-none absolute inset-0"
-        />
-        <Container className="relative py-24 text-center md:py-32">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.3em] text-gold-on-dark">
+      {/* ① Hero — 다크 타일 */}
+      <section className="bg-tile">
+        <Container className="py-24 text-center md:py-32">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.3em] text-blue-on-dark">
             Bumil Safe · {SITE.branch}
           </p>
-          <h1 className="mx-auto mt-5 max-w-[14ch] font-serif text-[clamp(38px,6.4vw,62px)] font-semibold leading-[1.22] text-on-dark">
+          <h1 className="mx-auto mt-5 max-w-[14ch] text-[clamp(38px,6.4vw,62px)] font-semibold leading-[1.22] text-on-dark">
             소중한 것을<br />가장 안전하게
           </h1>
-          <div className="mx-auto mt-7 h-px w-12 bg-gold/60" />
           <p className="mx-auto mt-7 max-w-[44ch] text-[clamp(17px,2.2vw,21px)] leading-relaxed text-on-dark-muted">
             범일금고 본사 정품을 영등포에서. 가정부터 사무실까지, 꼭 맞는 금고를
             상담해 드립니다.
@@ -49,7 +43,7 @@ export default function Home() {
             />
             <Link
               href="/products"
-              className="hidden shrink-0 text-[15px] font-medium text-gold-deep hover:underline sm:block"
+              className="hidden shrink-0 text-[15px] font-medium text-blue hover:underline sm:block"
             >
               전체 보기 →
             </Link>
@@ -70,8 +64,8 @@ export default function Home() {
       {/* ③ 철학 문장 — 다크 타일 */}
       <section className="bg-tile">
         <Container size="narrow" className="py-28 text-center">
-          <p className="font-serif text-[clamp(23px,3.4vw,34px)] font-medium leading-[1.55] text-on-dark">
-            우리는 오래도록 <span className="text-gold-on-dark">‘무엇을 지킬 것인가’</span>를
+          <p className="text-[clamp(23px,3.4vw,34px)] font-medium leading-[1.55] text-on-dark">
+            우리는 오래도록 <span className="text-blue-on-dark">‘무엇을 지킬 것인가’</span>를
             고민해 왔습니다. 좋은 금고란 단단한 철문을 넘어, 매일의 안심을 곁에 두는
             일이라 믿어요.
           </p>
@@ -135,7 +129,7 @@ export default function Home() {
             />
           </div>
           <div className="mt-10 text-center">
-            <Link href="/service" className="text-[15px] font-medium text-gold-deep hover:underline">
+            <Link href="/service" className="text-[15px] font-medium text-blue hover:underline">
               설치·A/S 과정 자세히 보기 →
             </Link>
           </div>
@@ -145,7 +139,7 @@ export default function Home() {
       {/* ⑥ 마무리 CTA — 파치먼트 */}
       <section className="bg-parchment">
         <Container className="py-24 text-center">
-          <h2 className="font-serif text-[clamp(27px,4.2vw,42px)] font-semibold leading-[1.25]">
+          <h2 className="text-[clamp(27px,4.2vw,42px)] font-semibold leading-[1.25]">
             오늘, 가장 안전한 선택을 시작하세요.
           </h2>
           <p className="mx-auto mt-4 max-w-[40ch] text-[18px] text-ink-muted">
@@ -174,9 +168,9 @@ function ServiceCard({
       href={href}
       className="group rounded-lg border border-hairline bg-canvas p-8 transition-transform duration-200 hover:-translate-y-1"
     >
-      <h3 className="font-serif text-[21px] font-semibold text-ink">{tag}</h3>
+      <h3 className="text-[21px] font-semibold text-ink">{tag}</h3>
       <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{desc}</p>
-      <span className="mt-5 inline-block text-[15px] font-medium text-gold-deep group-hover:underline">
+      <span className="mt-5 inline-block text-[15px] font-medium text-blue group-hover:underline">
         제품 보기 →
       </span>
     </Link>

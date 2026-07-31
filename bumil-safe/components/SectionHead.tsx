@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-/* 섹션 헤더 — 골드 eyebrow(레터스페이스 캡스) + 세리프 디스플레이 제목 + 리드 */
+/* 섹션 헤더 — 블루 eyebrow(레터스페이스 캡스) + 디스플레이 제목 + 리드 */
 export function SectionHead({
   eyebrow,
   title,
@@ -19,14 +19,14 @@ export function SectionHead({
       {eyebrow && (
         <p
           className={`mb-3 text-[13px] font-semibold uppercase tracking-[0.22em] ${
-            dark ? "text-gold-on-dark" : "text-gold-deep"
+            dark ? "text-blue-on-dark" : "text-blue"
           }`}
         >
           {eyebrow}
         </p>
       )}
       <h2
-        className={`font-serif text-[clamp(25px,3.8vw,38px)] font-semibold leading-[1.25] tracking-[-0.01em] ${
+        className={`tracking-tight-apple text-[clamp(25px,3.8vw,38px)] font-semibold leading-[1.25] ${
           dark ? "text-on-dark" : "text-ink"
         }`}
       >

@@ -33,7 +33,7 @@ export function Footer() {
               <ul className="space-y-1.5 text-[14px]">
                 {NAV.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href} className="hover:text-gold-deep">
+                    <Link href={item.href} className="hover:text-blue">
                       {item.label}
                     </Link>
                   </li>
@@ -44,7 +44,7 @@ export function Footer() {
               <h5 className="mb-3 text-[14px] font-semibold text-ink">상담</h5>
               <ul className="space-y-1.5 text-[14px]">
                 <li>
-                  <a href={SITE.phoneHref} className="hover:text-gold-deep">
+                  <a href={SITE.phoneHref} className="hover:text-blue">
                     {SITE.phone}
                   </a>
                 </li>

@@ -8,14 +8,14 @@ export function ReviewSection({ product: p }: { product: Product }) {
     <section className="bg-canvas">
       <div className="mx-auto max-w-[820px] px-6 py-16">
         <div className="rounded-lg border border-hairline bg-parchment px-8 py-12 text-center">
-          <h2 className="font-serif text-[22px] font-semibold text-ink">구매 후기</h2>
+          <h2 className="text-[22px] font-semibold text-ink">구매 후기</h2>
 
           {/* 종합 점수 */}
           <div className="mt-6 flex flex-col items-center gap-1">
-            <span className="font-serif text-[56px] font-semibold leading-none text-ink">
+            <span className="tracking-tight-apple text-[56px] font-semibold leading-none text-ink">
               {p.rating}
             </span>
-            <span className="text-[22px] text-gold">★★★★★</span>
+            <span className="text-[22px] text-ink">★★★★★</span>
             <span className="text-[14px] text-ink-faint">
               네이버 스마트스토어 실제 구매 후기 {p.reviews.toLocaleString()}개
             </span>
