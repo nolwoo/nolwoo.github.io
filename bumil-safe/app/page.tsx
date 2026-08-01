@@ -13,9 +13,10 @@ export default function Home() {
 
   return (
     <>
-      {/* ① Hero — 다크 타일 */}
-      <section className="bg-tile">
-        <Container className="py-24 text-center md:py-32">
+      {/* ① Hero — 다크 타일 + 배경 사진(안전금고 보관함) */}
+      <section className="relative bg-tile bg-[url(/hero-safe.jpg)] bg-cover bg-[center_55%]">
+        <div className="absolute inset-0 bg-linear-to-b from-tile/45 to-tile/85" />
+        <Container className="relative py-24 text-center md:py-32">
           <p className="text-[13px] font-semibold uppercase tracking-[0.3em] text-blue-on-dark">
             Bumil Safe · {SITE.branch}
           </p>
