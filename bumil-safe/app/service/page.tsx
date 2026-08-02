@@ -65,21 +65,30 @@ export default function ServicePage() {
         </Container>
       </section>
 
-      {/* 4단계 흐름 — 파치먼트 */}
+      {/* 4단계 흐름 — 파치먼트, 사진+단계 */}
       <section className="bg-parchment">
         <Container className="py-24">
-          <div className="grid gap-10 md:grid-cols-4">
-            {STEPS.map((s) => (
-              <div key={s.no}>
-                <span className="text-[15px] font-semibold text-blue">{s.no}</span>
-                <h3 className="mt-3 text-[21px] font-semibold text-ink">
-                  {s.title}
-                </h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
-                  {s.desc}
-                </p>
-              </div>
-            ))}
+          <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
+            <div className="overflow-hidden rounded-lg">
+              <img
+                src="/service-office.jpg"
+                alt="범일금고 STELTH 스텔스 스마트 금고"
+                className="aspect-[4/3] w-full object-cover"
+              />
+            </div>
+            <div className="grid gap-8 sm:grid-cols-2">
+              {STEPS.map((s) => (
+                <div key={s.no}>
+                  <span className="text-[15px] font-semibold text-blue">{s.no}</span>
+                  <h3 className="mt-3 text-[19px] font-semibold text-ink">
+                    {s.title}
+                  </h3>
+                  <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">
+                    {s.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </Container>
       </section>

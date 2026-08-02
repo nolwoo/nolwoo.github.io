@@ -1,6 +1,5 @@
 import { Container } from "@/components/Container";
 import { SectionHead } from "@/components/SectionHead";
-import { TrustItem } from "@/components/TrustItem";
 import { ConsultButtons } from "@/components/ConsultButtons";
 import { SITE } from "@/lib/site";
 
@@ -48,33 +47,42 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* 세 가지 기준 — 파치먼트 */}
+      {/* 세 가지 기준 — 사진+텍스트 교차 배치 */}
       <section className="bg-parchment">
-        <Container className="py-24">
+        <Container className="pt-24">
           <SectionHead
             eyebrow="기준"
             title="우리가 지키는 세 가지"
             lead="화려한 약속보다, 매일의 안심을 만드는 기본을 지킵니다."
           />
-          <div className="mt-12 grid gap-10 md:grid-cols-3">
-            <TrustItem
-              no="01"
-              title="본사 정품 직공급"
-              desc="범일금고 본사에서 직접 받은 정품만 취급합니다. 출처가 분명한 제품을 합리적인 가격에 공급합니다."
-            />
-            <TrustItem
-              no="02"
-              title="전문 기사 설치"
-              desc="수십 킬로그램의 금고도 안전하게. 설치 환경을 먼저 확인하고, 전문 기사가 직접 방문해 시공합니다."
-            />
-            <TrustItem
-              no="03"
-              title="구매 후 A/S 상담"
-              desc="비밀번호 변경·작동 문제까지. 판매로 끝나지 않고 구매 이후에도 곁에서 챙깁니다."
-            />
-          </div>
         </Container>
       </section>
+
+      <AboutRow
+        no="01"
+        title="본사 정품 직공급"
+        desc="범일금고 본사에서 직접 받은 정품만 취급합니다. 출처가 분명한 제품을 합리적인 가격에 공급합니다."
+        img="/hero-product.jpg"
+        alt="범일금고 OARCFX 스마트 금고 3종"
+        bg="bg-parchment"
+      />
+      <AboutRow
+        no="02"
+        title="전문 기사 설치"
+        desc="수십 킬로그램의 금고도 안전하게. 설치 환경을 먼저 확인하고, 전문 기사가 직접 방문해 시공합니다."
+        img="/about-install.jpg"
+        alt="범일금고 CAVE 스마트 금고"
+        bg="bg-canvas"
+        reverse
+      />
+      <AboutRow
+        no="03"
+        title="구매 후 A/S 상담"
+        desc="비밀번호 변경·작동 문제까지. 판매로 끝나지 않고 구매 이후에도 곁에서 챙깁니다."
+        img="/about-service.jpg"
+        alt="범일금고 LUSTER 스마트 금고"
+        bg="bg-parchment"
+      />
 
       {/* 매장 한 줄 + CTA — 밝은 */}
       <section className="bg-canvas">
@@ -91,5 +99,42 @@ export default function AboutPage() {
         </Container>
       </section>
     </>
+  );
+}
+
+function AboutRow({
+  no,
+  title,
+  desc,
+  img,
+  alt,
+  bg,
+  reverse = false,
+}: {
+  no: string;
+  title: string;
+  desc: string;
+  img: string;
+  alt: string;
+  bg: string;
+  reverse?: boolean;
+}) {
+  return (
+    <section className={bg}>
+      <Container className="py-16">
+        <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
+          <div className={`overflow-hidden rounded-lg ${reverse ? "md:order-2" : ""}`}>
+            <img src={img} alt={alt} className="aspect-[4/3] w-full object-cover" />
+          </div>
+          <div>
+            <span className="text-[15px] font-semibold text-blue">{no}</span>
+            <h3 className="mt-3 text-[26px] font-semibold text-ink">{title}</h3>
+            <p className="mt-3 max-w-[46ch] text-[16px] leading-relaxed text-ink-muted">
+              {desc}
+            </p>
+          </div>
+        </div>
+      </Container>
+    </section>
   );
 }

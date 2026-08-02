@@ -27,19 +27,35 @@ export default function ContactPage() {
         </Container>
       </section>
 
-      {/* 온라인 상담 신청 폼 — 밝은 */}
+      {/* 온라인 상담 신청 폼 — 밝은, 사진+폼 */}
       <section className="bg-canvas pb-20">
-        <Container size="narrow">
-          <InquiryForm />
-          <p className="mt-3 text-center text-[13px] text-ink-faint">
-            남겨주신 내용은 안전하게 보관되며, 상담 목적으로만 사용됩니다.
-          </p>
-          <p className="mt-6 text-center text-[14px] text-ink-muted">
-            매장에 직접 방문하고 싶으세요?{" "}
-            <a href="/location" className="font-medium text-blue hover:underline">
-              오시는길 보기 →
-            </a>
-          </p>
+        <Container className="grid gap-10 md:grid-cols-2 md:gap-16">
+          <div>
+            <div className="overflow-hidden rounded-lg">
+              <img
+                src="/service-home.jpg"
+                alt="범일금고 월넛우드패널 스마트 금고"
+                className="aspect-[4/3] w-full object-cover"
+              />
+            </div>
+            <ul className="mt-8 space-y-3 text-[15px] text-ink-muted">
+              <li>✓ 본사 정품만 취급합니다</li>
+              <li>✓ 전문 기사가 직접 방문해 설치합니다</li>
+              <li>✓ 구매 후에도 A/S로 곁에서 챙깁니다</li>
+            </ul>
+          </div>
+          <div>
+            <InquiryForm />
+            <p className="mt-3 text-center text-[13px] text-ink-faint">
+              남겨주신 내용은 안전하게 보관되며, 상담 목적으로만 사용됩니다.
+            </p>
+            <p className="mt-6 text-center text-[14px] text-ink-muted">
+              매장에 직접 방문하고 싶으세요?{" "}
+              <a href="/location" className="font-medium text-blue hover:underline">
+                오시는길 보기 →
+              </a>
+            </p>
+          </div>
         </Container>
       </section>
     </>

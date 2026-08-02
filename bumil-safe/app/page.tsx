@@ -13,22 +13,31 @@ export default function Home() {
 
   return (
     <>
-      {/* ① Hero — 다크 타일 + 배경 사진(안전금고 보관함) */}
-      <section className="relative bg-tile bg-[url(/hero-safe.jpg)] bg-cover bg-[center_55%]">
-        <div className="absolute inset-0 bg-linear-to-b from-tile/45 to-tile/85" />
-        <Container className="relative py-24 text-center md:py-32">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.3em] text-blue-on-dark">
+      {/* ① Hero — 밝은 배경 + 실제 제품 사진(OARCFX) 크게, 문구는 사진 하단 그라데이션 위에 */}
+      <section className="bg-canvas">
+        <Container className="pt-14 pb-20 md:pt-20">
+          <p className="text-center text-[13px] font-semibold uppercase tracking-[0.3em] text-blue">
             Bumil Safe · {SITE.branch}
           </p>
-          <h1 className="mx-auto mt-5 max-w-[14ch] text-[clamp(38px,6.4vw,62px)] font-semibold leading-[1.22] text-on-dark">
-            소중한 것을<br />가장 안전하게
-          </h1>
-          <p className="mx-auto mt-7 max-w-[44ch] text-[clamp(17px,2.2vw,21px)] leading-relaxed text-on-dark-muted">
-            범일금고 본사 정품을 영등포에서. 가정부터 사무실까지, 꼭 맞는 금고를
-            상담해 드립니다.
-          </p>
-          <div className="mt-10 flex justify-center">
-            <ConsultButtons size="lg" showPhoneNumber onDark className="justify-center" />
+          <div className="relative mt-6 overflow-hidden rounded-lg">
+            <img
+              src="/hero-product.jpg"
+              alt="거실에 놓인 범일금고 OARCFX 스마트 금고 3종"
+              className="h-[420px] w-full object-cover object-center sm:h-[520px]"
+            />
+            <div className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-tile/90 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-8 text-center sm:p-12">
+              <h1 className="mx-auto max-w-[14ch] text-[clamp(28px,5vw,48px)] font-semibold leading-[1.22] text-on-dark">
+                소중한 것을 가장 안전하게
+              </h1>
+              <p className="mx-auto mt-4 max-w-[44ch] text-[clamp(15px,1.8vw,18px)] leading-relaxed text-on-dark-muted">
+                범일금고 본사 정품을 영등포에서. 가정부터 사무실까지, 꼭 맞는 금고를
+                상담해 드립니다.
+              </p>
+              <div className="mt-7 flex justify-center">
+                <ConsultButtons size="lg" showPhoneNumber onDark className="justify-center" />
+              </div>
+            </div>
           </div>
         </Container>
       </section>
@@ -62,18 +71,29 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ③ 철학 문장 — 다크 타일 */}
+      {/* ③ 철학 — 다크 타일, 사진+텍스트 스플릿 */}
       <section className="bg-tile">
-        <Container size="narrow" className="py-28 text-center">
-          <p className="text-[clamp(23px,3.4vw,34px)] font-medium leading-[1.55] text-on-dark">
-            우리는 오래도록 <span className="text-blue-on-dark">‘무엇을 지킬 것인가’</span>를
-            고민해 왔습니다. 좋은 금고란 단단한 철문을 넘어, 매일의 안심을 곁에 두는
-            일이라 믿어요.
-          </p>
-          <p className="mx-auto mt-6 max-w-[52ch] text-[17px] leading-relaxed text-on-dark-muted">
-            현금과 귀중품, 중요한 서류와 추억까지 — 지켜야 할 것이 분명한 사람들을
-            위해, 범일금고는 곁을 지킵니다.
-          </p>
+        <Container className="py-20 md:py-28">
+          <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
+            <div className="overflow-hidden rounded-lg">
+              <img
+                src="/philosophy-moire.jpg"
+                alt="범일금고 MOIRE 모아르 스마트 금고"
+                className="aspect-[4/5] w-full object-cover sm:aspect-[16/11] md:aspect-[4/5]"
+              />
+            </div>
+            <div>
+              <p className="text-[clamp(22px,3vw,30px)] font-medium leading-[1.55] text-on-dark">
+                우리는 오래도록 <span className="text-blue-on-dark">‘무엇을 지킬 것인가’</span>를
+                고민해 왔습니다. 좋은 금고란 단단한 철문을 넘어, 매일의 안심을 곁에 두는
+                일이라 믿어요.
+              </p>
+              <p className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-on-dark-muted">
+                현금과 귀중품, 중요한 서류와 추억까지 — 지켜야 할 것이 분명한 사람들을
+                위해, 범일금고는 곁을 지킵니다.
+              </p>
+            </div>
+          </div>
         </Container>
       </section>
 
@@ -119,11 +139,13 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             <ServiceCard
+              img="/service-home.jpg"
               tag="가정용 금고"
               desc="현금·귀중품·서류를 안전하게. 인테리어를 해치지 않는 디자인 금고부터 지문인식까지."
               href="/products"
             />
             <ServiceCard
+              img="/service-office.jpg"
               tag="사무용 금고"
               desc="사무실·매장의 자산을 든든하게. 대형·이중잠금·스마트 모델까지 폭넓게 갖췄어요."
               href="/products"
@@ -156,10 +178,12 @@ export default function Home() {
 }
 
 function ServiceCard({
+  img,
   tag,
   desc,
   href,
 }: {
+  img: string;
   tag: string;
   desc: string;
   href: string;
@@ -167,13 +191,22 @@ function ServiceCard({
   return (
     <Link
       href={href}
-      className="group rounded-lg border border-hairline bg-canvas p-8 transition-transform duration-200 hover:-translate-y-1"
+      className="group overflow-hidden rounded-lg border border-hairline bg-canvas transition-transform duration-200 hover:-translate-y-1"
     >
-      <h3 className="text-[21px] font-semibold text-ink">{tag}</h3>
-      <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{desc}</p>
-      <span className="mt-5 inline-block text-[15px] font-medium text-blue group-hover:underline">
-        제품 보기 →
-      </span>
+      <div className="aspect-[16/10] overflow-hidden">
+        <img
+          src={img}
+          alt={tag}
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
+      <div className="p-8">
+        <h3 className="text-[21px] font-semibold text-ink">{tag}</h3>
+        <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{desc}</p>
+        <span className="mt-5 inline-block text-[15px] font-medium text-blue group-hover:underline">
+          제품 보기 →
+        </span>
+      </div>
     </Link>
   );
 }
