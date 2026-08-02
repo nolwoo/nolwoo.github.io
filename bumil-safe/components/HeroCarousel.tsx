@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ConsultButtons } from "./ConsultButtons";
 
 type Slide = { img: string; alt: string; title: string; desc: string };
 
@@ -117,9 +116,6 @@ export function HeroCarousel() {
         <p className="mx-auto mt-4 max-w-[44ch] text-[clamp(15px,1.8vw,18px)] leading-relaxed text-on-dark-muted">
           {active.desc}
         </p>
-        <div className="pointer-events-auto mt-7 flex justify-center">
-          <ConsultButtons size="lg" showPhoneNumber onDark className="justify-center" />
-        </div>
 
         {/* 점 인디케이터 */}
         <div className="pointer-events-auto mt-6 flex justify-center gap-2">
