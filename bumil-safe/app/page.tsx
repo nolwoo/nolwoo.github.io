@@ -5,6 +5,7 @@ import { ConsultButtons } from "@/components/ConsultButtons";
 import { TrustItem } from "@/components/TrustItem";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/Button";
+import { HeroCarousel } from "@/components/HeroCarousel";
 import { getPopular } from "@/lib/catalog";
 import { SITE } from "@/lib/site";
 
@@ -13,31 +14,14 @@ export default function Home() {
 
   return (
     <>
-      {/* ① Hero — 밝은 배경 + 실제 제품 사진(OARCFX) 크게, 문구는 사진 하단 그라데이션 위에 */}
+      {/* ① Hero — 실제 제품 사진 5장이 자동으로 넘어가는 캐러셀 */}
       <section className="bg-canvas">
         <Container className="pt-14 pb-20 md:pt-20">
           <p className="text-center text-[13px] font-semibold uppercase tracking-[0.3em] text-blue">
             Bumil Safe · {SITE.branch}
           </p>
-          <div className="relative mt-6 overflow-hidden rounded-lg">
-            <img
-              src="/hero-product.jpg"
-              alt="거실에 놓인 범일금고 OARCFX 스마트 금고 3종"
-              className="h-[420px] w-full object-cover object-center sm:h-[520px]"
-            />
-            <div className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-tile/90 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-8 text-center sm:p-12">
-              <h1 className="mx-auto max-w-[14ch] text-[clamp(28px,5vw,48px)] font-semibold leading-[1.22] text-on-dark">
-                소중한 것을 가장 안전하게
-              </h1>
-              <p className="mx-auto mt-4 max-w-[44ch] text-[clamp(15px,1.8vw,18px)] leading-relaxed text-on-dark-muted">
-                범일금고 본사 정품을 영등포에서. 가정부터 사무실까지, 꼭 맞는 금고를
-                상담해 드립니다.
-              </p>
-              <div className="mt-7 flex justify-center">
-                <ConsultButtons size="lg" showPhoneNumber onDark className="justify-center" />
-              </div>
-            </div>
+          <div className="mt-6">
+            <HeroCarousel />
           </div>
         </Container>
       </section>
