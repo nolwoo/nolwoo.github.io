@@ -77,7 +77,11 @@
   .utility-bar .wrap{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding-top:.55em; padding-bottom:.55em; }
   .utility-bar .msg{ display:flex; align-items:center; gap:.6em; opacity:.92; }
   .utility-bar .msg .dot{ width:6px; height:6px; border-radius:50%; background:var(--red); flex:none; }
-  .utility-bar a.tel{ font-weight:700; color:var(--paper); text-decoration:none; }
+  .utility-bar a.tel{ font-weight:700; color:var(--paper); text-decoration:none; white-space:nowrap; }
+  @media (max-width:640px){
+    .utility-bar .wrap{ justify-content:center; }
+    .utility-bar .msg:first-child{ display:none; }
+  }
 
   /* ---------- header ---------- */
   header.site{
@@ -108,10 +112,11 @@
   .hero-copy p.lede{ font-size:1.05rem; color:rgba(255,255,255,.88); max-width:46ch; margin-bottom:1.5em; }
   .hero-copy .ctas{ display:flex; gap:.8em; flex-wrap:wrap; }
   .scroll-cue{ position:absolute; left:50%; bottom:18px; transform:translateX(-50%); z-index:2; color:#fff; font-size:.72rem; letter-spacing:.14em; opacity:.75; text-transform:uppercase; }
+  @media (max-width:640px){ .scroll-cue{ display:none; } }
 
   /* ---------- quick stats ---------- */
   .stat-strip{ border-top:1px solid var(--line); }
-  .stat-strip .wrap{ display:flex; justify-content:center; gap:clamp(24px,6vw,72px); flex-wrap:wrap; padding:2rem 0; text-align:center; }
+  .stat-strip .wrap{ display:flex; justify-content:center; gap:clamp(24px,6vw,72px); row-gap:1.1rem; flex-wrap:wrap; padding:2rem 0; text-align:center; }
   .stat-strip b{ display:block; font-size:1.5rem; font-variant-numeric:tabular-nums; }
   .stat-strip small{ font-size:.78rem; color:var(--ink-soft); }
 
@@ -332,7 +337,7 @@
           <div class="thumb"><span class="badge">BEST</span><img src="images/keyring.jpg" alt="아크릴키링 예시"></div>
           <div class="body">
             <h3>아크릴키링</h3>
-            <p>맑고 선명한 인쇄, 양면 아크릴로 오래도록 간직하는 나만의 키링.</p>
+            <p>맑고 선명한 양면 인쇄. 학급 전체 수량으로 가장 많이 나가는 품목입니다.</p>
             <div class="price">6,500원<small>~ (예시)</small></div>
             <a class="more" href="#">자세히 보기 →</a>
           </div>
@@ -341,7 +346,7 @@
           <div class="thumb duotone"><img src="images/studio.jpg" alt="아크릴스탠드 예시"></div>
           <div class="body">
             <h3>아크릴스탠드</h3>
-            <p>조립하는 재미와 입체감 — 책상 위에 두는 우리 학급 풍경.</p>
+            <p>조립형 입체 스탠드. 학급 단체 사진을 그대로 살릴 수 있습니다.</p>
             <div class="price">9,800원<small>~ (예시)</small></div>
             <a class="more" href="#">자세히 보기 →</a>
           </div>
@@ -350,7 +355,7 @@
           <div class="thumb"><img src="images/frame.jpg" alt="감성액자 예시"></div>
           <div class="body">
             <h3>감성액자</h3>
-            <p>물푸레나무 원목 프레임에 담는 학창시절의 무드.</p>
+            <p>물푸레나무 원목 프레임. 담임 선생님 선물용으로도 많이 찾으십니다.</p>
             <div class="price">18,000원<small>~ (예시)</small></div>
             <a class="more" href="#">자세히 보기 →</a>
           </div>
@@ -359,7 +364,7 @@
           <div class="thumb"><img src="images/calendar.jpg" alt="우드스탠드 캘린더 예시"></div>
           <div class="body">
             <h3>우드스탠드 캘린더</h3>
-            <p>멀바우 우드스탠드로 완성하는 품격 있는 졸업사진 캘린더.</p>
+            <p>멀바우 우드스탠드에 학급 사진을 넣는 탁상 캘린더.</p>
             <div class="price">22,000원<small>~ (예시)</small></div>
             <a class="more" href="#">자세히 보기 →</a>
           </div>
@@ -368,7 +373,7 @@
           <div class="thumb"><img src="images/prints.jpg" alt="사진인화 예시"></div>
           <div class="body">
             <h3>사진인화</h3>
-            <p>7색 인쇄로 더 선명하게, 졸업 사진인화 세트.</p>
+            <p>7색 인쇄 사진 세트. 앨범에 못 담은 컷을 따로 인화해 드립니다.</p>
             <div class="price">5,000원<small>~ (예시)</small></div>
             <a class="more" href="#">자세히 보기 →</a>
           </div>
@@ -466,7 +471,7 @@
         </details>
         <details class="faq-item">
           <summary>학교 회계 절차는 어떻게 맞추나요?<span class="chev">＋</span></summary>
-          <p><b>나라장터 종합쇼핑몰에 등록된 업체</b>라, 학교에서 별도 업체 선정 공고나 입찰 절차 없이 종합쇼핑몰에서 바로 계약하실 수 있습니다. 금액 기준에 따라 2단계 경쟁이 필요한 경우에도 절차를 안내해 드립니다. 수의계약으로 진행하시는 경우 견적서·계약서·세금계산서를 학교 요청 서식에 맞춰 준비해 드립니다.</p>
+          <p>나라장터 종합쇼핑몰에 등록된 업체라, 학교에서 별도 업체 선정 공고나 입찰 절차 없이 종합쇼핑몰에서 바로 계약하실 수 있습니다. 금액 기준에 따라 2단계 경쟁이 필요한 경우에도 절차를 안내해 드립니다. 수의계약으로 진행하시는 경우 견적서·계약서·세금계산서를 학교 요청 서식에 맞춰 준비해 드립니다.</p>
         </details>
         <details class="faq-item">
           <summary>오탈자나 사진 누락이 발견되면 어떻게 하나요?<span class="chev">＋</span></summary>
@@ -516,7 +521,7 @@
       <span><span class="k">사업자등록번호</span> <span class="placeholder">[사업자등록번호 입력]</span></span>
     </div>
     <div class="disclaimer">
-      <b>안내.</b> 이 페이지는 benine9 studio의 웹사이트 리뉴얼을 제안하기 위해 <span class="placeholder">[제작자 이름·스튜디오명]</span>이 만든 <b>비공식 시안</b>입니다. 실제 benine9 studio의 서비스 페이지가 아닙니다. 주 고객인 <b>학교 졸업앨범 담당 선생님</b>을 기준으로 정보 구조를 다시 짠 것이며, 본문의 <b>제작 과정·검수 절차·동의서 처리·회계 서류·재인쇄 기준은 업계 일반 관행을 바탕으로 가정해 작성한 문구</b>입니다. 실제 운영 방식과 다를 수 있으니 대표님 확인 후 확정해 주세요. 연락처는 benine9 studio 공식 홈페이지에 게재된 정보를 인용했고, 수치·후기·가격 중 "예시" 또는 "*" 표기가 있는 항목은 실제 데이터가 아닙니다. 사진은 Unsplash 무료 라이선스 이미지로 배치했으며, 실제 촬영물·앨범 사진으로 교체를 권장합니다. 무단으로 실제 서비스처럼 배포하지 않습니다.
+      <b>안내.</b> 이 페이지는 benine9 studio의 웹사이트 리뉴얼을 제안하기 위해 <span class="placeholder">[제작자 이름·스튜디오명]</span>이 만든 <b>비공식 시안</b>입니다. 실제 benine9 studio의 서비스 페이지가 아닙니다. 주 고객인 <b>학교 졸업앨범 담당 선생님</b>을 기준으로 정보 구조를 다시 짠 것이며, 본문의 <b>제작 과정·검수 절차·동의서 처리·회계 서류·재인쇄 기준, 그리고 나라장터 종합쇼핑몰 등록 여부는 업계 일반 관행을 바탕으로 가정해 작성한 문구</b>이며 아직 확인되지 않았습니다. 실제 운영 방식과 다를 수 있으니 대표님 확인 후 확정해 주세요. 연락처는 benine9 studio 공식 홈페이지에 게재된 정보를 인용했고, 수치·후기·가격 중 "예시" 또는 "*" 표기가 있는 항목은 실제 데이터가 아닙니다. 사진은 Unsplash 무료 라이선스 이미지로 배치했으며, 실제 촬영물·앨범 사진으로 교체를 권장합니다. 무단으로 실제 서비스처럼 배포하지 않습니다.
     </div>
     <div class="foot-meta">
       <span>© benine9 studio(원 브랜드) · 시안 제작 <span class="placeholder">[내 연락처]</span></span>
