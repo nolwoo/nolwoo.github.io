@@ -6,7 +6,7 @@ import { ConsultButtons } from "@/components/ConsultButtons";
 export const metadata = {
   title: "전체 금고 보기",
   description:
-    "영등포 금고 전문점 범일금고 영등포대리점 전체 금고 목록. 디자인금고·지문인식금고·가정용·사무용 금고를 만나보세요.",
+    "영등포 금고 대리점이 취급하는 범일금고 정품 40종. 디자인금고·지문인식금고·가정용·사무용 금고를 한눈에 비교해 보세요.",
   alternates: { canonical: "/products" },
 };
 

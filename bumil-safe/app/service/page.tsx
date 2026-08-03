@@ -5,7 +5,7 @@ import { ConsultButtons } from "@/components/ConsultButtons";
 export const metadata = {
   title: "서비스 · 설치 · A/S",
   description:
-    "상담부터 방문 설치, 구매 후 A/S까지. 영등포 금고 전문점 범일금고 영등포대리점의 설치·사후관리 과정을 안내합니다.",
+    "상담부터 방문 설치, 구매 후 A/S까지. 영등포 금고 대리점이 금고를 어떻게 설치하고 관리하는지 안내합니다.",
   alternates: { canonical: "/service" },
 };
 

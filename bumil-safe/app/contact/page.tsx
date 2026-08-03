@@ -6,7 +6,7 @@ import { InquiryForm } from "@/components/InquiryForm";
 export const metadata = {
   title: "상담",
   description:
-    "영등포 금고 전문점 범일금고 영등포대리점 온라인 상담 신청. 전화·카카오톡 상담도 가능합니다.",
+    "영등포 금고 상담을 신청하세요. 설치 환경만 알려주시면 맞는 금고를 추천해 드립니다. 전화·카카오톡 상담도 가능합니다.",
   alternates: { canonical: "/contact" },
 };
 

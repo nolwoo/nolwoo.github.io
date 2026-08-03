@@ -7,7 +7,7 @@ import { SITE } from "@/lib/site";
 
 export const metadata = {
   title: "오시는길",
-  description: `${SITE.address.road} — 영등포 금고 매장 범일금고 영등포대리점 오시는 길과 매장 정보를 안내합니다. ${SITE.address.hours}.`,
+  description: `영등포 금고 매장 오시는 길 안내. ${SITE.address.road}, ${SITE.address.hours}.`,
   alternates: { canonical: "/location" },
 };
 

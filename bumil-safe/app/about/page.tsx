@@ -6,7 +6,7 @@ import { SITE } from "@/lib/site";
 export const metadata = {
   title: "회사소개",
   description:
-    "범일금고 영등포대리점 — 영등포 금고 전문점으로 본사 정품을 직접 설치하고 사후관리까지 책임집니다.",
+    "본사에서 직접 공급받은 정품만 취급하는 영등포 금고 대리점입니다. 전문 기사 설치와 구매 후 A/S로 곁에서 챙깁니다.",
   alternates: { canonical: "/about" },
 };
 

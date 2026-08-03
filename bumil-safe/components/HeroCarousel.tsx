@@ -58,12 +58,19 @@ export function HeroCarousel() {
   const active = SLIDES[index];
 
   return (
-    <div className="relative h-[420px] w-full overflow-hidden rounded-lg sm:h-[520px]">
+    <div
+      className="relative h-[420px] w-full overflow-hidden rounded-lg sm:h-[520px]"
+      role="region"
+      aria-roledescription="캐러셀"
+      aria-label="대표 제품 사진"
+    >
       {SLIDES.map((s, i) => (
         <img
           key={s.img}
           src={s.img}
           alt={s.alt}
+          // 보이지 않는 슬라이드는 스크린리더에서도 감춘다 (안 그러면 5장 설명이 모두 읽힘)
+          aria-hidden={i !== index}
           // 첫 장은 LCP 대상이라 우선 로드, 나머지는 뒤로 미뤄 첫 화면 속도를 지킨다
           fetchPriority={i === 0 ? "high" : "low"}
           decoding={i === 0 ? "sync" : "async"}
