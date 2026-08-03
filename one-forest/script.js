@@ -10,6 +10,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const carousel = document.getElementById('homeCarousel');
+  if (carousel) {
+    const track = carousel.querySelector('.carousel-track');
+    const slides = Array.from(track.children);
+    const dotsWrap = carousel.querySelector('.carousel-dots');
+    const prevBtn = carousel.querySelector('.carousel-btn--prev');
+    const nextBtn = carousel.querySelector('.carousel-btn--next');
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `${i + 1}번째 슬라이드로 이동`);
+      dot.addEventListener('click', () => {
+        track.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
+      });
+      dotsWrap.appendChild(dot);
+    });
+    const dots = Array.from(dotsWrap.children);
+
+    const setActive = () => {
+      const idx = Math.round(track.scrollLeft / track.clientWidth);
+      dots.forEach((d, i) => d.setAttribute('aria-current', String(i === idx)));
+    };
+    setActive();
+    track.addEventListener('scroll', () => {
+      window.clearTimeout(track._scrollTimer);
+      track._scrollTimer = window.setTimeout(setActive, 80);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
+    });
+    nextBtn.addEventListener('click', () => {
+      track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
+    });
+  }
+
   document.querySelectorAll('form[data-demo-form]').forEach((form) => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
