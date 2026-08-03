@@ -7,7 +7,6 @@ import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/Button";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { getPopular } from "@/lib/catalog";
-import { SITE } from "@/lib/site";
 
 export default function Home() {
   const popular = getPopular(8);
@@ -17,9 +16,10 @@ export default function Home() {
       {/* ① Hero — 실제 제품 사진 5장이 자동으로 넘어가는 캐러셀 */}
       <section className="bg-canvas">
         <Container className="pt-14 pb-20 md:pt-20">
-          <p className="text-center text-[13px] font-semibold uppercase tracking-[0.3em] text-blue">
-            Bumil Safe · {SITE.branch}
-          </p>
+          {/* 페이지 대표 제목(h1) — 검색엔진이 주제를 판단하는 핵심 신호라 지역·업종을 명시 */}
+          <h1 className="text-center text-[13px] font-semibold uppercase tracking-[0.3em] text-blue">
+            Bumil Safe · 영등포 금고 전문점
+          </h1>
           <div className="mt-6">
             <HeroCarousel />
           </div>
@@ -61,7 +61,7 @@ export default function Home() {
           <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
             <div className="overflow-hidden rounded-lg">
               <img
-                src="/philosophy-moire.jpg"
+                src="/philosophy-moire.webp"
                 alt="범일금고 MOIRE 모아르 스마트 금고"
                 className="aspect-[4/5] w-full object-cover sm:aspect-[16/11] md:aspect-[4/5]"
               />
@@ -123,13 +123,13 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             <ServiceCard
-              img="/service-home.jpg"
+              img="/service-home.webp"
               tag="가정용 금고"
               desc="현금·귀중품·서류를 안전하게. 인테리어를 해치지 않는 디자인 금고부터 지문인식까지."
               href="/products"
             />
             <ServiceCard
-              img="/service-office.jpg"
+              img="/service-office.webp"
               tag="사무용 금고"
               desc="사무실·매장의 자산을 든든하게. 대형·이중잠금·스마트 모델까지 폭넓게 갖췄어요."
               href="/products"

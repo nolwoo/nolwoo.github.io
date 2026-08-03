@@ -24,7 +24,8 @@ export async function generateMetadata({
   if (!p) return { title: "제품을 찾을 수 없습니다" };
   return {
     title: p.name,
-    description: `${p.catLabel} · ${p.lock} · ${p.price}원. 범일금고 본사 정품을 영등포에서 직접 설치해 드립니다.`,
+    description: `${p.catLabel} · ${p.lock} · ${p.price}원. 영등포 금고 전문점에서 범일금고 본사 정품을 직접 설치해 드립니다.`,
+    alternates: { canonical: `/products/${p.id}` },
   };
 }
 

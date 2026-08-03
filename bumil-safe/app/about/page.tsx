@@ -6,7 +6,8 @@ import { SITE } from "@/lib/site";
 export const metadata = {
   title: "회사소개",
   description:
-    "범일금고 영등포대리점 — 본사 정품을 영등포에서 직접 설치하고 사후관리까지 책임지는 금고 전문 대리점입니다.",
+    "범일금고 영등포대리점 — 영등포 금고 전문점으로 본사 정품을 직접 설치하고 사후관리까지 책임집니다.",
+  alternates: { canonical: "/about" },
 };
 
 const STATS = [
@@ -23,6 +24,7 @@ export default function AboutPage() {
       <section className="bg-canvas">
         <Container size="narrow" className="py-24 text-center">
           <SectionHead
+            as="h1"
             center
             eyebrow="회사소개"
             title={<>지켜야 할 것이 분명한 사람들의 곁에서</>}
@@ -62,7 +64,7 @@ export default function AboutPage() {
         no="01"
         title="본사 정품 직공급"
         desc="범일금고 본사에서 직접 받은 정품만 취급합니다. 출처가 분명한 제품을 합리적인 가격에 공급합니다."
-        img="/hero-product.jpg"
+        img="/hero-product.webp"
         alt="범일금고 OARCFX 스마트 금고 3종"
         bg="bg-parchment"
       />
@@ -70,7 +72,7 @@ export default function AboutPage() {
         no="02"
         title="전문 기사 설치"
         desc="수십 킬로그램의 금고도 안전하게. 설치 환경을 먼저 확인하고, 전문 기사가 직접 방문해 시공합니다."
-        img="/about-install.jpg"
+        img="/about-install.webp"
         alt="범일금고 CAVE 스마트 금고"
         bg="bg-canvas"
         reverse
@@ -79,7 +81,7 @@ export default function AboutPage() {
         no="03"
         title="구매 후 A/S 상담"
         desc="비밀번호 변경·작동 문제까지. 판매로 끝나지 않고 구매 이후에도 곁에서 챙깁니다."
-        img="/about-service.jpg"
+        img="/about-service.webp"
         alt="범일금고 LUSTER 스마트 금고"
         bg="bg-parchment"
       />

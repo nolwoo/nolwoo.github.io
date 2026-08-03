@@ -6,7 +6,8 @@ import { InquiryForm } from "@/components/InquiryForm";
 export const metadata = {
   title: "상담",
   description:
-    "범일금고 영등포대리점 온라인 상담 신청. 전화·카카오톡 상담도 가능합니다.",
+    "영등포 금고 전문점 범일금고 영등포대리점 온라인 상담 신청. 전화·카카오톡 상담도 가능합니다.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {
@@ -16,6 +17,7 @@ export default function ContactPage() {
       <section className="bg-canvas">
         <Container size="narrow" className="py-24 text-center">
           <SectionHead
+            as="h1"
             center
             eyebrow="상담"
             title="부담 없이 문의하세요"
@@ -33,7 +35,7 @@ export default function ContactPage() {
           <div>
             <div className="overflow-hidden rounded-lg">
               <img
-                src="/service-home.jpg"
+                src="/service-home.webp"
                 alt="범일금고 월넛우드패널 스마트 금고"
                 className="aspect-[4/3] w-full object-cover"
               />

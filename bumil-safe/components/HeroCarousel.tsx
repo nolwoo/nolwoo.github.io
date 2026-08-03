@@ -6,31 +6,31 @@ type Slide = { img: string; alt: string; title: string; desc: string };
 
 const SLIDES: Slide[] = [
   {
-    img: "/hero-product.jpg",
+    img: "/hero-product.webp",
     alt: "거실에 놓인 범일금고 OARCFX 스마트 금고 3종",
     title: "소중한 것을 가장 안전하게",
     desc: "범일금고 본사 정품을 영등포에서. 가정부터 사무실까지, 꼭 맞는 금고를 상담해 드립니다.",
   },
   {
-    img: "/service-office.jpg",
+    img: "/service-office.webp",
     alt: "범일금고 STELTH 스텔스 스마트 금고 2종",
     title: "사무실 자산도 든든하게",
     desc: "대형·이중잠금 스마트 금고까지, 사무 공간에 맞는 모델을 폭넓게 갖췄습니다.",
   },
   {
-    img: "/service-home.jpg",
+    img: "/service-home.webp",
     alt: "범일금고 월넛우드패널 스마트 금고",
     title: "공간을 해치지 않는 디자인",
     desc: "월넛 우드 패널부터 새틴 글라스까지, 인테리어에 자연스럽게 스며드는 소재로 골라보세요.",
   },
   {
-    img: "/about-service.jpg",
+    img: "/about-service.webp",
     alt: "범일금고 LUSTER 러스터 스마트 금고 3종",
     title: "은은한 광택의 프리미엄 라인업",
     desc: "컬러 스테인리스 패널로 완성한 러스터 시리즈, 실물로 확인해 보세요.",
   },
   {
-    img: "/philosophy-moire.jpg",
+    img: "/philosophy-moire.webp",
     alt: "범일금고 MOIRE 모아르 스마트 금고",
     title: "매일의 안심을 곁에 두는 일",
     desc: "무엇을 지킬 것인가 — 범일금고가 오래도록 고민해 온 질문입니다.",
@@ -64,6 +64,9 @@ export function HeroCarousel() {
           key={s.img}
           src={s.img}
           alt={s.alt}
+          // 첫 장은 LCP 대상이라 우선 로드, 나머지는 뒤로 미뤄 첫 화면 속도를 지킨다
+          fetchPriority={i === 0 ? "high" : "low"}
+          decoding={i === 0 ? "sync" : "async"}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
             i === index ? "opacity-100" : "opacity-0"
           }`}
@@ -110,9 +113,10 @@ export function HeroCarousel() {
       </button>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 p-8 text-center sm:p-12">
-        <h1 className="mx-auto max-w-[16ch] text-[clamp(28px,5vw,48px)] font-semibold leading-[1.22] text-on-dark">
+        {/* 슬라이드마다 바뀌는 문구라 h1이 아닌 h2 — 페이지 대표 h1은 캐러셀 위에 고정으로 둔다 */}
+        <h2 className="mx-auto max-w-[16ch] text-[clamp(28px,5vw,48px)] font-semibold leading-[1.22] text-on-dark">
           {active.title}
-        </h1>
+        </h2>
         <p className="mx-auto mt-4 max-w-[44ch] text-[clamp(15px,1.8vw,18px)] leading-relaxed text-on-dark-muted">
           {active.desc}
         </p>

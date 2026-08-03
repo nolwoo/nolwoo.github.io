@@ -5,7 +5,8 @@ import { ConsultButtons } from "@/components/ConsultButtons";
 export const metadata = {
   title: "서비스 · 설치 · A/S",
   description:
-    "상담부터 방문 설치, 구매 후 A/S까지. 범일금고 영등포대리점의 설치·사후관리 과정을 안내합니다.",
+    "상담부터 방문 설치, 구매 후 A/S까지. 영등포 금고 전문점 범일금고 영등포대리점의 설치·사후관리 과정을 안내합니다.",
+  alternates: { canonical: "/service" },
 };
 
 const STEPS = [
@@ -57,6 +58,7 @@ export default function ServicePage() {
       <section className="bg-canvas">
         <Container size="narrow" className="py-24 text-center">
           <SectionHead
+            as="h1"
             center
             eyebrow="서비스"
             title={<>상담부터 설치, 사후관리까지<br />한 번에 챙겨드립니다.</>}
@@ -71,7 +73,7 @@ export default function ServicePage() {
           <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
             <div className="overflow-hidden rounded-lg">
               <img
-                src="/service-office.jpg"
+                src="/service-office.webp"
                 alt="범일금고 STELTH 스텔스 스마트 금고"
                 className="aspect-[4/3] w-full object-cover"
               />

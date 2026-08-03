@@ -5,6 +5,12 @@ import { Button } from "@/components/Button";
 import { KakaoMap } from "@/components/KakaoMap";
 import { SITE } from "@/lib/site";
 
+export const metadata = {
+  title: "오시는길",
+  description: `${SITE.address.road} — 영등포 금고 매장 범일금고 영등포대리점 오시는 길과 매장 정보를 안내합니다. ${SITE.address.hours}.`,
+  alternates: { canonical: "/location" },
+};
+
 export default function LocationPage() {
   return (
     <>
@@ -12,6 +18,7 @@ export default function LocationPage() {
       <section className="bg-canvas">
         <Container size="narrow" className="pt-20 pb-10 text-center">
           <SectionHead
+            as="h1"
             center
             eyebrow="오시는길"
             title="매장으로 찾아오세요"

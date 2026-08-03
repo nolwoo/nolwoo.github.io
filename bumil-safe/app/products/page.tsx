@@ -6,7 +6,8 @@ import { ConsultButtons } from "@/components/ConsultButtons";
 export const metadata = {
   title: "전체 금고 보기",
   description:
-    "범일금고 영등포대리점 전체 금고 목록. 디자인금고·지문인식금고·가정용·사무용 금고를 할인가로 만나보세요.",
+    "영등포 금고 전문점 범일금고 영등포대리점 전체 금고 목록. 디자인금고·지문인식금고·가정용·사무용 금고를 만나보세요.",
+  alternates: { canonical: "/products" },
 };
 
 export default function ProductsPage() {
@@ -15,6 +16,7 @@ export default function ProductsPage() {
       <section className="bg-canvas">
         <Container className="py-14">
           <SectionHead
+            as="h1"
             eyebrow="제품"
             title="전체 금고 보기"
             lead="설치 환경만 알려주시면 딱 맞는 금고를 추천해 드려요."

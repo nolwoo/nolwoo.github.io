@@ -7,12 +7,15 @@ export function SectionHead({
   lead,
   center = false,
   dark = false,
+  as: Heading = "h2",
 }: {
   eyebrow?: string;
   title: ReactNode;
   lead?: ReactNode;
   center?: boolean;
   dark?: boolean;
+  /** 페이지의 대표 제목에는 "h1"을 준다 (페이지당 하나 — 검색엔진 주제 신호) */
+  as?: "h1" | "h2";
 }) {
   return (
     <div className={center ? "text-center" : ""}>
@@ -25,13 +28,13 @@ export function SectionHead({
           {eyebrow}
         </p>
       )}
-      <h2
+      <Heading
         className={`tracking-tight-apple text-[clamp(25px,3.8vw,38px)] font-semibold leading-[1.25] ${
           dark ? "text-on-dark" : "text-ink"
         }`}
       >
         {title}
-      </h2>
+      </Heading>
       {lead && (
         <p
           className={`mt-4 text-[clamp(17px,2vw,21px)] leading-relaxed ${
