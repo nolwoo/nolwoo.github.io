@@ -64,8 +64,7 @@ export function Footer() {
         </div>
 
         <p className="pt-6 text-[12px] text-ink-faint">
-          © 2026 {SITE.brand} {SITE.branch}. 본 사이트는 샘플 데모이며, 가격·재고는
-          상담 시 확정됩니다.
+          © 2026 {SITE.brand} {SITE.branch}. 가격·재고는 상담 시 확정됩니다.
         </p>
       </div>
     </footer>
