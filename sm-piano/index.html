@@ -303,6 +303,38 @@
     font-size:0.98rem;
   }
 
+  /* ---------- Story (reunion quote) ---------- */
+  .story-block{
+    max-width:680px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .quote-mark{
+    display:block;
+    font-family:var(--font-display);
+    font-size:4.5rem;
+    line-height:1;
+    color:var(--brass);
+    margin-bottom:-10px;
+  }
+  .story-quote{
+    margin:0;
+    font-family:var(--font-display);
+    font-size:clamp(1.2rem, 2.4vw, 1.55rem);
+    line-height:1.75;
+    color:var(--ink);
+  }
+  .story-source{
+    display:inline-block;
+    margin-top:24px;
+    font-family:var(--font-mono);
+    font-size:0.8rem;
+    color:var(--ink-faint);
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .story-source:hover{ color:var(--brass-deep); }
+
   /* ---------- Class cards ---------- */
   .class-grid{
     display:grid;
@@ -694,6 +726,21 @@
           <dd>인천 2호선 마전역 2번 출구</dd>
         </div>
       </dl>
+    </div>
+  </section>
+
+  <section id="story" class="reveal">
+    <div class="wrap story-block">
+      <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote class="story-quote">
+        예전에 함께 음악을 배우던 아이들이 어느덧 중학생이 되어 학원을 찾아왔습니다.
+        키도 훌쩍 크고 목소리도 굵어졌지만, 웃는 모습은 그대로였어요.
+        오랜만에 모여 피자와 치킨을 먹으며 이런저런 이야기를 나눈 시간, 참 고맙고 뭉클한 순간이었습니다.
+        졸업해도 언제든 편하게 들를 수 있는 공간이고 싶습니다.
+      </blockquote>
+      <a class="story-source" href="https://blog.naver.com/byeoldabang_mh/224198450505" target="_blank" rel="noopener">
+        원장님 블로그, 2026년 2월 27일 글 &rarr;
+      </a>
     </div>
   </section>
 
