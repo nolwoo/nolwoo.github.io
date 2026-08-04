@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>상명피아노음악교습소 | 인천 검단 마전동</title>
+<meta name="description" content="싱어송라이터가 지도하는 음악교실, 상명피아노음악교습소. 피아노 기본·성인·입시 과정과 카드 기반 작곡 수업. 인천 검단구 마전동, 마전역 2번 출구.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23F7F1E6'/%3E%3Ctext x='32' y='42' font-size='30' text-anchor='middle' fill='%23B08D57'%3E♪%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/variable/pretendardvariable.css">
+<style>
+  :root{
+    --paper:#F7F1E6;
+    --paper-2:#EFE5D2;
+    --ink:#2B2622;
+    --ink-soft:rgba(43,38,34,.66);
+    --ink-faint:rgba(43,38,34,.42);
+    --line:rgba(43,38,34,.14);
+    --brass:#B08D57;
+    --brass-deep:#8C6D3F;
+    --dusk:#46566B;
+    --dusk-deep:#2E3A48;
+    --card-rose:#E3AF9C;
+    --card-sage:#9FB28F;
+    --card-sky:#93AFC4;
+    --card-brass:#E8CC9E;
+    --radius:18px;
+    --font-display:'Gowun Batang', serif;
+    --font-body:'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+    --font-mono:'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+  }
+
+  a{color:inherit;}
+  img,svg{max-width:100%; display:block;}
+
+  :focus-visible{
+    outline:3px solid var(--brass-deep);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  h1,h2,h3{
+    font-family:var(--font-display);
+    font-weight:700;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    letter-spacing:0.06em;
+    color:var(--brass-deep);
+    text-transform:uppercase;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px; height:1px;
+    background:var(--brass-deep);
+  }
+
+  /* ---------- Header ---------- */
+  .site-header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(247,241,230,.88);
+    backdrop-filter:saturate(140%) blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:14px 24px;
+    max-width:1080px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.05rem;
+    white-space:nowrap;
+  }
+  .brand-mark{
+    width:30px; height:30px;
+    border-radius:8px;
+    background:var(--brass);
+    color:var(--paper);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--font-display);
+    font-size:0.95rem;
+    flex-shrink:0;
+  }
+  .site-nav{
+    display:none;
+    gap:22px;
+    font-size:0.92rem;
+    color:var(--ink-soft);
+  }
+  .site-nav a{ text-decoration:none; }
+  .site-nav a:hover{ color:var(--brass-deep); }
+  @media (min-width:860px){ .site-nav{ display:flex; } }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:11px 22px;
+    border-radius:999px;
+    font-size:0.92rem;
+    font-weight:600;
+    text-decoration:none;
+    white-space:nowrap;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{
+    background:var(--brass);
+    color:#fff;
+    box-shadow:0 6px 16px rgba(139,109,63,.28);
+  }
+  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(139,109,63,.36); }
+  .btn-ghost{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--line);
+  }
+  .btn-ghost:hover{ border-color:var(--brass-deep); color:var(--brass-deep); }
+  .btn-sm{ padding:8px 16px; font-size:0.82rem; }
+
+  /* ---------- Sections generic ---------- */
+  section{ padding:88px 0; }
+  .section-tight{ padding:64px 0; }
+  .section-head{
+    max-width:640px;
+    margin-bottom:44px;
+  }
+  .section-head h2{
+    font-size:clamp(1.6rem, 3vw, 2.15rem);
+    margin-top:10px;
+    line-height:1.4;
+  }
+  .bg-alt{ background:var(--paper-2); }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .reveal.is-visible{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:72px 0 96px;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:56px;
+    align-items:center;
+  }
+  @media (min-width:900px){
+    .hero-grid{ grid-template-columns:1.1fr 0.9fr; gap:40px; }
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 5vw, 3.2rem);
+    line-height:1.42;
+    margin:18px 0 22px;
+  }
+  .hero .lead{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    max-width:46ch;
+    margin-bottom:32px;
+  }
+  .hero-ctas{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .hero-note{
+    margin-top:16px;
+    font-size:0.86rem;
+    color:var(--ink-faint);
+  }
+
+  /* card-stack signature motif */
+  .card-stack{
+    position:relative;
+    height:320px;
+  }
+  .stack-card{
+    position:absolute;
+    width:150px;
+    padding:20px 18px;
+    border-radius:16px;
+    box-shadow:0 14px 28px rgba(43,38,34,.16);
+    font-family:var(--font-display);
+    font-size:1.05rem;
+    font-weight:700;
+    color:var(--ink);
+    transition:transform .3s ease;
+  }
+  .stack-card .glyph{
+    font-family:var(--font-body);
+    font-size:0.78rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    display:block;
+    margin-bottom:10px;
+  }
+  .stack-card:hover{ transform:rotate(0deg) translateY(-6px) !important; }
+  .card-1{ background:var(--card-rose); top:6px; left:8%; transform:rotate(-9deg); z-index:4; }
+  .card-2{ background:var(--card-sky); top:70px; left:34%; transform:rotate(6deg); z-index:3; }
+  .card-3{ background:var(--card-sage); top:150px; left:4%; transform:rotate(4deg); z-index:2; }
+  .card-4{ background:var(--card-brass); top:190px; left:42%; transform:rotate(-5deg); z-index:1; }
+  @media (max-width:899px){
+    .card-stack{ height:260px; max-width:340px; margin:0 auto; }
+    .stack-card{ width:128px; padding:16px; }
+  }
+
+  /* ---------- Intro ---------- */
+  .intro-grid{
+    display:grid;
+    gap:32px;
+    grid-template-columns:1fr;
+  }
+  @media (min-width:760px){
+    .intro-grid{ grid-template-columns:1.3fr 0.7fr; align-items:start; }
+  }
+  .intro-quote{
+    font-family:var(--font-display);
+    font-size:clamp(1.3rem, 2.4vw, 1.6rem);
+    line-height:1.6;
+    color:var(--ink);
+  }
+  .intro-quote span{ color:var(--brass-deep); }
+  .identity-badge{
+    display:inline-block;
+    margin-top:26px;
+    padding:10px 18px;
+    border-radius:999px;
+    background:var(--dusk);
+    color:var(--paper);
+    font-size:0.88rem;
+    font-weight:600;
+  }
+  .intro-facts{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    padding:24px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper);
+  }
+  .intro-facts dt{
+    font-family:var(--font-mono);
+    font-size:0.74rem;
+    color:var(--ink-faint);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .intro-facts dd{
+    margin:4px 0 0;
+    font-size:0.98rem;
+  }
+
+  /* ---------- Class cards ---------- */
+  .class-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:20px;
+  }
+  @media (min-width:640px){ .class-grid{ grid-template-columns:1fr 1fr; } }
+  @media (min-width:1000px){ .class-grid{ grid-template-columns:repeat(4,1fr); } }
+
+  .class-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 22px;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .class-card:hover{
+    transform:rotate(-1deg) translateY(-4px);
+    box-shadow:0 18px 30px rgba(43,38,34,.1);
+    border-color:var(--brass);
+  }
+  .class-card .tag{
+    display:inline-block;
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    color:var(--brass-deep);
+    background:rgba(176,141,87,.12);
+    padding:3px 10px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .class-card h3{
+    font-size:1.2rem;
+    margin-bottom:10px;
+  }
+  .class-card ul{
+    margin:0;
+    padding-left:1.1em;
+    font-size:0.9rem;
+    color:var(--ink-soft);
+  }
+  .class-card li{ margin-bottom:4px; }
+  .price-note{
+    margin-top:28px;
+    font-size:0.88rem;
+    color:var(--ink-faint);
+    font-style:italic;
+  }
+
+  /* ---------- Composition (signature section) ---------- */
+  .comp-section{
+    background:var(--dusk-deep);
+    color:var(--paper);
+  }
+  .comp-section .eyebrow{ color:var(--card-brass); }
+  .comp-section .eyebrow::before{ background:var(--card-brass); }
+  .comp-section .section-head h2{ color:var(--paper); }
+  .comp-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:48px;
+    align-items:center;
+  }
+  @media (min-width:900px){ .comp-grid{ grid-template-columns:0.95fr 1.05fr; } }
+  .comp-text p{ color:rgba(247,241,230,.82); font-size:1rem; max-width:52ch; }
+  .comp-list{
+    list-style:none;
+    margin:26px 0 0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .comp-list li{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    font-size:0.96rem;
+    color:rgba(247,241,230,.9);
+  }
+  .comp-list .dot{
+    flex-shrink:0;
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--card-brass);
+    margin-top:9px;
+  }
+
+  .combo{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:14px;
+    justify-content:center;
+  }
+  .combo-card{
+    width:118px;
+    padding:18px 14px;
+    border-radius:14px;
+    font-family:var(--font-display);
+    font-weight:700;
+    color:var(--ink);
+    text-align:center;
+    box-shadow:0 12px 24px rgba(0,0,0,.28);
+  }
+  .combo-card small{
+    display:block;
+    font-family:var(--font-body);
+    font-weight:500;
+    font-size:0.7rem;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+  .combo-op{
+    font-family:var(--font-mono);
+    font-size:1.3rem;
+    color:var(--card-brass);
+  }
+  .combo-result{
+    width:150px;
+    padding:20px 16px;
+    border-radius:14px;
+    background:var(--card-brass);
+    color:var(--ink);
+    text-align:center;
+    font-family:var(--font-display);
+    font-weight:700;
+    box-shadow:0 14px 30px rgba(0,0,0,.32);
+  }
+  .combo-result small{
+    display:block;
+    font-family:var(--font-body);
+    font-weight:500;
+    font-size:0.7rem;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+
+  /* ---------- Space & instruments ---------- */
+  .space-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:40px;
+    align-items:center;
+  }
+  @media (min-width:860px){ .space-grid{ grid-template-columns:1fr 1fr; } }
+  .space-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  .space-list li{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .space-list .icon{
+    flex-shrink:0;
+    width:38px; height:38px;
+    border-radius:10px;
+    background:var(--paper-2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--brass-deep);
+  }
+  .space-list strong{ display:block; font-size:1rem; margin-bottom:2px; }
+  .space-list span{ font-size:0.9rem; color:var(--ink-soft); }
+
+  .keys-art{
+    display:flex;
+    gap:2px;
+    padding:20px;
+    background:var(--paper-2);
+    border-radius:var(--radius);
+    justify-content:center;
+  }
+  .key{
+    width:26px; height:120px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:0 0 6px 6px;
+    position:relative;
+  }
+  .key.black{
+    width:16px; height:74px;
+    background:var(--ink);
+    margin:0 -9px;
+    z-index:2;
+    border-radius:0 0 4px 4px;
+    border:none;
+  }
+
+  /* ---------- Schedule ---------- */
+  .schedule-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+  @media (min-width:760px){ .schedule-grid{ grid-template-columns:repeat(3,1fr); } }
+  .schedule-card{
+    padding:26px;
+    border-radius:var(--radius);
+    border:1px solid var(--line);
+    background:var(--paper);
+  }
+  .schedule-card.highlight{
+    background:var(--dusk);
+    color:var(--paper);
+    border-color:var(--dusk);
+  }
+  .schedule-card .tag{
+    font-family:var(--font-mono);
+    font-size:0.74rem;
+    letter-spacing:.04em;
+    color:var(--brass-deep);
+    text-transform:uppercase;
+  }
+  .schedule-card.highlight .tag{ color:var(--card-brass); }
+  .schedule-card h3{ font-size:1.1rem; margin:10px 0 8px; }
+  .schedule-card p{ margin:0; font-size:0.92rem; color:var(--ink-soft); }
+  .schedule-card.highlight p{ color:rgba(247,241,230,.82); }
+  .schedule-foot{
+    margin-top:24px;
+    font-size:0.9rem;
+    color:var(--ink-faint);
+  }
+  .schedule-foot strong{ color:var(--ink-soft); }
+
+  /* ---------- Contact ---------- */
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:40px;
+  }
+  @media (min-width:900px){ .contact-grid{ grid-template-columns:1fr 1fr; } }
+  .contact-card{
+    padding:32px;
+    border-radius:var(--radius);
+    background:var(--paper-2);
+  }
+  .contact-card dl{ margin:20px 0 0; }
+  .contact-card dt{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    color:var(--ink-faint);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-top:16px;
+  }
+  .contact-card dd{ margin:4px 0 0; font-size:0.98rem; }
+  .contact-card dd:first-of-type{ margin-top:4px; }
+  .map-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:18px;
+    font-size:0.9rem;
+    color:var(--brass-deep);
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+
+  .cta-card{
+    padding:32px;
+    border-radius:var(--radius);
+    background:var(--brass);
+    color:#fff;
+  }
+  .cta-card h3{ font-size:1.3rem; color:#fff; }
+  .cta-card p{ color:rgba(255,255,255,.88); font-size:0.94rem; margin:10px 0 22px; }
+  .cta-card .btn-primary{ background:#fff; color:var(--brass-deep); box-shadow:none; }
+  .cta-card .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 18px rgba(0,0,0,.18); }
+  .cta-alt{
+    margin-top:22px;
+    padding-top:20px;
+    border-top:1px solid rgba(255,255,255,.28);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    font-size:0.88rem;
+    color:rgba(255,255,255,.9);
+  }
+  .cta-alt a{ color:#fff; text-decoration:underline; text-underline-offset:2px; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding:44px 0 60px;
+    border-top:1px solid var(--line);
+    font-size:0.86rem;
+    color:var(--ink-faint);
+  }
+  footer .foot-inner{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 24px;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+  footer strong{ color:var(--ink-soft); font-weight:600; }
+  footer a{ color:var(--ink-soft); text-decoration:underline; text-underline-offset:2px; }
+  footer .foot-links{ display:flex; gap:18px; }
+
+  .visually-hidden{
+    position:absolute;
+    width:1px; height:1px;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    white-space:nowrap;
+  }
+</style>
+</head>
+<body>
+
+<script>
+  /* ⚠️ 구글 폼 링크가 확정되면 아래 값만 채워 넣으면 됩니다 (따옴표 안에 링크 붙여넣기) */
+  const GOOGLE_FORM_URL = "";
+</script>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#hero" aria-label="상명피아노음악교습소 홈으로 이동">
+      <span class="brand-mark" aria-hidden="true">상</span>
+      상명피아노음악
+    </a>
+    <nav class="site-nav" aria-label="주요 메뉴">
+      <a href="#intro">소개</a>
+      <a href="#classes">수업 과정</a>
+      <a href="#composition">작곡 클래스</a>
+      <a href="#space">공간·악기</a>
+      <a href="#schedule">운영 시간</a>
+      <a href="#contact">위치·문의</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#" data-cta-form>문의하기</a>
+  </div>
+</header>
+
+<main>
+
+  <section id="hero" class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">인천 검단구 마전동 · 상명피아노음악교습소</span>
+        <h1>연주에서 시작해,<br>나만의 음악으로 완성하는 시간</h1>
+        <p class="lead">피아노부터 작곡까지, 아이의 속도와 목표에 맞춰 배우는 음악교실입니다. 싱어송라이터가 직접 지도합니다.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#" data-cta-form>문의하기</a>
+          <a class="btn btn-ghost" href="#classes">수업 과정 보기</a>
+        </div>
+        <p class="hero-note">정규 수업 전, 부담 없는 체험 레슨도 가능합니다.</p>
+      </div>
+      <div class="card-stack" aria-hidden="true">
+        <div class="stack-card card-1"><span class="glyph">♪ 재료 1</span>멜로디</div>
+        <div class="stack-card card-2"><span class="glyph">♪ 재료 2</span>리듬</div>
+        <div class="stack-card card-3"><span class="glyph">♪ 재료 3</span>화성</div>
+        <div class="stack-card card-4"><span class="glyph">♪ 재료 4</span>가사</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="intro" class="reveal">
+    <div class="wrap intro-grid">
+      <div>
+        <span class="eyebrow">소개</span>
+        <p class="intro-quote" style="margin-top:16px;">
+          피아노 수업은 단순히 곡을 치는 시간이 아니라, <span>음악을 이해하고 직접 경험하며 성장해가는 과정</span>이라고 생각합니다.
+          반복적인 연습을 통해 작은 성취를 쌓고, 그 성취가 음악을 즐기고 향유하는 삶으로 이어지기를 바랍니다.
+        </p>
+        <span class="identity-badge">싱어송라이터가 지도하는 음악교실</span>
+      </div>
+      <dl class="intro-facts">
+        <div>
+          <dt>등록</dt>
+          <dd>인천서부교육지원청 등록 제995호</dd>
+        </div>
+        <div>
+          <dt>과목</dt>
+          <dd>피아노 · 작곡 · 리코더 · 오카리나</dd>
+        </div>
+        <div>
+          <dt>수업 형태</dt>
+          <dd>1:1 개인레슨 · 소그룹 레슨</dd>
+        </div>
+        <div>
+          <dt>위치</dt>
+          <dd>인천 2호선 마전역 2번 출구</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="classes" class="bg-alt reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">수업 과정</span>
+        <h2>기초부터 입시까지, 목표에 맞춘 네 갈래 길</h2>
+      </div>
+      <div class="class-grid">
+        <article class="class-card">
+          <span class="tag">초 · 중 · 고등학생</span>
+          <h3>기본과정</h3>
+          <ul>
+            <li>올바른 손 모양과 터치 훈련</li>
+            <li>악보 읽기와 리듬 감각 형성</li>
+            <li>바이엘 · 체르니 · 하농 등 단계별 교재</li>
+            <li>동요 · 소곡 · 뉴에이지 등 곡 선택 폭넓게</li>
+          </ul>
+        </article>
+        <article class="class-card">
+          <span class="tag">성인 · 취미</span>
+          <h3>성인부</h3>
+          <ul>
+            <li>손 모양 · 기본 테크닉 · 독보력 중심</li>
+            <li>치고 싶은 곡 위주로 진행</li>
+            <li>시대별 작곡가 작품 분석과 표현력</li>
+            <li>평일 저녁 밤 10시까지 야간반 운영</li>
+          </ul>
+        </article>
+        <article class="class-card">
+          <span class="tag">예중 · 예고 · 음대 입시</span>
+          <h3>입시반</h3>
+          <ul>
+            <li>테크닉 · 곡 해석 · 음악적 표현 지도</li>
+            <li>시대별 필수 레퍼토리 지도</li>
+            <li>무대 완성도 집중 관리</li>
+            <li>목표 학교에 맞춘 방향 설정</li>
+          </ul>
+        </article>
+        <article class="class-card">
+          <span class="tag">초등 1~6학년 · 소그룹</span>
+          <h3>작곡반</h3>
+          <ul>
+            <li>이론이 아닌 선택과 조합으로 배우는 창작 수업</li>
+            <li>매 수업 한 곡을 완성</li>
+            <li>자체 개발 카드 기반 작곡 교재로 진행</li>
+            <li>자세한 내용은 다음 섹션에서 소개합니다</li>
+          </ul>
+        </article>
+      </div>
+      <p class="price-note">과정별 수업료와 정확한 시간은 상담 시 안내해 드립니다.</p>
+    </div>
+  </section>
+
+  <section id="composition" class="comp-section reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">작곡 클래스</span>
+        <h2>카드 한 장이, 한 곡이 되는 시간</h2>
+      </div>
+      <div class="comp-grid">
+        <div class="comp-text">
+          <p>
+            멜로디 · 리듬 · 화성 · 가사 같은 음악의 재료를 카드로 골라 조합하며 자신만의 곡을 완성하는 창작 수업입니다.
+            이론을 먼저 배우는 방식이 아니라, 선택하고 조합하는 경험으로 작곡을 시작합니다.
+          </p>
+          <ul class="comp-list">
+            <li><span class="dot" aria-hidden="true"></span>소그룹으로 진행하며, 서로의 아이디어를 나눕니다</li>
+            <li><span class="dot" aria-hidden="true"></span>매 수업마다 한 곡을 완성합니다</li>
+            <li><span class="dot" aria-hidden="true"></span>멜로디 작곡부터 미디 작업, 직접 노래하고 녹음까지</li>
+            <li><span class="dot" aria-hidden="true"></span>완성한 곡에 어울리는 장면을 구상해 뮤직비디오까지 제작합니다</li>
+          </ul>
+        </div>
+        <div class="combo" aria-hidden="true">
+          <div class="combo-card" style="background:var(--card-rose);"><small>재료</small>멜로디</div>
+          <span class="combo-op">+</span>
+          <div class="combo-card" style="background:var(--card-sky);"><small>재료</small>리듬</div>
+          <span class="combo-op">+</span>
+          <div class="combo-card" style="background:var(--card-sage);"><small>재료</small>화성</div>
+          <span class="combo-op">=</span>
+          <div class="combo-result"><small>완성</small>한 곡</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="space" class="reveal">
+    <div class="wrap space-grid">
+      <div>
+        <span class="eyebrow">공간·악기</span>
+        <h2 style="font-size:clamp(1.5rem,3vw,2rem); margin:14px 0 26px;">손끝에서 시작되는 즐거움</h2>
+        <ul class="space-list">
+          <li>
+            <span class="icon" aria-hidden="true">🎹</span>
+            <div><strong>어쿠스틱 업라이트 피아노</strong><span>레슨과 개인 연습 모두 같은 악기로 진행합니다</span></div>
+          </li>
+          <li>
+            <span class="icon" aria-hidden="true">🎛️</span>
+            <div><strong>YAMAHA Montage7 신디사이저</strong><span>작곡·미디 수업에 활용되는 신디사이저입니다</span></div>
+          </li>
+          <li>
+            <span class="icon" aria-hidden="true">🕰️</span>
+            <div><strong>연습실 개방</strong><span>운영 시간 내, 레슨 외 개인 연습이 가능합니다</span></div>
+          </li>
+        </ul>
+      </div>
+      <div class="keys-art" aria-hidden="true">
+        <div class="key"></div><div class="key black"></div><div class="key"></div>
+        <div class="key black"></div><div class="key"></div><div class="key"></div>
+        <div class="key black"></div><div class="key"></div><div class="key black"></div>
+        <div class="key"></div><div class="key black"></div><div class="key"></div>
+      </div>
+      <!-- 공간·악기 실제 사진은 원장님 확인 후 추가 예정 -->
+    </div>
+  </section>
+
+  <section id="schedule" class="bg-alt reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">운영 시간</span>
+        <h2>일상과 자연스럽게 맞물리는 시간표</h2>
+      </div>
+      <div class="schedule-grid">
+        <div class="schedule-card">
+          <span class="tag">기본 · 입시반</span>
+          <h3>평일 오후</h3>
+          <p>월 · 화 · 목 · 금요일 오후 시간대에 진행합니다.</p>
+        </div>
+        <div class="schedule-card highlight">
+          <span class="tag">성인 야간반</span>
+          <h3>퇴근 후, 밤 10시까지</h3>
+          <p>평일 저녁 시간대에 운영하는 성인 전용 클래스입니다.</p>
+        </div>
+        <div class="schedule-card">
+          <span class="tag">작곡반</span>
+          <h3>수요일</h3>
+          <p>수요일 오후, 소그룹으로 진행합니다.</p>
+        </div>
+      </div>
+      <p class="schedule-foot"><strong>정확한 요일별 시간과 수업료는 상담 시 안내해 드립니다.</strong> 정규 등록 전 체험 레슨도 가능합니다.</p>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">위치·문의</span>
+        <h2>마전역 2번 출구, 걸어서 만나는 교습소</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <dl>
+            <dt>주소</dt>
+            <dd>인천광역시 검단구 완정로65번안길 10, 2층<br>(마전동 대주피오레1차 상가 B동)</dd>
+            <dt>교통</dt>
+            <dd>인천 2호선 마전역 2번 출구</dd>
+            <dt>참고</dt>
+            <dd>행정구역 개편 전 이름은 인천 서구 검단이었습니다.</dd>
+          </dl>
+          <a class="map-link" href="https://map.naver.com/p/search/상명피아노음악교습소" target="_blank" rel="noopener">
+            네이버 지도에서 길찾기 →
+          </a>
+        </div>
+        <div class="cta-card">
+          <h3>상담이 궁금하신가요?</h3>
+          <p>언제든 편하게 남겨주시면 확인 후 문자로 안내해 드립니다.</p>
+          <a class="btn btn-primary" href="#" data-cta-form>문의하기</a>
+          <div class="cta-alt">
+            <span>수업 중에는 통화가 어려워, 문자와 카카오톡으로 먼저 남겨주시면 순차적으로 안내드립니다.</span>
+            <a href="sms:01088292387">문자 보내기 010-8829-2387</a>
+            <a href="mailto:cocorun89@naver.com">이메일 cocorun89@naver.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span><strong>상명피아노음악교습소</strong> · 인천서부교육지원청 등록 제995호</span>
+    <div class="foot-links">
+      <a href="https://blog.naver.com/byeoldabang_mh" target="_blank" rel="noopener">네이버 블로그</a>
+      <a href="#hero">맨 위로</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (GOOGLE_FORM_URL) {
+      document.querySelectorAll('[data-cta-form]').forEach((el) => {
+        el.href = GOOGLE_FORM_URL;
+        el.target = '_blank';
+        el.rel = 'noopener';
+      });
+    }
+
+    const revealEls = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealEls.forEach((el) => io.observe(el));
+    } else {
+      revealEls.forEach((el) => el.classList.add('is-visible'));
+    }
+  });
+</script>
+
+</body>
+</html>
