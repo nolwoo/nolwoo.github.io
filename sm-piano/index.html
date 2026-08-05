@@ -221,39 +221,40 @@
     color:var(--ink-faint);
   }
 
-  /* card-stack signature motif */
-  .card-stack{
+  /* real-photo treatment — warm brass color-grade ties every photo to the palette */
+  .photo-frame{
     position:relative;
-    height:320px;
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 20px 40px rgba(43,38,34,.24);
   }
-  .stack-card{
-    position:absolute;
-    width:150px;
-    padding:20px 18px;
-    border-radius:16px;
-    box-shadow:0 14px 28px rgba(43,38,34,.16);
-    font-family:var(--font-display);
-    font-size:1.05rem;
-    font-weight:700;
-    color:var(--ink);
-    transition:transform .3s ease;
-  }
-  .stack-card .glyph{
-    font-family:var(--font-body);
-    font-size:0.78rem;
-    font-weight:500;
-    color:var(--ink-soft);
+  .photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
     display:block;
-    margin-bottom:10px;
+    filter:saturate(1.08) contrast(1.05) brightness(.97);
   }
-  .stack-card:hover{ transform:rotate(0deg) translateY(-6px) !important; }
-  .card-1{ background:var(--card-rose); top:6px; left:8%; transform:rotate(-9deg); z-index:4; }
-  .card-2{ background:var(--card-sky); top:70px; left:34%; transform:rotate(6deg); z-index:3; }
-  .card-3{ background:var(--card-sage); top:150px; left:4%; transform:rotate(4deg); z-index:2; }
-  .card-4{ background:var(--card-brass); top:190px; left:42%; transform:rotate(-5deg); z-index:1; }
+  .photo-frame::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(155deg, rgba(176,141,87,.24), rgba(43,38,34,.1));
+    mix-blend-mode:multiply;
+    pointer-events:none;
+  }
+  .hero-photo{
+    aspect-ratio:4/3;
+    transform:rotate(-1.4deg);
+  }
+  .hero-photo-cap{
+    margin-top:14px;
+    text-align:center;
+    font-size:0.78rem;
+    color:var(--ink-faint);
+  }
   @media (max-width:899px){
-    .card-stack{ height:260px; max-width:340px; margin:0 auto; }
-    .stack-card{ width:128px; padding:16px; }
+    .hero-photo-wrap{ max-width:420px; margin:0 auto; }
   }
 
   /* ---------- Intro ---------- */
@@ -477,7 +478,7 @@
   .space-grid{
     display:grid;
     grid-template-columns:1fr;
-    gap:40px;
+    gap:56px;
     align-items:center;
   }
   @media (min-width:860px){ .space-grid{ grid-template-columns:1fr 1fr; } }
@@ -487,48 +488,40 @@
     padding:0;
     display:flex;
     flex-direction:column;
-    gap:20px;
+    gap:22px;
   }
   .space-list li{
-    display:flex;
-    gap:14px;
-    align-items:flex-start;
+    padding-left:18px;
+    border-left:2px solid var(--brass);
   }
-  .space-list .icon{
-    flex-shrink:0;
-    width:38px; height:38px;
-    border-radius:10px;
-    background:var(--paper-2);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--brass-deep);
-  }
-  .space-list strong{ display:block; font-size:1rem; margin-bottom:2px; }
+  .space-list strong{ display:block; font-size:1rem; margin-bottom:3px; }
   .space-list span{ font-size:0.9rem; color:var(--ink-soft); }
 
-  .keys-art{
-    display:flex;
-    gap:2px;
-    padding:20px;
-    background:var(--paper-2);
-    border-radius:var(--radius);
-    justify-content:center;
-  }
-  .key{
-    width:26px; height:120px;
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:0 0 6px 6px;
+  .space-photos{
     position:relative;
+    width:min(100%, 360px);
+    justify-self:center;
+    height:360px;
   }
-  .key.black{
-    width:16px; height:74px;
-    background:var(--ink);
-    margin:0 -9px;
+  .space-photo-main{
+    position:absolute;
+    width:72%;
+    aspect-ratio:3/4;
+    top:0; right:0;
+    transform:rotate(1.6deg);
+    z-index:1;
+  }
+  .space-photo-accent{
+    position:absolute;
+    width:52%;
+    aspect-ratio:3/4;
+    left:0; bottom:0;
+    transform:rotate(-3deg);
     z-index:2;
-    border-radius:0 0 4px 4px;
-    border:none;
+    border:5px solid var(--paper);
+  }
+  @media (max-width:640px){
+    .space-photos{ height:300px; }
   }
 
   /* ---------- Schedule ---------- */
@@ -689,11 +682,11 @@
         </div>
         <p class="hero-note">정규 수업 전, 부담 없는 체험 레슨도 가능합니다.</p>
       </div>
-      <div class="card-stack" aria-hidden="true">
-        <div class="stack-card card-1"><span class="glyph">♪ 재료 1</span>멜로디</div>
-        <div class="stack-card card-2"><span class="glyph">♪ 재료 2</span>리듬</div>
-        <div class="stack-card card-3"><span class="glyph">♪ 재료 3</span>화성</div>
-        <div class="stack-card card-4"><span class="glyph">♪ 재료 4</span>가사</div>
+      <div class="hero-photo-wrap">
+        <div class="photo-frame hero-photo">
+          <img src="img/sheet-music.jpg" alt="상명피아노음악교습소 업라이트 피아노 위에 펼쳐진 악보">
+        </div>
+        <p class="hero-photo-cap">상명피아노음악교습소 연습실</p>
       </div>
     </div>
   </section>
@@ -835,26 +828,27 @@
         <h2 style="font-size:clamp(1.5rem,3vw,2rem); margin:14px 0 26px;">손끝에서 시작되는 즐거움</h2>
         <ul class="space-list">
           <li>
-            <span class="icon" aria-hidden="true">🎹</span>
-            <div><strong>어쿠스틱 업라이트 피아노</strong><span>레슨과 개인 연습 모두 같은 악기로 진행합니다</span></div>
+            <strong>어쿠스틱 업라이트 피아노</strong>
+            <span>레슨과 개인 연습 모두 같은 악기로 진행합니다</span>
           </li>
           <li>
-            <span class="icon" aria-hidden="true">🎛️</span>
-            <div><strong>YAMAHA Montage7 신디사이저</strong><span>작곡·미디 수업에 활용되는 신디사이저입니다</span></div>
+            <strong>YAMAHA Montage7 신디사이저</strong>
+            <span>작곡·미디 수업에 활용되는 신디사이저입니다</span>
           </li>
           <li>
-            <span class="icon" aria-hidden="true">🕰️</span>
-            <div><strong>연습실 개방</strong><span>운영 시간 내, 레슨 외 개인 연습이 가능합니다</span></div>
+            <strong>연습실 개방</strong>
+            <span>운영 시간 내, 레슨 외 개인 연습이 가능합니다</span>
           </li>
         </ul>
       </div>
-      <div class="keys-art" aria-hidden="true">
-        <div class="key"></div><div class="key black"></div><div class="key"></div>
-        <div class="key black"></div><div class="key"></div><div class="key"></div>
-        <div class="key black"></div><div class="key"></div><div class="key black"></div>
-        <div class="key"></div><div class="key black"></div><div class="key"></div>
+      <div class="space-photos">
+        <div class="photo-frame space-photo-main">
+          <img src="img/piano-room.jpg" alt="상명피아노음악교습소 업라이트 피아노와 연습 공간">
+        </div>
+        <div class="photo-frame space-photo-accent">
+          <img src="img/piano-keys.jpg" alt="상명피아노음악교습소 피아노 건반 클로즈업">
+        </div>
       </div>
-      <!-- 공간·악기 실제 사진은 원장님 확인 후 추가 예정 -->
     </div>
   </section>
 

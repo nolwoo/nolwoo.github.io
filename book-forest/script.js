@@ -75,7 +75,7 @@ function renderReviews(targetId, list) {
   if (!el || !list.length) return;
   el.innerHTML = list.map((r) => `
     <div class="review-card">
-      <p class="quote">"${escapeHtml(r.quote)}"</p>
+      <p class="quote">${escapeHtml(r.quote)}</p>
       <p class="who">${escapeHtml(r.name)} · <span class="program-tag">${escapeHtml(r.program)}</span></p>
     </div>
   `).join('');
