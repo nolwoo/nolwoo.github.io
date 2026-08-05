@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabase, INQUIRY_TABLE } from "@/lib/supabase";
 import { rateLimited, clientIp } from "@/lib/rate-limit";
+import { notifyNewInquiry } from "@/lib/notify";
 
 /* 구매자 상담 접수 — 폼 제출을 받아 Supabase에 저장 */
 export async function POST(req: Request) {
@@ -74,6 +75,9 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
+
+  // 저장이 끝난 뒤 알림 — 실패해도 접수는 이미 성공이므로 손님에겐 영향 없음
+  await notifyNewInquiry({ name, phone, product, message });
 
   return NextResponse.json({ ok: true });
 }
