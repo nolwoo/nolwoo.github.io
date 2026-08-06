@@ -185,40 +185,97 @@
     .reveal{ opacity:1; transform:none; transition:none; }
   }
 
-  /* ---------- Hero ---------- */
+  /* ---------- Hero (full-bleed photo) ---------- */
   .hero{
-    padding:72px 0 96px;
+    position:relative;
+    height:min(82vh,680px);
+    min-height:480px;
     overflow:hidden;
   }
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:56px;
+  .hero-bg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 42%;
+    filter:saturate(1.05) contrast(1.05) brightness(.9);
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(20,15,10,.18) 0%, rgba(20,15,10,.46) 40%, rgba(15,11,7,.88) 100%);
+  }
+  .hero-topbar{
+    position:absolute;
+    top:0; left:0; right:0;
+    z-index:2;
+    padding:clamp(16px,3vw,28px) 0 0;
+  }
+  .hero-topbar .wrap{
+    display:flex;
+    justify-content:flex-end;
+  }
+  .hero-blog-link{
+    display:inline-flex;
     align-items:center;
+    gap:6px;
+    padding:9px 18px;
+    border-radius:999px;
+    background:rgba(17,13,9,.4);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.3);
+    color:#fff;
+    font-size:0.82rem;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:background .15s ease, border-color .15s ease;
   }
-  @media (min-width:900px){
-    .hero-grid{ grid-template-columns:1.1fr 0.9fr; gap:40px; }
+  .hero-blog-link:hover{
+    background:rgba(17,13,9,.6);
+    border-color:rgba(255,255,255,.55);
   }
+  .hero-blog-link .arrow{ font-family:var(--font-mono); }
+  .hero-copy{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    z-index:2;
+    padding:clamp(32px,6vw,72px) 0 clamp(40px,6vw,64px);
+  }
+  .hero-copy .eyebrow{ color:var(--card-brass); text-shadow:0 1px 10px rgba(0,0,0,.4); }
+  .hero-copy .eyebrow::before{ background:var(--card-brass); }
   .hero h1{
-    font-size:clamp(2.1rem, 5vw, 3.2rem);
+    font-size:clamp(2.1rem, 5vw, 3.4rem);
     line-height:1.42;
     margin:18px 0 22px;
+    color:#fff;
+    text-shadow:0 2px 20px rgba(0,0,0,.4);
   }
   .hero .lead{
     font-size:1.05rem;
-    color:var(--ink-soft);
+    color:rgba(255,255,255,.86);
     max-width:46ch;
     margin-bottom:32px;
+    text-shadow:0 1px 12px rgba(0,0,0,.35);
   }
   .hero-ctas{
     display:flex;
     flex-wrap:wrap;
     gap:12px;
   }
+  .hero-copy .btn-ghost{
+    color:#fff;
+    border-color:rgba(255,255,255,.5);
+  }
+  .hero-copy .btn-ghost:hover{
+    border-color:#fff;
+    color:#fff;
+  }
   .hero-note{
     margin-top:16px;
     font-size:0.86rem;
-    color:var(--ink-faint);
+    color:rgba(255,255,255,.66);
   }
 
   /* real-photo treatment — warm brass color-grade ties every photo to the palette */
@@ -242,19 +299,6 @@
     background:linear-gradient(155deg, rgba(176,141,87,.24), rgba(43,38,34,.1));
     mix-blend-mode:multiply;
     pointer-events:none;
-  }
-  .hero-photo{
-    aspect-ratio:4/3;
-    transform:rotate(-1.4deg);
-  }
-  .hero-photo-cap{
-    margin-top:14px;
-    text-align:center;
-    font-size:0.78rem;
-    color:var(--ink-faint);
-  }
-  @media (max-width:899px){
-    .hero-photo-wrap{ max-width:420px; margin:0 auto; }
   }
 
   /* ---------- Intro ---------- */
@@ -422,6 +466,30 @@
     border-radius:50%;
     background:var(--card-brass);
     margin-top:9px;
+  }
+
+  .comp-visual{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:36px;
+  }
+  .comp-proof{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .comp-proof-photo{
+    width:min(100%, 300px);
+    aspect-ratio:4/3;
+    transform:rotate(-1.6deg);
+  }
+  .comp-proof-cap{
+    margin-top:14px;
+    text-align:center;
+    font-size:0.8rem;
+    color:rgba(247,241,230,.62);
+    max-width:30ch;
   }
 
   .combo{
@@ -671,8 +739,16 @@
 <main>
 
   <section id="hero" class="hero">
-    <div class="wrap hero-grid">
-      <div>
+    <img class="hero-bg" src="img/piano-keys.jpg" alt="상명피아노음악교습소 피아노 건반 클로즈업">
+    <div class="hero-topbar">
+      <div class="wrap">
+        <a class="hero-blog-link" href="https://blog.naver.com/byeoldabang_mh" target="_blank" rel="noopener">
+          네이버 블로그에서 소식 보기 <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-copy">
+      <div class="wrap">
         <span class="eyebrow">인천 검단구 마전동 · 상명피아노음악교습소</span>
         <h1>연주에서 시작해,<br>나만의 음악으로 완성하는 시간</h1>
         <p class="lead">피아노부터 작곡까지, 아이의 속도와 목표에 맞춰 배우는 음악교실입니다. 싱어송라이터가 직접 지도합니다.</p>
@@ -681,12 +757,6 @@
           <a class="btn btn-ghost" href="#classes">수업 과정 보기</a>
         </div>
         <p class="hero-note">정규 수업 전, 부담 없는 체험 레슨도 가능합니다.</p>
-      </div>
-      <div class="hero-photo-wrap">
-        <div class="photo-frame hero-photo">
-          <img src="img/sheet-music.jpg" alt="상명피아노음악교습소 업라이트 피아노 위에 펼쳐진 악보">
-        </div>
-        <p class="hero-photo-cap">상명피아노음악교습소 연습실</p>
       </div>
     </div>
   </section>
@@ -808,14 +878,22 @@
             <li><span class="dot" aria-hidden="true"></span>완성한 곡에 어울리는 장면을 구상해 뮤직비디오까지 제작합니다</li>
           </ul>
         </div>
-        <div class="combo" aria-hidden="true">
-          <div class="combo-card" style="background:var(--card-rose);"><small>재료</small>멜로디</div>
-          <span class="combo-op">+</span>
-          <div class="combo-card" style="background:var(--card-sky);"><small>재료</small>리듬</div>
-          <span class="combo-op">+</span>
-          <div class="combo-card" style="background:var(--card-sage);"><small>재료</small>화성</div>
-          <span class="combo-op">=</span>
-          <div class="combo-result"><small>완성</small>한 곡</div>
+        <div class="comp-visual">
+          <div class="combo" aria-hidden="true">
+            <div class="combo-card" style="background:var(--card-rose);"><small>재료</small>멜로디</div>
+            <span class="combo-op">+</span>
+            <div class="combo-card" style="background:var(--card-sky);"><small>재료</small>리듬</div>
+            <span class="combo-op">+</span>
+            <div class="combo-card" style="background:var(--card-sage);"><small>재료</small>화성</div>
+            <span class="combo-op">=</span>
+            <div class="combo-result"><small>완성</small>한 곡</div>
+          </div>
+          <div class="comp-proof">
+            <div class="photo-frame comp-proof-photo">
+              <img src="img/certificate.jpg" alt="상명피아노음악교습소 카드작곡 과정 수료증">
+            </div>
+            <p class="comp-proof-cap">과정을 마친 학생에게 실제로 발급하는 수료증입니다</p>
+          </div>
         </div>
       </div>
     </div>
@@ -846,7 +924,7 @@
           <img src="img/piano-room.jpg" alt="상명피아노음악교습소 업라이트 피아노와 연습 공간">
         </div>
         <div class="photo-frame space-photo-accent">
-          <img src="img/piano-keys.jpg" alt="상명피아노음악교습소 피아노 건반 클로즈업">
+          <img src="img/sheet-music.jpg" alt="상명피아노음악교습소 업라이트 피아노 위에 펼쳐진 악보">
         </div>
       </div>
     </div>
