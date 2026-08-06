@@ -223,6 +223,37 @@ a:hover { color: var(--forest-deep); }
   color: #fdfaf1;
 }
 .hero-photo .btn-outline:hover { background: #fdfaf1; color: var(--forest-deep); }
+.sister-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  background: rgba(24, 30, 22, 0.55);
+  border: 1px solid rgba(253, 250, 241, 0.35);
+  border-radius: 999px;
+  color: #fdfaf1;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  backdrop-filter: blur(2px);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.sister-badge:hover {
+  background: rgba(24, 30, 22, 0.78);
+  border-color: rgba(253, 250, 241, 0.6);
+}
+.sister-badge img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: var(--forest-deep);
+  display: block;
+}
 @media (max-width: 640px) {
   .hero-photo { min-height: 56vh; }
   .hero-photo .container { padding-top: 100px; }
