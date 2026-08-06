@@ -238,6 +238,40 @@ a:hover { color: var(--moss-deep); }
 .hero-photo .kraft-tag {
   background: #fdfaf1;
 }
+.sister-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  background: rgba(20, 22, 12, 0.55);
+  border: 1px solid rgba(253, 250, 241, 0.35);
+  border-radius: 999px;
+  color: #fdfaf1;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  backdrop-filter: blur(2px);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.sister-badge:hover {
+  background: rgba(20, 22, 12, 0.78);
+  border-color: rgba(253, 250, 241, 0.6);
+}
+.sister-badge-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--moss-deep);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
 
 /* ---------- 히어로 (기존 카드형 — 보관용) ---------- */
 .hero {
