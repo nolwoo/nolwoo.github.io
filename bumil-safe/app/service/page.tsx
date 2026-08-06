@@ -51,9 +51,24 @@ const FAQ = [
   },
 ];
 
+// FAQ 구조화 데이터 — 구글 검색결과에 질문·답변이 아코디언으로 노출될 수 있음
+const FAQ_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export default function ServicePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSONLD) }}
+      />
       {/* Hero */}
       <section className="bg-canvas">
         <Container size="narrow" className="py-24 text-center">
