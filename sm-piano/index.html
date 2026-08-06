@@ -27,6 +27,7 @@
     --card-sky:#93AFC4;
     --card-brass:#E8CC9E;
     --radius:18px;
+    --shadow-card:0 0 .5px rgba(43,38,34,.16), 0 1px 2px rgba(43,38,34,.1);
     --font-display:'Gowun Batang', serif;
     --font-body:'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
     --font-mono:'IBM Plex Mono', ui-monospace, monospace;
@@ -92,6 +93,7 @@
     background:rgba(247,241,230,.88);
     backdrop-filter:saturate(140%) blur(10px);
     border-bottom:1px solid var(--line);
+    box-shadow:0 1px 3px rgba(43,38,34,.06), 0 2px 2px rgba(43,38,34,.04);
   }
   .header-inner{
     display:flex;
@@ -111,22 +113,11 @@
     font-size:1.05rem;
     white-space:nowrap;
   }
-  .brand-mark{
-    width:30px; height:30px;
-    border-radius:8px;
-    background:var(--brass);
-    color:var(--paper);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:var(--font-display);
-    font-size:0.95rem;
-    flex-shrink:0;
-  }
   .site-nav{
     display:none;
     gap:22px;
     font-size:0.92rem;
+    letter-spacing:-0.01em;
     color:var(--ink-soft);
   }
   .site-nav a{ text-decoration:none; }
@@ -142,6 +133,7 @@
     border-radius:999px;
     font-size:0.92rem;
     font-weight:600;
+    letter-spacing:-0.01em;
     text-decoration:none;
     white-space:nowrap;
     cursor:pointer;
@@ -150,9 +142,8 @@
   .btn-primary{
     background:var(--brass);
     color:#fff;
-    box-shadow:0 6px 16px rgba(139,109,63,.28);
   }
-  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(139,109,63,.36); }
+  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(139,109,63,.3); }
   .btn-ghost{
     background:transparent;
     color:var(--ink);
@@ -160,6 +151,7 @@
   }
   .btn-ghost:hover{ border-color:var(--brass-deep); color:var(--brass-deep); }
   .btn-sm{ padding:8px 16px; font-size:0.82rem; }
+  .btn:active{ transform:scale(.96); box-shadow:none; }
 
   /* ---------- Sections generic ---------- */
   section{ padding:88px 0; }
@@ -283,7 +275,7 @@
     position:relative;
     border-radius:var(--radius);
     overflow:hidden;
-    box-shadow:0 20px 40px rgba(43,38,34,.24);
+    box-shadow:0 1px 2px rgba(43,38,34,.18), 0 20px 40px rgba(43,38,34,.2);
   }
   .photo-frame img{
     width:100%;
@@ -335,6 +327,7 @@
     border:1px solid var(--line);
     border-radius:var(--radius);
     background:var(--paper);
+    box-shadow:var(--shadow-card);
   }
   .intro-facts dt{
     font-family:var(--font-mono);
@@ -394,6 +387,7 @@
     border:1px solid var(--line);
     border-radius:var(--radius);
     padding:26px 22px;
+    box-shadow:var(--shadow-card);
     transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   }
   .class-card:hover{
@@ -507,7 +501,7 @@
     font-weight:700;
     color:var(--ink);
     text-align:center;
-    box-shadow:0 12px 24px rgba(0,0,0,.28);
+    box-shadow:0 1px 2px rgba(0,0,0,.2), 0 12px 24px rgba(0,0,0,.28);
   }
   .combo-card small{
     display:block;
@@ -531,7 +525,7 @@
     text-align:center;
     font-family:var(--font-display);
     font-weight:700;
-    box-shadow:0 14px 30px rgba(0,0,0,.32);
+    box-shadow:0 1px 2px rgba(0,0,0,.22), 0 14px 30px rgba(0,0,0,.32);
   }
   .combo-result small{
     display:block;
@@ -604,6 +598,7 @@
     border-radius:var(--radius);
     border:1px solid var(--line);
     background:var(--paper);
+    box-shadow:var(--shadow-card);
   }
   .schedule-card.highlight{
     background:var(--dusk);
@@ -639,6 +634,7 @@
     padding:32px;
     border-radius:var(--radius);
     background:var(--paper-2);
+    box-shadow:var(--shadow-card);
   }
   .contact-card dl{ margin:20px 0 0; }
   .contact-card dt{
@@ -715,13 +711,12 @@
 
 <script>
   /* ⚠️ 구글 폼 링크가 확정되면 아래 값만 채워 넣으면 됩니다 (따옴표 안에 링크 붙여넣기) */
-  const GOOGLE_FORM_URL = "";
+  const GOOGLE_FORM_URL = "https://forms.gle/dXVtjDACwDSXRknW7";
 </script>
 
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="#hero" aria-label="상명피아노음악교습소 홈으로 이동">
-      <span class="brand-mark" aria-hidden="true">상</span>
       상명피아노음악
     </a>
     <nav class="site-nav" aria-label="주요 메뉴">
@@ -751,7 +746,7 @@
       <div class="wrap">
         <span class="eyebrow">인천 검단구 마전동 · 상명피아노음악교습소</span>
         <h1>연주에서 시작해,<br>나만의 음악으로 완성하는 시간</h1>
-        <p class="lead">피아노부터 작곡까지, 아이의 속도와 목표에 맞춰 배우는 음악교실입니다. 싱어송라이터가 직접 지도합니다.</p>
+        <p class="lead">피아노부터 작곡까지<br>, 아이의 속도와 목표에 맞춰 배우는 음악교실입니다.<br> 싱어송라이터가 직접 지도합니다.</p>
         <div class="hero-ctas">
           <a class="btn btn-primary" href="#" data-cta-form>문의하기</a>
           <a class="btn btn-ghost" href="#classes">수업 과정 보기</a>
