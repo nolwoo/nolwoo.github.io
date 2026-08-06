@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>상명피아노음악교습소 | 인천 검단 마전동</title>
 <meta name="description" content="싱어송라이터가 지도하는 음악교실, 상명피아노음악교습소. 피아노 기본·성인·입시 과정과 카드 기반 작곡 수업. 인천 검단구 마전동, 마전역 2번 출구.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="상명피아노음악교습소 | 인천 검단 마전동">
+<meta property="og:description" content="싱어송라이터가 지도하는 음악교실, 상명피아노음악교습소. 피아노 기본·성인·입시 과정과 카드 기반 작곡 수업.">
+<meta property="og:image" content="https://nolwoo.github.io/sm-piano/img/piano-keys.jpg">
+<meta property="og:url" content="https://nolwoo.github.io/sm-piano/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23F7F1E6'/%3E%3Ctext x='32' y='42' font-size='30' text-anchor='middle' fill='%23B08D57'%3E♪%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +22,7 @@
     --paper-2:#EFE5D2;
     --ink:#2B2622;
     --ink-soft:rgba(43,38,34,.66);
-    --ink-faint:rgba(43,38,34,.42);
+    --ink-faint:rgba(43,38,34,.68);
     --line:rgba(43,38,34,.14);
     --brass:#B08D57;
     --brass-deep:#8C6D3F;
@@ -140,7 +146,7 @@
     transition:transform .15s ease, box-shadow .15s ease;
   }
   .btn-primary{
-    background:var(--brass);
+    background:var(--brass-deep);
     color:#fff;
   }
   .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(139,109,63,.3); }
@@ -150,12 +156,11 @@
     border:1px solid var(--line);
   }
   .btn-ghost:hover{ border-color:var(--brass-deep); color:var(--brass-deep); }
-  .btn-sm{ padding:8px 16px; font-size:0.82rem; }
+  .btn-sm{ padding:13px 18px; font-size:0.82rem; }
   .btn:active{ transform:scale(.96); box-shadow:none; }
 
   /* ---------- Sections generic ---------- */
-  section{ padding:88px 0; }
-  .section-tight{ padding:64px 0; }
+  section{ padding:88px 0; scroll-margin-top:76px; }
   .section-head{
     max-width:640px;
     margin-bottom:44px;
@@ -213,7 +218,7 @@
     display:inline-flex;
     align-items:center;
     gap:6px;
-    padding:9px 18px;
+    padding:13px 18px;
     border-radius:999px;
     background:rgba(17,13,9,.4);
     backdrop-filter:blur(6px);
@@ -392,7 +397,7 @@
   }
   .class-card:hover{
     transform:rotate(-1deg) translateY(-4px);
-    box-shadow:0 18px 30px rgba(43,38,34,.1);
+    box-shadow:0 1px 2px rgba(43,38,34,.12), 0 18px 30px rgba(43,38,34,.1);
     border-color:var(--brass);
   }
   .class-card .tag{
@@ -661,12 +666,13 @@
   .cta-card{
     padding:32px;
     border-radius:var(--radius);
-    background:var(--brass);
+    background:var(--brass-deep);
     color:#fff;
+    box-shadow:var(--shadow-card);
   }
   .cta-card h3{ font-size:1.3rem; color:#fff; }
-  .cta-card p{ color:rgba(255,255,255,.88); font-size:0.94rem; margin:10px 0 22px; }
-  .cta-card .btn-primary{ background:#fff; color:var(--brass-deep); box-shadow:none; }
+  .cta-card p{ color:rgba(255,255,255,.92); font-size:0.94rem; margin:10px 0 22px; }
+  .cta-card .btn-primary{ background:#fff; color:var(--brass-deep); }
   .cta-card .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 18px rgba(0,0,0,.18); }
   .cta-alt{
     margin-top:22px;
@@ -676,7 +682,7 @@
     flex-direction:column;
     gap:8px;
     font-size:0.88rem;
-    color:rgba(255,255,255,.9);
+    color:rgba(255,255,255,.95);
   }
   .cta-alt a{ color:#fff; text-decoration:underline; text-underline-offset:2px; }
 
@@ -705,14 +711,24 @@
     clip:rect(0 0 0 0);
     white-space:nowrap;
   }
+
+  .skip-link{
+    position:absolute;
+    left:12px; top:-60px;
+    z-index:100;
+    background:var(--ink);
+    color:#fff;
+    padding:10px 18px;
+    border-radius:8px;
+    text-decoration:none;
+    transition:top .15s ease;
+  }
+  .skip-link:focus{ top:12px; }
 </style>
 </head>
 <body>
-
-<script>
-  /* ⚠️ 구글 폼 링크가 확정되면 아래 값만 채워 넣으면 됩니다 (따옴표 안에 링크 붙여넣기) */
-  const GOOGLE_FORM_URL = "https://forms.gle/dXVtjDACwDSXRknW7";
-</script>
+<noscript><style>.reveal{ opacity:1; transform:none; }</style></noscript>
+<a class="skip-link" href="#main">본문으로 바로가기</a>
 
 <header class="site-header">
   <div class="header-inner">
@@ -727,11 +743,11 @@
       <a href="#schedule">운영 시간</a>
       <a href="#contact">위치·문의</a>
     </nav>
-    <a class="btn btn-primary btn-sm" href="#" data-cta-form>문의하기</a>
+    <a class="btn btn-primary btn-sm" href="https://forms.gle/dXVtjDACwDSXRknW7" target="_blank" rel="noopener">문의하기</a>
   </div>
 </header>
 
-<main>
+<main id="main">
 
   <section id="hero" class="hero">
     <img class="hero-bg" src="img/piano-keys.jpg" alt="상명피아노음악교습소 피아노 건반 클로즈업">
@@ -748,10 +764,10 @@
         <h1>연주에서 시작해,<br>나만의 음악으로 완성하는 시간</h1>
         <p class="lead">피아노부터 작곡까지, 아이의 속도와 목표에 맞춰 배우는 음악교실입니다. 싱어송라이터가 직접 지도합니다.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary" href="#" data-cta-form>문의하기</a>
+          <a class="btn btn-primary" href="https://forms.gle/dXVtjDACwDSXRknW7" target="_blank" rel="noopener">문의하기</a>
           <a class="btn btn-ghost" href="#classes">수업 과정 보기</a>
         </div>
-        <p class="hero-note">정규 수업 전, 부담 없는 체험 레슨도 가능합니다.</p>
+        <p class="hero-note">문의하시면 자세히 안내해 드립니다.</p>
       </div>
     </div>
   </section>
@@ -759,7 +775,8 @@
   <section id="intro" class="reveal">
     <div class="wrap intro-grid">
       <div>
-        <span class="eyebrow">소개</span>
+        <h2 class="visually-hidden">소개</h2>
+        <span class="eyebrow" aria-hidden="true">소개</span>
         <p class="intro-quote" style="margin-top:16px;">
           피아노 수업은 단순히 곡을 치는 시간이 아니라, <span>음악을 이해하고 직접 경험하며 성장해가는 과정</span>이라고 생각합니다.
           반복적인 연습을 통해 작은 성취를 쌓고, 그 성취가 음악을 즐기고 향유하는 삶으로 이어지기를 바랍니다.
@@ -789,15 +806,16 @@
 
   <section id="story" class="reveal">
     <div class="wrap story-block">
+      <h2 class="visually-hidden">졸업생 이야기</h2>
       <span class="quote-mark" aria-hidden="true">&ldquo;</span>
-      <blockquote class="story-quote">
+      <p class="story-quote">
         예전에 함께 음악을 배우던 아이들이 어느덧 중학생이 되어 학원을 찾아왔습니다.
         키도 훌쩍 크고 목소리도 굵어졌지만, 웃는 모습은 그대로였어요.
         오랜만에 모여 피자와 치킨을 먹으며 이런저런 이야기를 나눈 시간, 참 고맙고 뭉클한 순간이었습니다.
         졸업해도 언제든 편하게 들를 수 있는 공간이고 싶습니다.
-      </blockquote>
+      </p>
       <a class="story-source" href="https://blog.naver.com/byeoldabang_mh/224198450505" target="_blank" rel="noopener">
-        원장님 블로그, 2026년 2월 27일 글 &rarr;
+        원장님 블로그 글 중에서, 2026년 2월 27일 &rarr;
       </a>
     </div>
   </section>
@@ -826,7 +844,7 @@
             <li>손 모양 · 기본 테크닉 · 독보력 중심</li>
             <li>치고 싶은 곡 위주로 진행</li>
             <li>시대별 작곡가 작품 분석과 표현력</li>
-            <li>평일 저녁 밤 10시까지 야간반 운영</li>
+            <li>퇴근 후에도 다닐 수 있는 늦은 저녁 야간반 운영</li>
           </ul>
         </article>
         <article class="class-card">
@@ -874,6 +892,7 @@
           </ul>
         </div>
         <div class="comp-visual">
+          <p class="visually-hidden">재료 카드 멜로디, 리듬, 화성을 조합하면 한 곡이 완성됩니다.</p>
           <div class="combo" aria-hidden="true">
             <div class="combo-card" style="background:var(--card-rose);"><small>재료</small>멜로디</div>
             <span class="combo-op">+</span>
@@ -939,7 +958,7 @@
         </div>
         <div class="schedule-card highlight">
           <span class="tag">성인 야간반</span>
-          <h3>퇴근 후, 밤 10시까지</h3>
+          <h3>퇴근 후, 늦은 저녁까지</h3>
           <p>평일 저녁 시간대에 운영하는 성인 전용 클래스입니다.</p>
         </div>
         <div class="schedule-card">
@@ -948,7 +967,7 @@
           <p>수요일 오후, 소그룹으로 진행합니다.</p>
         </div>
       </div>
-      <p class="schedule-foot"><strong>정확한 요일별 시간과 수업료는 상담 시 안내해 드립니다.</strong> 정규 등록 전 체험 레슨도 가능합니다.</p>
+      <p class="schedule-foot"><strong>정확한 요일별 시간과 수업료는 상담 시 안내해 드립니다.</strong></p>
     </div>
   </section>
 
@@ -969,13 +988,13 @@
             <dd>행정구역 개편 전 이름은 인천 서구 검단이었습니다.</dd>
           </dl>
           <a class="map-link" href="https://map.naver.com/p/search/상명피아노음악교습소" target="_blank" rel="noopener">
-            네이버 지도에서 길찾기 →
+            네이버 지도에서 보기 →
           </a>
         </div>
         <div class="cta-card">
-          <h3>상담이 궁금하신가요?</h3>
+          <h3>궁금한 점이 있으신가요?</h3>
           <p>언제든 편하게 남겨주시면 확인 후 문자로 안내해 드립니다.</p>
-          <a class="btn btn-primary" href="#" data-cta-form>문의하기</a>
+          <a class="btn btn-primary" href="https://forms.gle/dXVtjDACwDSXRknW7" target="_blank" rel="noopener">문의하기</a>
           <div class="cta-alt">
             <span>수업 중에는 통화가 어려워, 문자와 카카오톡으로 먼저 남겨주시면 순차적으로 안내드립니다.</span>
             <a href="sms:01088292387">문자 보내기 010-8829-2387</a>
@@ -1000,14 +1019,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    if (GOOGLE_FORM_URL) {
-      document.querySelectorAll('[data-cta-form]').forEach((el) => {
-        el.href = GOOGLE_FORM_URL;
-        el.target = '_blank';
-        el.rel = 'noopener';
-      });
-    }
-
     const revealEls = document.querySelectorAll('.reveal');
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
