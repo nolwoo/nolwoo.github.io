@@ -82,30 +82,25 @@ export default function ServicePage() {
         </Container>
       </section>
 
-      {/* 4단계 흐름 — 파치먼트, 사진+단계 */}
+      {/* 4단계 흐름 — 파치먼트, 줄 단위 리스트(에디토리얼) */}
       <section className="bg-parchment">
-        <Container className="py-24">
-          <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
-            <div className="overflow-hidden rounded-lg">
-              <img
-                src="/service-office.webp"
-                alt="범일금고 STELTH 스텔스 스마트 금고"
-                className="aspect-[4/3] w-full object-cover"
-              />
-            </div>
-            <div className="grid gap-8 sm:grid-cols-2">
-              {STEPS.map((s) => (
-                <div key={s.no}>
-                  <span className="text-[15px] font-semibold text-blue">{s.no}</span>
-                  <h3 className="mt-3 text-[19px] font-semibold text-ink">
-                    {s.title}
-                  </h3>
-                  <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">
-                    {s.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
+        <Container size="narrow" className="py-24">
+          <SectionHead eyebrow="프로세스" title="설치는 이렇게 진행됩니다" />
+          <div className="mt-10 divide-y divide-hairline border-y border-hairline">
+            {STEPS.map((s) => (
+              <div
+                key={s.no}
+                className="grid gap-2 py-8 sm:grid-cols-[64px_180px_1fr] sm:items-baseline sm:gap-8"
+              >
+                <span className="text-[15px] font-semibold text-blue">
+                  ({s.no})
+                </span>
+                <h3 className="text-[19px] font-semibold text-ink">{s.title}</h3>
+                <p className="text-[15px] leading-relaxed text-ink-muted">
+                  {s.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </Container>
       </section>
