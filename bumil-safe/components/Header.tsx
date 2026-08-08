@@ -38,7 +38,7 @@ export function Header() {
 
         {/* 데스크톱 상담 CTA */}
         <div className="hidden lg:block">
-          <ConsultButtons size="sm" />
+          <ConsultButtons size="sm" phoneOutline />
         </div>
 
         {/* 모바일 햄버거 */}
@@ -82,7 +82,11 @@ export function Header() {
               </Link>
             ))}
             <div className="mt-3">
-              <ConsultButtons size="md" className="flex-col items-stretch [&>a]:w-full" />
+              <ConsultButtons
+                size="md"
+                phoneOutline
+                className="flex-col items-stretch [&>a]:w-full"
+              />
             </div>
           </aside>
         </div>

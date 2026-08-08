@@ -9,17 +9,19 @@ const base =
   "inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap " +
   "transition-transform duration-150 active:scale-95 select-none";
 
+// 아웃라인 알약 — 고스트·카카오 공용 (조용한 톤, 채움 없음)
+const outlinePill =
+  "bg-transparent text-ink border border-ink/25 rounded-pill hover:border-ink hover:bg-pearl";
+
 const variants: Record<Variant, string> = {
   // 잉크 알약 — 1차 액션 (프리미엄 톤)
   primary: "bg-ink text-white rounded-pill hover:bg-black",
   // 고스트 알약 — 두 번째 CTA
-  ghost:
-    "bg-transparent text-ink border border-ink/25 rounded-pill hover:border-ink hover:bg-pearl",
+  ghost: outlinePill,
   // 다크 유틸 — 8px 라운드
   dark: "bg-ink text-white rounded-sm hover:bg-black",
-  // 카카오 — 기능색 예외, pill 문법 유지
-  kakao:
-    "bg-kakao text-kakao-ink rounded-pill hover:brightness-95",
+  // 카카오 — 기능색 예외. 배경은 아웃라인으로 조용히, 브랜드 인지는 아이콘 색으로만
+  kakao: outlinePill,
   // 라이트 알약 — 다크 타일 위의 1차 액션
   light: "bg-white text-ink rounded-pill hover:bg-parchment",
 };

@@ -25,11 +25,14 @@ export function ConsultButtons({
   className = "",
   showPhoneNumber = false,
   onDark = false,
+  phoneOutline = false,
 }: {
   size?: "sm" | "md" | "lg";
   className?: string;
   showPhoneNumber?: boolean;
   onDark?: boolean;
+  /* 헤더 등 상시 노출 자리용 — 전화 버튼도 카카오처럼 조용한 아웃라인으로 */
+  phoneOutline?: boolean;
 }) {
   function onKakao(e: React.MouseEvent) {
     if (!SITE.kakaoUrl) {
@@ -38,6 +41,8 @@ export function ConsultButtons({
       return;
     }
   }
+
+  const phoneVariant = onDark ? "light" : phoneOutline ? "ghost" : "primary";
 
   return (
     <div className={`flex flex-wrap items-center gap-2 ${className}`}>
@@ -49,9 +54,9 @@ export function ConsultButtons({
         target={SITE.kakaoUrl ? "_blank" : undefined}
         rel="noopener"
       >
-        <ChatIcon /> 카카오톡 상담
+        <span className="text-kakao"><ChatIcon /></span> 카카오톡 상담
       </Button>
-      <Button variant={onDark ? "light" : "primary"} size={size} href={SITE.phoneHref}>
+      <Button variant={phoneVariant} size={size} href={SITE.phoneHref}>
         <PhoneIcon /> {showPhoneNumber ? SITE.phone : "전화 상담"}
       </Button>
     </div>
