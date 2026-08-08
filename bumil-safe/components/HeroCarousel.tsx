@@ -1,38 +1,74 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
-type Slide = { img: string; alt: string; title: string; desc: string };
+type Slide = { img: string; alt: string; title: ReactNode; desc: ReactNode };
 
 const SLIDES: Slide[] = [
   {
     img: "/hero-product.webp",
     alt: "거실에 놓인 범일금고 OARCFX 스마트 금고 3종",
     title: "소중한 것을 가장 안전하게",
-    desc: "범일금고 본사 정품을 영등포에서. 가정부터 사무실까지, 꼭 맞는 금고를 상담해 드립니다.",
+    desc: (
+      <>
+        범일금고 본사 정품을 영등포에서.
+        <br />
+        가정부터 사무실까지, 꼭 맞는 금고를 상담해 드립니다.
+      </>
+    ),
   },
   {
     img: "/service-office.webp",
     alt: "범일금고 STELTH 스텔스 스마트 금고 2종",
     title: "사무실 자산도 든든하게",
-    desc: "대형·이중잠금 스마트 금고까지, 사무 공간에 맞는 모델을 폭넓게 갖췄습니다.",
+    desc: (
+      <>
+        대형·이중잠금 스마트 금고까지,
+        <br />
+        사무 공간에 맞는 모델을 폭넓게 갖췄습니다.
+      </>
+    ),
   },
   {
     img: "/service-home.webp",
     alt: "범일금고 월넛우드패널 스마트 금고",
     title: "공간을 해치지 않는 디자인",
-    desc: "월넛 우드 패널부터 새틴 글라스까지, 인테리어에 자연스럽게 스며드는 소재로 골라보세요.",
+    desc: (
+      <>
+        월넛 우드 패널부터 새틴 글라스까지,
+        <br />
+        인테리어에 자연스럽게 스며드는 소재로 골라보세요.
+      </>
+    ),
   },
   {
     img: "/about-service.webp",
     alt: "범일금고 LUSTER 러스터 스마트 금고 3종",
-    title: "은은한 광택의 프리미엄 라인업",
-    desc: "컬러 스테인리스 패널로 완성한 러스터 시리즈, 실물로 확인해 보세요.",
+    title: (
+      <>
+        은은한 광택의
+        <br />
+        프리미엄 라인업
+      </>
+    ),
+    desc: (
+      <>
+        컬러 스테인리스 패널로 완성한
+        <br />
+        러스터 시리즈, 실물로 확인해 보세요.
+      </>
+    ),
   },
   {
     img: "/philosophy-moire.webp",
     alt: "범일금고 MOIRE 모아르 스마트 금고",
-    title: "매일의 안심을 곁에 두는 일",
+    title: (
+      <>
+        매일의
+        <br />
+        안심을 곁에 두는 일
+      </>
+    ),
     desc: "무엇을 지킬 것인가 — 범일금고가 오래도록 고민해 온 질문입니다.",
   },
 ];

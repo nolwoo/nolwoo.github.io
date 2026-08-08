@@ -1,53 +1,53 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────────────────
-   범일금고 디자인 토큰 — Apple 디자인 시스템
-   단일 액센트 Action Blue · 잉크/파치먼트/다크타일 · 미니멀 크롬
-   (금고 = 안전·고급 — CLAUDE.md 디자인 규칙의 프리미엄·신뢰·차분 톤)
+   범일금고 디자인 토큰 — 흑백 모노톤 시안 (design/mono-draft)
+   /Users/yj/code/web-builder/mono-design-system.md 그대로 적용
+   컬러 액센트 없음 · 명도 차이로만 위계 · 각짐 + 무그림자
    ────────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #1d1d1f;
+  --background: #f6f6f4;
+  --foreground: #141414;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* 액센트 (유일한 인터랙티브 색) */
-  --color-blue: #0066cc;            /* Action Blue — 모든 CTA·링크 */
-  --color-blue-focus: #0071e3;      /* 포커스 링 */
-  --color-blue-on-dark: #2997ff;    /* 다크 타일 위 링크 */
+  /* 액센트 제거 — "블루" 토큰도 잉크로 통일 (명도로만 구분) */
+  --color-blue: #141414;            /* 원래 Action Blue → 잉크 */
+  --color-blue-focus: #000000;      /* 포커스 링 */
+  --color-blue-on-dark: #ededea;    /* 다크 섹션 위 강조 — card-accent */
 
   /* 잉크 / 텍스트 */
-  --color-ink: #1d1d1f;             /* 헤드라인·본문 */
-  --color-ink-muted: #333333;
-  --color-ink-faint: #7a7a7a;       /* 비활성·법적 고지 */
+  --color-ink: #141414;
+  --color-ink-muted: rgba(20, 20, 20, 0.66);
+  --color-ink-faint: rgba(20, 20, 20, 0.68);
   --color-on-dark: #ffffff;
   --color-on-dark-muted: #cccccc;
 
   /* 서피스 */
-  --color-canvas: #ffffff;
-  --color-parchment: #f5f5f7;       /* 시그니처 오프화이트 — 교차 타일·푸터 */
-  --color-pearl: #fafafc;           /* 고스트 버튼 면 */
-  --color-tile: #272729;            /* 다크 타일 1 */
-  --color-tile-2: #2a2a2c;
-  --color-tile-3: #252527;
+  --color-canvas: #f6f6f4;
+  --color-parchment: #ececE9;       /* paper-2 — 교차 타일·푸터 */
+  --color-pearl: #f6f6f4;           /* 고스트 버튼 면 */
+  --color-tile: #2a2a2a;            /* dusk */
+  --color-tile-2: #0e0e0e;          /* dusk-deep */
+  --color-tile-3: #0e0e0e;          /* dusk-deep */
 
-  /* 헤어라인 */
-  --color-hairline: #e0e0e0;
-  --color-divider: #f0f0f0;
+  /* 헤어라인 — 유일한 경계 표현 수단 */
+  --color-hairline: rgba(20, 20, 20, 0.18);
+  --color-divider: rgba(20, 20, 20, 0.1);
 
-  /* 기능색 예외 — 카카오 채널 */
+  /* 기능색 예외 — 카카오 채널만 유지 */
   --color-kakao: #fee500;
   --color-kakao-ink: #3c1e1e;
 
-  /* radius 스케일 (Apple) */
-  --radius-xs: 5px;
-  --radius-sm: 8px;
-  --radius-md: 11px;
-  --radius-lg: 18px;
-  --radius-pill: 9999px;
+  /* radius 전역 각짐 */
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-pill: 0px;
 
   /* Pretendard = 한글판 SF Pro. 시스템 폰트 먼저 → Apple 기기서 진짜 SF Pro */
   --font-sans: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont,

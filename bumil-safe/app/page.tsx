@@ -33,7 +33,13 @@ export default function Home() {
             <SectionHead
               eyebrow="제품"
               title="바로 만나보는 인기 금고"
-              lead="범일금고 본사 정품 · 영등포 직접 설치 · 가격은 상담 시 확정됩니다."
+              lead={
+                <>
+                  범일금고 본사 정품 · 영등포 직접 설치
+                  <br />
+                  가격은 상담 시 확정됩니다.
+                </>
+              }
             />
             <Link
               href="/products"
@@ -150,7 +156,9 @@ export default function Home() {
             오늘, 가장 안전한 선택을 시작하세요.
           </h2>
           <p className="mx-auto mt-4 max-w-[40ch] text-[18px] text-ink-muted">
-            설치 환경만 알려주시면 딱 맞는 금고를 추천해 드려요. 부담 없이 문의하세요.
+            설치 환경만 알려주시면
+            <br />
+            딱 맞는 금고를 추천해 드려요. 부담{" "}없이 문의하세요.
           </p>
           <div className="mt-8 flex justify-center">
             <ConsultButtons size="lg" showPhoneNumber className="justify-center" />

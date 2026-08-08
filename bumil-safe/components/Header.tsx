@@ -63,7 +63,7 @@ export function Header() {
             className="fixed inset-0 z-[60] bg-black/35"
             onClick={() => setOpen(false)}
           />
-          <aside className="fixed right-0 top-0 z-[70] flex h-full w-[80vw] max-w-[320px] flex-col gap-1 bg-canvas p-6 shadow-2xl">
+          <aside className="fixed right-0 top-0 z-[70] flex h-full w-[80vw] max-w-[320px] flex-col gap-1 border-l border-hairline bg-canvas p-6">
             <button
               className="self-end p-2 text-2xl leading-none text-ink-faint"
               aria-label="닫기"

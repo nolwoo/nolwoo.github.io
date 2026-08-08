@@ -19,7 +19,7 @@ export function ProductCard({ product: p }: { product: Product }) {
           src={p.img}
           alt={p.name}
           loading="lazy"
-          className="h-full w-full object-cover [filter:drop-shadow(0_5px_30px_rgba(0,0,0,0.22))] transition-transform duration-300 group-hover:scale-[1.03]"
+          className="h-full w-full object-cover [filter:contrast(1.03)] transition-transform duration-300 group-hover:scale-[1.03]"
         />
       </div>
 

@@ -38,7 +38,7 @@ export default function ProductsPage() {
               어떤 금고가 맞을지 고민되시나요?
             </h3>
             <p className="mt-2 text-[16px] text-ink-muted">
-              설치 환경만 알려주시면 딱 맞는 금고를 추천해 드려요. 부담 없이 문의하세요.
+              설치 환경만 알려주시면 딱 맞는 금고를 추천해 드려요. 부담{" "}없이 문의하세요.
             </p>
           </div>
           <ConsultButtons size="lg" showPhoneNumber />

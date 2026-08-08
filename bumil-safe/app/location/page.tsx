@@ -22,7 +22,13 @@ export default function LocationPage() {
             center
             eyebrow="오시는길"
             title="매장으로 찾아오세요"
-            lead="영등포 매장에서 실물을 보고 상담하실 수 있어요. 방문 전 전화 주시면 더 빠르게 도와드려요."
+            lead={
+              <>
+                영등포 매장에서 실물을 보고
+                <br />
+                상담하실 수 있어요. 방문 전 전화 주시면 더 빠르게 도와드려요.
+              </>
+            }
           />
         </Container>
       </section>

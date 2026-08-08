@@ -76,7 +76,7 @@ export default function ServicePage() {
             as="h1"
             center
             eyebrow="서비스"
-            title={<>상담부터 설치, 사후관리까지<br />한 번에 챙겨드립니다.</>}
+            title={<>상담부터 설치,<br />사후관리까지 한 번에 챙겨드립니다.</>}
             lead="금고는 사는 것보다 '제대로 설치하고 오래 쓰는 것'이 중요합니다."
           />
         </Container>
@@ -129,7 +129,9 @@ export default function ServicePage() {
             궁금한 건 편하게 물어보세요.
           </h2>
           <p className="mx-auto mt-4 max-w-[40ch] text-[17px] text-on-dark-muted">
-            설치 환경만 알려주시면 딱 맞는 금고와 설치 방법을 안내해 드려요.
+            설치 환경만 알려주시면
+            <br />
+            딱 맞는 금고와 설치 방법을 안내해 드려요.
           </p>
           <div className="mt-8 flex justify-center">
             <ConsultButtons size="lg" showPhoneNumber className="justify-center" />
