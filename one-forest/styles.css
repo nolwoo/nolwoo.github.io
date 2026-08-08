@@ -316,7 +316,7 @@ a:hover { color: var(--moss-deep); }
   border: 1.5px solid transparent;
   cursor: pointer;
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: scale(0.97); }
@@ -326,6 +326,7 @@ a:hover { color: var(--moss-deep); }
   box-shadow: 0 6px 18px rgba(49, 63, 36, 0.35);
 }
 .btn-primary:hover { background: var(--moss); color: #fdfaf1; }
+.btn-primary:active { box-shadow: 0 2px 8px rgba(49, 63, 36, 0.35); }
 .btn-outline {
   background: transparent;
   border-color: var(--bark);
@@ -508,9 +509,10 @@ section.alt {
   text-decoration: none;
   color: var(--ink);
   display: block;
+  box-shadow: var(--shadow-soft);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.pillar:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+.pillar:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .pillar .verb {
   font-family: var(--font-display);
   font-size: 1.5rem;
@@ -594,7 +596,7 @@ section.alt {
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-soft);
 }
 .shelf-photo img {
   width: 100%;
