@@ -24,7 +24,9 @@ const variants: Record<Variant, string> = {
   "ghost-dark": outlinePillDark,
   // 다크 유틸 — 8px 라운드
   dark: "bg-ink text-white rounded-sm hover:bg-black",
-  // 카카오 — 기능색 예외. 배경은 아웃라인으로 조용히, 브랜드 인지는 아이콘 색으로만
+  // 카카오 — 기능색 예외. 배경은 아웃라인으로 조용히, 브랜드 인지는 아이콘 색으로만.
+  // ghost/ghost-dark와 값이 항상 같아야 한다(이름만 분리 — ConsultButtons.tsx에서
+  // 어떤 버튼인지 구분하기 위함). 아웃라인 톤을 바꿀 땐 outlinePill(Dark) 쪽만 고치면 된다.
   kakao: outlinePill,
   "kakao-dark": outlinePillDark,
   // 라이트 알약 — 다크 타일 위의 1차 액션

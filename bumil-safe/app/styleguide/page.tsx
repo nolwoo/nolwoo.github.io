@@ -130,7 +130,7 @@ export default function StyleGuide() {
             lead="근검정 #272729 위 흰 텍스트. 인라인 링크는 스카이 블루."
           />
           <div className="mt-8 flex justify-center">
-            <ConsultButtons size="md" />
+            <ConsultButtons size="md" onDark />
           </div>
         </Container>
       </section>

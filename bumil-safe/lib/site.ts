@@ -3,6 +3,10 @@
 //  기존 사이트 js/config.js 대응
 // =====================================================================
 
+// 헤더 높이(px) — Header.tsx(높이)·HeroCarousel.tsx(음수 마진·컨트롤 위치)가
+// 공유하는 유일한 값. 헤더 높이를 바꿀 땐 여기만 고치면 된다.
+export const HEADER_HEIGHT_PX = 56;
+
 export const SITE = {
   brand: "범일금고",
   branch: "영등포대리점",

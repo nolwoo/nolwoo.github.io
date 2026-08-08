@@ -134,7 +134,7 @@ export default function ServicePage() {
             딱 맞는 금고와 설치 방법을 안내해 드려요.
           </p>
           <div className="mt-8 flex justify-center">
-            <ConsultButtons size="lg" showPhoneNumber className="justify-center" />
+            <ConsultButtons size="lg" showPhoneNumber onDark className="justify-center" />
           </div>
         </Container>
       </section>

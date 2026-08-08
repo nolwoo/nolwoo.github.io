@@ -1,6 +1,8 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
+import Link from "next/link";
+import { HEADER_HEIGHT_PX } from "@/lib/site";
 
 type Slide = { img: string; alt: string; title: ReactNode; desc: ReactNode };
 
@@ -95,9 +97,12 @@ export function HeroCarousel() {
 
   return (
     <div
-      // 헤더(56px, sticky) 아래로 음수 마진을 줘서 사진이 헤더 뒤까지 이어지게 한다
-      // — 헤더는 홈 최상단에서 투명해져 사진 위에 떠 있는 것처럼 보인다.
-      className="relative -mt-14 h-[100dvh] w-full overflow-hidden"
+      // 헤더(HEADER_HEIGHT_PX, sticky) 아래로 음수 마진을 줘서 사진이 헤더 뒤까지 이어지게
+      // 한다 — 헤더는 홈 최상단에서 투명해져 사진 위에 떠 있는 것처럼 보인다.
+      // id는 Header.tsx가 IntersectionObserver로 "히어로를 벗어났는지" 판단하는 기준.
+      id="home-hero"
+      style={{ marginTop: -HEADER_HEIGHT_PX }}
+      className="relative h-[100dvh] w-full overflow-hidden"
       role="region"
       aria-roledescription="캐러셀"
       aria-label="대표 제품 사진"
@@ -132,7 +137,7 @@ export function HeroCarousel() {
             aria-label={`${i + 1}번째 사진 보기`}
             aria-current={i === index}
             className={`w-1.5 rounded-pill transition-all ${
-              i === index ? "h-6 bg-white" : "h-1.5 bg-white/40"
+              i === index ? "h-6 bg-on-dark" : "h-1.5 bg-white/40"
             }`}
           />
         ))}
@@ -142,7 +147,8 @@ export function HeroCarousel() {
       <button
         onClick={() => setPaused((p) => !p)}
         aria-label={paused ? "자동 슬라이드 재생" : "자동 슬라이드 정지"}
-        className="absolute right-6 top-[calc(3.5rem+1.25rem)] flex h-8 w-8 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-colors hover:bg-black/50 sm:right-10"
+        style={{ top: HEADER_HEIGHT_PX + 20 }}
+        className="absolute right-6 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 text-on-dark backdrop-blur-sm transition-colors hover:bg-black/50 sm:right-10"
       >
         {paused ? (
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -155,28 +161,30 @@ export function HeroCarousel() {
         )}
       </button>
 
-      <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-5 p-8 sm:max-w-[560px] sm:p-16">
+      {/* pointer-events-none — 이 박스는 콘텐츠보다 넓어서(특히 모바일 전체폭) 우측
+          인디케이터·정지 버튼과 자리가 겹칠 수 있다. 안의 링크만 다시 클릭 가능하게 켠다. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-start gap-5 p-8 sm:max-w-[560px] sm:p-16">
         {/* 페이지 대표 제목(h1) — 슬라이드와 무관하게 고정, 검색엔진에 지역·업종을 명시 */}
         <h1 className="text-[13px] font-semibold uppercase tracking-[0.3em] text-white/80">
           Bumil Safe · 영등포 금고 전문점
         </h1>
         {/* 슬라이드마다 바뀌는 문구라 h1이 아닌 h2 */}
-        <h2 className="max-w-[14ch] text-[clamp(30px,5.5vw,56px)] font-semibold leading-[1.2] text-white">
+        <h2 className="max-w-[14ch] text-[clamp(30px,5.5vw,56px)] font-semibold leading-[1.2] text-on-dark">
           {active.title}
         </h2>
         <p className="max-w-[40ch] text-[clamp(15px,1.8vw,18px)] leading-relaxed text-white/80">
           {active.desc}
         </p>
         {/* 상시 CTA는 헤더가 담당 — 히어로에는 가벼운 링크 하나만 */}
-        <a
+        <Link
           href="/contact"
-          className="mt-2 inline-flex items-center gap-2 border-b border-white/40 pb-1 text-[15px] text-white transition-colors hover:border-white"
+          className="pointer-events-auto mt-2 inline-flex items-center gap-2 border-b border-white/40 pb-1 text-[15px] text-on-dark transition-colors hover:border-on-dark"
         >
           상담 안내 보기
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-        </a>
+        </Link>
       </div>
     </div>
   );
