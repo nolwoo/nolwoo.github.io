@@ -112,7 +112,7 @@ export default function ServicePage() {
           <div className="mt-10 divide-y divide-hairline border-y border-hairline">
             {FAQ.map((f) => (
               <div key={f.q} className="py-6">
-                <h4 className="text-[17px] font-semibold text-ink">Q. {f.q}</h4>
+                <h3 className="text-[17px] font-semibold text-ink">Q. {f.q}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
                   {f.a}
                 </p>

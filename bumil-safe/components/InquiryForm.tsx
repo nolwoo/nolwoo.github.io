@@ -35,9 +35,9 @@ export function InquiryForm() {
     return (
       <div className="rounded-lg border border-hairline bg-canvas p-8 text-center">
         <p className="text-[40px]">✅</p>
-        <h3 className="mt-3 text-[21px] font-semibold text-ink">
+        <h2 className="mt-3 text-[21px] font-semibold text-ink">
           상담 신청이 접수되었어요
-        </h3>
+        </h2>
         <p className="mt-2 text-[15px] text-ink-muted">
           확인 후 빠르게 연락드리겠습니다. 급하시면 전화로도 문의해 주세요.
         </p>
@@ -56,7 +56,7 @@ export function InquiryForm() {
       onSubmit={onSubmit}
       className="rounded-lg border border-hairline bg-canvas p-8"
     >
-      <h3 className="text-[22px] font-semibold text-ink">온라인 상담 신청</h3>
+      <h2 className="text-[22px] font-semibold text-ink">온라인 상담 신청</h2>
       <p className="mt-2 text-[14px] text-ink-muted">
         남겨주시면 확인 후 연락드려요. (실시간 답변은 아니에요)
       </p>

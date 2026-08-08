@@ -71,7 +71,7 @@ export default async function AdminPage() {
           >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-3">
-                <h3 className="text-[18px] font-semibold text-ink">{q.name}</h3>
+                <h2 className="text-[18px] font-semibold text-ink">{q.name}</h2>
                 <span className="rounded-pill bg-parchment px-2.5 py-0.5 text-[12px] font-medium text-ink-muted">
                   {q.status}
                 </span>

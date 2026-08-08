@@ -20,7 +20,7 @@ export default function ContactPage() {
             as="h1"
             center
             eyebrow="상담"
-            title="부담 없이 문의하세요"
+            title={<>부담{" "}없이 문의하세요</>}
             lead="설치 환경(어디에·무엇을 보관)만 알려주시면 딱 맞는 금고를 추천해 드려요."
           />
           <div className="mt-9 flex justify-center">

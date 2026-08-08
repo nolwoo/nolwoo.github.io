@@ -19,9 +19,9 @@ export function TrustItem({
       >
         {no}
       </span>
-      <h4 className={`mt-3 text-[21px] font-semibold ${dark ? "text-on-dark" : "text-ink"}`}>
+      <h3 className={`mt-3 text-[21px] font-semibold ${dark ? "text-on-dark" : "text-ink"}`}>
         {title}
-      </h4>
+      </h3>
       <p className={`mt-2 text-[15px] leading-relaxed ${dark ? "text-on-dark-muted" : "text-ink-muted"}`}>
         {desc}
       </p>

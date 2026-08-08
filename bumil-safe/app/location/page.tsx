@@ -48,9 +48,9 @@ export default function LocationPage() {
           <div className="grid gap-8 md:grid-cols-2">
             {/* 정보 */}
             <div className="rounded-lg border border-hairline bg-canvas p-8">
-              <h3 className="text-[22px] font-semibold text-ink">
+              <h2 className="text-[22px] font-semibold text-ink">
                 범일금고 <span className="text-ink-faint">영등포대리점</span>
-              </h3>
+              </h2>
               <ul className="mt-6 space-y-4 text-[15px]">
                 <Row label="도로명" value={SITE.address.road} />
                 <Row label="지번" value={SITE.address.jibun} />
