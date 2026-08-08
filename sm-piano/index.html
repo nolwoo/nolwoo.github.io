@@ -11,29 +11,27 @@
 <meta property="og:image" content="https://nolwoo.github.io/sm-piano/img/piano-keys.jpg">
 <meta property="og:url" content="https://nolwoo.github.io/sm-piano/">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23F7F1E6'/%3E%3Ctext x='32' y='42' font-size='30' text-anchor='middle' fill='%23B08D57'%3E♪%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F6F6F4'/%3E%3Ctext x='32' y='42' font-size='30' text-anchor='middle' fill='%23141414'%3E♪%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/variable/pretendardvariable.css">
 <style>
   :root{
-    --paper:#F7F1E6;
-    --paper-2:#EFE5D2;
-    --ink:#2B2622;
-    --ink-soft:rgba(43,38,34,.66);
-    --ink-faint:rgba(43,38,34,.68);
-    --line:rgba(43,38,34,.14);
-    --brass:#B08D57;
-    --brass-deep:#8C6D3F;
-    --dusk:#46566B;
-    --dusk-deep:#2E3A48;
-    --card-rose:#E3AF9C;
-    --card-sage:#9FB28F;
-    --card-sky:#93AFC4;
-    --card-brass:#E8CC9E;
-    --radius:18px;
-    --shadow-card:0 0 .5px rgba(43,38,34,.16), 0 1px 2px rgba(43,38,34,.1);
+    --paper:#F6F6F4;
+    --paper-2:#ECECE9;
+    --ink:#141414;
+    --ink-soft:rgba(20,20,20,.66);
+    --ink-faint:rgba(20,20,20,.68);
+    --line:rgba(20,20,20,.18);
+    --dusk:#2A2A2A;
+    --dusk-deep:#0E0E0E;
+    --card-a:#E8E8E5;
+    --card-b:#CACAC6;
+    --card-c:#A6A6A2;
+    --card-accent:#EDEDEA;
+    --radius:0px;
+    --shadow-card:none;
     --font-display:'Gowun Batang', serif;
     --font-body:'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
     --font-mono:'IBM Plex Mono', ui-monospace, monospace;
@@ -58,7 +56,7 @@
   img,svg{max-width:100%; display:block;}
 
   :focus-visible{
-    outline:3px solid var(--brass-deep);
+    outline:3px solid var(--ink);
     outline-offset:3px;
   }
 
@@ -82,13 +80,13 @@
     font-family:var(--font-mono);
     font-size:0.78rem;
     letter-spacing:0.06em;
-    color:var(--brass-deep);
+    color:var(--ink);
     text-transform:uppercase;
   }
   .eyebrow::before{
     content:"";
     width:18px; height:1px;
-    background:var(--brass-deep);
+    background:var(--ink);
   }
 
   /* ---------- Header ---------- */
@@ -96,10 +94,9 @@
     position:sticky;
     top:0;
     z-index:50;
-    background:rgba(247,241,230,.88);
-    backdrop-filter:saturate(140%) blur(10px);
+    background:rgba(246,246,244,.92);
+    backdrop-filter:saturate(100%) blur(10px);
     border-bottom:1px solid var(--line);
-    box-shadow:0 1px 3px rgba(43,38,34,.06), 0 2px 2px rgba(43,38,34,.04);
   }
   .header-inner{
     display:flex;
@@ -127,7 +124,7 @@
     color:var(--ink-soft);
   }
   .site-nav a{ text-decoration:none; }
-  .site-nav a:hover{ color:var(--brass-deep); }
+  .site-nav a:hover{ color:var(--ink); }
   @media (min-width:860px){ .site-nav{ display:flex; } }
 
   .btn{
@@ -136,28 +133,28 @@
     justify-content:center;
     gap:8px;
     padding:11px 22px;
-    border-radius:999px;
+    border-radius:0;
     font-size:0.92rem;
     font-weight:600;
     letter-spacing:-0.01em;
     text-decoration:none;
     white-space:nowrap;
     cursor:pointer;
-    transition:transform .15s ease, box-shadow .15s ease;
+    transition:transform .15s ease, background .15s ease, border-color .15s ease;
   }
   .btn-primary{
-    background:var(--brass-deep);
+    background:var(--ink);
     color:#fff;
   }
-  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(139,109,63,.3); }
+  .btn-primary:hover{ transform:translateY(-1px); background:#000; }
   .btn-ghost{
     background:transparent;
     color:var(--ink);
     border:1px solid var(--line);
   }
-  .btn-ghost:hover{ border-color:var(--brass-deep); color:var(--brass-deep); }
+  .btn-ghost:hover{ border-color:var(--ink); }
   .btn-sm{ padding:13px 18px; font-size:0.82rem; }
-  .btn:active{ transform:scale(.96); box-shadow:none; }
+  .btn:active{ transform:scale(.96); }
 
   /* ---------- Sections generic ---------- */
   section{ padding:88px 0; scroll-margin-top:76px; }
@@ -202,7 +199,7 @@
     content:"";
     position:absolute;
     inset:0;
-    background:linear-gradient(180deg, rgba(20,15,10,.18) 0%, rgba(20,15,10,.46) 40%, rgba(15,11,7,.88) 100%);
+    background:linear-gradient(180deg, rgba(10,10,10,.18) 0%, rgba(10,10,10,.46) 40%, rgba(8,8,8,.88) 100%);
   }
   .hero-topbar{
     position:absolute;
@@ -219,8 +216,8 @@
     align-items:center;
     gap:6px;
     padding:13px 18px;
-    border-radius:999px;
-    background:rgba(17,13,9,.4);
+    border-radius:0;
+    background:rgba(10,10,10,.4);
     backdrop-filter:blur(6px);
     border:1px solid rgba(255,255,255,.3);
     color:#fff;
@@ -240,8 +237,8 @@
     z-index:2;
     padding:clamp(32px,6vw,72px) 0 clamp(40px,6vw,64px);
   }
-  .hero-copy .eyebrow{ color:var(--card-brass); text-shadow:0 1px 10px rgba(0,0,0,.4); }
-  .hero-copy .eyebrow::before{ background:var(--card-brass); }
+  .hero-copy .eyebrow{ color:var(--card-accent); text-shadow:0 1px 10px rgba(0,0,0,.4); }
+  .hero-copy .eyebrow::before{ background:var(--card-accent); }
   .hero h1{
     font-size:clamp(2.1rem, 5vw, 3.4rem);
     line-height:1.42;
@@ -275,27 +272,18 @@
     color:rgba(255,255,255,.66);
   }
 
-  /* real-photo treatment — warm brass color-grade ties every photo to the palette */
+  /* real-photo treatment — no color-grade; photography stays natural against a monochrome shell */
   .photo-frame{
     position:relative;
-    border-radius:var(--radius);
+    border-radius:0;
     overflow:hidden;
-    box-shadow:0 1px 2px rgba(43,38,34,.18), 0 20px 40px rgba(43,38,34,.2);
   }
   .photo-frame img{
     width:100%;
     height:100%;
     object-fit:cover;
     display:block;
-    filter:saturate(1.08) contrast(1.05) brightness(.97);
-  }
-  .photo-frame::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(155deg, rgba(176,141,87,.24), rgba(43,38,34,.1));
-    mix-blend-mode:multiply;
-    pointer-events:none;
+    filter:contrast(1.03);
   }
 
   /* ---------- Intro ---------- */
@@ -313,12 +301,12 @@
     line-height:1.6;
     color:var(--ink);
   }
-  .intro-quote span{ color:var(--brass-deep); }
+  .intro-quote span{ color:var(--ink); font-weight:600; }
   .identity-badge{
     display:inline-block;
     margin-top:26px;
     padding:10px 18px;
-    border-radius:999px;
+    border-radius:0;
     background:var(--dusk);
     color:var(--paper);
     font-size:0.88rem;
@@ -330,9 +318,8 @@
     gap:18px;
     padding:24px;
     border:1px solid var(--line);
-    border-radius:var(--radius);
+    border-radius:0;
     background:var(--paper);
-    box-shadow:var(--shadow-card);
   }
   .intro-facts dt{
     font-family:var(--font-mono);
@@ -357,7 +344,7 @@
     font-family:var(--font-display);
     font-size:4.5rem;
     line-height:1;
-    color:var(--brass);
+    color:var(--ink-soft);
     margin-bottom:-10px;
   }
   .story-quote{
@@ -376,7 +363,7 @@
     text-decoration:underline;
     text-underline-offset:3px;
   }
-  .story-source:hover{ color:var(--brass-deep); }
+  .story-source:hover{ color:var(--ink); }
 
   /* ---------- Class cards ---------- */
   .class-grid{
@@ -390,24 +377,22 @@
   .class-card{
     background:var(--paper);
     border:1px solid var(--line);
-    border-radius:var(--radius);
+    border-radius:0;
     padding:26px 22px;
-    box-shadow:var(--shadow-card);
-    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    transition:transform .2s ease, border-color .2s ease;
   }
   .class-card:hover{
-    transform:rotate(-1deg) translateY(-4px);
-    box-shadow:0 1px 2px rgba(43,38,34,.12), 0 18px 30px rgba(43,38,34,.1);
-    border-color:var(--brass);
+    transform:translateY(-4px);
+    border-color:var(--ink);
   }
   .class-card .tag{
     display:inline-block;
     font-family:var(--font-mono);
     font-size:0.72rem;
-    color:var(--brass-deep);
-    background:rgba(176,141,87,.12);
+    color:var(--ink);
+    background:rgba(20,20,20,.07);
     padding:3px 10px;
-    border-radius:999px;
+    border-radius:0;
     margin-bottom:14px;
   }
   .class-card h3{
@@ -433,8 +418,8 @@
     background:var(--dusk-deep);
     color:var(--paper);
   }
-  .comp-section .eyebrow{ color:var(--card-brass); }
-  .comp-section .eyebrow::before{ background:var(--card-brass); }
+  .comp-section .eyebrow{ color:var(--card-accent); }
+  .comp-section .eyebrow::before{ background:var(--card-accent); }
   .comp-section .section-head h2{ color:var(--paper); }
   .comp-grid{
     display:grid;
@@ -443,7 +428,7 @@
     align-items:center;
   }
   @media (min-width:900px){ .comp-grid{ grid-template-columns:0.95fr 1.05fr; } }
-  .comp-text p{ color:rgba(247,241,230,.82); font-size:1rem; max-width:52ch; }
+  .comp-text p{ color:rgba(246,246,244,.82); font-size:1rem; max-width:52ch; }
   .comp-list{
     list-style:none;
     margin:26px 0 0;
@@ -457,13 +442,13 @@
     gap:12px;
     align-items:flex-start;
     font-size:0.96rem;
-    color:rgba(247,241,230,.9);
+    color:rgba(246,246,244,.9);
   }
   .comp-list .dot{
     flex-shrink:0;
     width:8px; height:8px;
     border-radius:50%;
-    background:var(--card-brass);
+    background:var(--card-accent);
     margin-top:9px;
   }
 
@@ -487,7 +472,7 @@
     margin-top:14px;
     text-align:center;
     font-size:0.8rem;
-    color:rgba(247,241,230,.62);
+    color:rgba(246,246,244,.62);
     max-width:30ch;
   }
 
@@ -501,12 +486,11 @@
   .combo-card{
     width:118px;
     padding:18px 14px;
-    border-radius:14px;
+    border-radius:0;
     font-family:var(--font-display);
     font-weight:700;
     color:var(--ink);
     text-align:center;
-    box-shadow:0 1px 2px rgba(0,0,0,.2), 0 12px 24px rgba(0,0,0,.28);
   }
   .combo-card small{
     display:block;
@@ -519,18 +503,17 @@
   .combo-op{
     font-family:var(--font-mono);
     font-size:1.3rem;
-    color:var(--card-brass);
+    color:var(--card-accent);
   }
   .combo-result{
     width:150px;
     padding:20px 16px;
-    border-radius:14px;
-    background:var(--card-brass);
+    border-radius:0;
+    background:var(--card-accent);
     color:var(--ink);
     text-align:center;
     font-family:var(--font-display);
     font-weight:700;
-    box-shadow:0 1px 2px rgba(0,0,0,.22), 0 14px 30px rgba(0,0,0,.32);
   }
   .combo-result small{
     display:block;
@@ -559,7 +542,7 @@
   }
   .space-list li{
     padding-left:18px;
-    border-left:2px solid var(--brass);
+    border-left:2px solid var(--ink);
   }
   .space-list strong{ display:block; font-size:1rem; margin-bottom:3px; }
   .space-list span{ font-size:0.9rem; color:var(--ink-soft); }
@@ -614,13 +597,13 @@
     font-family:var(--font-mono);
     font-size:0.74rem;
     letter-spacing:.04em;
-    color:var(--brass-deep);
+    color:var(--ink);
     text-transform:uppercase;
   }
-  .schedule-card.highlight .tag{ color:var(--card-brass); }
+  .schedule-card.highlight .tag{ color:var(--card-accent); }
   .schedule-card h3{ font-size:1.1rem; margin:10px 0 8px; }
   .schedule-card p{ margin:0; font-size:0.92rem; color:var(--ink-soft); }
-  .schedule-card.highlight p{ color:rgba(247,241,230,.82); }
+  .schedule-card.highlight p{ color:rgba(246,246,244,.82); }
   .schedule-foot{
     margin-top:24px;
     font-size:0.9rem;
@@ -658,7 +641,7 @@
     gap:6px;
     margin-top:18px;
     font-size:0.9rem;
-    color:var(--brass-deep);
+    color:var(--ink);
     text-decoration:underline;
     text-underline-offset:3px;
   }
@@ -666,14 +649,14 @@
   .cta-card{
     padding:32px;
     border-radius:var(--radius);
-    background:var(--brass-deep);
+    background:var(--ink);
     color:#fff;
     box-shadow:var(--shadow-card);
   }
   .cta-card h3{ font-size:1.3rem; color:#fff; }
   .cta-card p{ color:rgba(255,255,255,.92); font-size:0.94rem; margin:10px 0 22px; }
-  .cta-card .btn-primary{ background:#fff; color:var(--brass-deep); }
-  .cta-card .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 18px rgba(0,0,0,.18); }
+  .cta-card .btn-primary{ background:#fff; color:var(--ink); }
+  .cta-card .btn-primary:hover{ transform:translateY(-1px); }
   .cta-alt{
     margin-top:22px;
     padding-top:20px;
@@ -894,11 +877,11 @@
         <div class="comp-visual">
           <p class="visually-hidden">재료 카드 멜로디, 리듬, 화성을 조합하면 한 곡이 완성됩니다.</p>
           <div class="combo" aria-hidden="true">
-            <div class="combo-card" style="background:var(--card-rose);"><small>재료</small>멜로디</div>
+            <div class="combo-card" style="background:var(--card-a);"><small>재료</small>멜로디</div>
             <span class="combo-op">+</span>
-            <div class="combo-card" style="background:var(--card-sky);"><small>재료</small>리듬</div>
+            <div class="combo-card" style="background:var(--card-b);"><small>재료</small>리듬</div>
             <span class="combo-op">+</span>
-            <div class="combo-card" style="background:var(--card-sage);"><small>재료</small>화성</div>
+            <div class="combo-card" style="background:var(--card-c);"><small>재료</small>화성</div>
             <span class="combo-op">=</span>
             <div class="combo-result"><small>완성</small>한 곡</div>
           </div>
