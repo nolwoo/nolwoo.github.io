@@ -13,18 +13,8 @@ export default function Home() {
 
   return (
     <>
-      {/* ① Hero — 실제 제품 사진 5장이 자동으로 넘어가는 캐러셀 */}
-      <section className="bg-canvas">
-        <Container className="pt-14 pb-20 md:pt-20">
-          {/* 페이지 대표 제목(h1) — 검색엔진이 주제를 판단하는 핵심 신호라 지역·업종을 명시 */}
-          <h1 className="text-center text-[13px] font-semibold uppercase tracking-[0.3em] text-blue">
-            Bumil Safe · 영등포 금고 전문점
-          </h1>
-          <div className="mt-6">
-            <HeroCarousel />
-          </div>
-        </Container>
-      </section>
+      {/* ① Hero — 화면을 꽉 채우는 풀블리드 캐러셀. h1은 컴포넌트 내부에 고정으로 둔다 */}
+      <HeroCarousel />
 
       {/* ② 인기 제품 — 밝은 타일 */}
       <section className="bg-canvas pb-24">

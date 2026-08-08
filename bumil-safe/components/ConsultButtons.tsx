@@ -42,12 +42,19 @@ export function ConsultButtons({
     }
   }
 
-  const phoneVariant = onDark ? "light" : phoneOutline ? "ghost" : "primary";
+  const kakaoVariant = onDark ? "kakao-dark" : "kakao";
+  const phoneVariant = onDark
+    ? phoneOutline
+      ? "ghost-dark"
+      : "light"
+    : phoneOutline
+      ? "ghost"
+      : "primary";
 
   return (
     <div className={`flex flex-wrap items-center gap-2 ${className}`}>
       <Button
-        variant="kakao"
+        variant={kakaoVariant}
         size={size}
         href={SITE.kakaoUrl || "#"}
         onClick={onKakao}
