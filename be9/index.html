@@ -17,7 +17,7 @@
   </div>
 </div>
 
-<header class="site">
+<header class="site site--home">
   <div class="wrap">
     <a class="logo" href="index.html"><span class="mark"></span><span class="signature">benine</span> studio</a>
     <nav class="primary">
@@ -37,7 +37,12 @@
 
 <main id="top">
   <section class="hero">
-    <img src="images/hero.jpg" alt="정성껏 제본된 졸업앨범 클로즈업">
+    <div class="hero-slides">
+      <img src="images/hero.jpg" alt="정성껏 제본된 졸업앨범 클로즈업" class="is-active">
+      <img src="images/camera.jpg" alt="정성스러운 촬영에 쓰이는 클래식 카메라">
+      <img src="images/polaroid.jpg" alt="사진 한 장이 완성되는 순간">
+      <img src="images/studio.jpg" alt="따뜻한 빛 아래 넘겨지는 앨범 페이지">
+    </div>
     <div class="hero-copy">
       <div class="wrap reveal">
         <p class="eyebrow">초·중·고 학교 졸업앨범 전문</p>
@@ -49,6 +54,7 @@
         </div>
       </div>
     </div>
+    <div class="hero-dots" aria-hidden="true"><span class="is-active"></span><span></span><span></span><span></span></div>
     <div class="scroll-cue">Scroll Down</div>
   </section>
 
@@ -58,7 +64,7 @@
       <div><b>100%*</b><small>졸업식 전 납품</small></div>
       <div><b>2단계</b><small>오탈자·누락 검수</small></div>
       <div><b>나라장터*</b><small>종합쇼핑몰 등록 업체</small></div>
-      <p style="flex-basis:100%; margin:.6em 0 0; font-size:.72rem; color:var(--ink-soft);">* 표시 수치는 배치 예시입니다. 실제 실적은 <a href="works.html" style="color:var(--red); font-weight:700;">납품 실적 페이지</a>에서 확인하실 수 있도록 준비 중입니다.</p>
+      <p style="flex-basis:100%; margin:.6em 0 0; font-size:.72rem; color:var(--ink-soft);">* 표시 수치는 배치 예시입니다. 실제 실적은 <a href="works.html" style="color:var(--ink); font-weight:700; text-decoration:underline;">납품 실적 페이지</a>에서 확인하실 수 있도록 준비 중입니다.</p>
     </div>
   </section>
 
@@ -95,7 +101,7 @@
   <section class="studio-band">
     <img src="images/studio.jpg" alt="따뜻한 빛 아래 넘겨지는 앨범 페이지">
     <div class="wrap">
-      <p class="quote">첫 촬영부터 졸업식 아침까지,<br><span class="signature">benine9</span>가 함께 있습니다.</p>
+      <p class="quote">촬영부터 졸업식까지,<br><span class="signature">benine9</span>가 함께 있습니다.</p>
     </div>
   </section>
 
@@ -188,5 +194,33 @@
     </div>
   </div>
 </footer>
+
+<script>
+(function(){
+  var header = document.querySelector('.site--home');
+  var hero = document.querySelector('.hero');
+  if(!header || !hero) return;
+  function onScroll(){
+    var past = window.scrollY > window.innerHeight * 0.8;
+    header.classList.toggle('is-transparent', !past);
+  }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive:true });
+})();
+(function(){
+  var slides = document.querySelectorAll('.hero-slides img');
+  var dots = document.querySelectorAll('.hero-dots span');
+  if(slides.length < 2) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var i = 0;
+  setInterval(function(){
+    slides[i].classList.remove('is-active');
+    if(dots[i]) dots[i].classList.remove('is-active');
+    i = (i + 1) % slides.length;
+    slides[i].classList.add('is-active');
+    if(dots[i]) dots[i].classList.add('is-active');
+  }, 5000);
+})();
+</script>
 </body>
 </html>
