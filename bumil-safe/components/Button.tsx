@@ -7,7 +7,8 @@ type Size = "sm" | "md" | "lg";
 
 const base =
   "inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap " +
-  "transition-transform duration-150 active:scale-95 select-none";
+  "transition-transform duration-150 active:scale-95 select-none " +
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-focus";
 
 // 아웃라인 알약 — 고스트·카카오 공용 (조용한 톤, 채움 없음)
 const outlinePill =

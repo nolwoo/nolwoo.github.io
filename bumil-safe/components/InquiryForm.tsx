@@ -33,8 +33,12 @@ export function InquiryForm() {
 
   if (status === "done") {
     return (
-      <div className="rounded-lg border border-hairline bg-canvas p-8 text-center">
-        <p className="text-[40px]">✅</p>
+      <div
+        role="status"
+        aria-live="polite"
+        className="rounded-lg border border-hairline bg-canvas p-8 text-center"
+      >
+        <p aria-hidden="true" className="text-[40px]">✅</p>
         <h2 className="mt-3 text-[21px] font-semibold text-ink">
           상담 신청이 접수되었어요
         </h2>
@@ -98,7 +102,7 @@ export function InquiryForm() {
       </div>
 
       {status === "error" && (
-        <p className="mt-4 text-[14px] text-red-600">{errorMsg}</p>
+        <p role="alert" className="mt-4 text-[14px] text-red-600">{errorMsg}</p>
       )}
 
       <button

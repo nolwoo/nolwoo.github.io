@@ -26,6 +26,7 @@ export function ProductBrowser() {
           <button
             key={c.key}
             onClick={() => setCat(c.key)}
+            aria-pressed={cat === c.key}
             className={`rounded-pill px-4 py-2 text-[14px] font-medium transition-colors ${
               cat === c.key
                 ? "bg-ink text-white"

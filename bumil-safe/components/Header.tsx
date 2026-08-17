@@ -32,6 +32,16 @@ export function Header() {
   // isHome이 아니면 scrolled 값과 무관하게 항상 불투명 헤더
   const transparent = isHome && !scrolled;
 
+  // 모바일 드로어 — ESC로 닫기
+  useEffect(() => {
+    if (!open) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
   return (
     <>
       <header
@@ -71,6 +81,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
+              aria-current={pathname === item.href ? "page" : undefined}
               className={`rounded-sm px-3 py-2 text-[14px] transition-colors ${
                 transparent ? "text-white/85 hover:text-on-dark" : "text-ink-muted hover:text-blue"
               }`}
@@ -107,7 +118,12 @@ export function Header() {
             className="fixed inset-0 z-[60] bg-black/35"
             onClick={() => setOpen(false)}
           />
-          <aside className="fixed right-0 top-0 z-[70] flex h-full w-[80vw] max-w-[320px] flex-col gap-1 border-l border-hairline bg-canvas p-6">
+          <aside
+            role="dialog"
+            aria-modal="true"
+            aria-label="메뉴"
+            className="fixed right-0 top-0 z-[70] flex h-full w-[80vw] max-w-[320px] flex-col gap-1 border-l border-hairline bg-canvas p-6"
+          >
             <button
               className="self-end p-2 text-2xl leading-none text-ink-faint"
               aria-label="닫기"
@@ -119,6 +135,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={pathname === item.href ? "page" : undefined}
                 className="rounded-sm px-3 py-3.5 text-[16px] font-medium text-ink hover:text-blue"
                 onClick={() => setOpen(false)}
               >
