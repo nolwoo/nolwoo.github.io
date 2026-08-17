@@ -115,6 +115,7 @@
     font-weight:700;
     font-size:1.05rem;
     white-space:nowrap;
+    text-decoration:none;
   }
   .site-nav{
     display:none;
@@ -265,6 +266,9 @@
   .hero-copy .btn-ghost:hover{
     border-color:#fff;
     color:#fff;
+  }
+  .hero :focus-visible{
+    outline-color:#fff;
   }
   .hero-note{
     margin-top:16px;
@@ -657,6 +661,7 @@
   .cta-card p{ color:rgba(255,255,255,.92); font-size:0.94rem; margin:10px 0 22px; }
   .cta-card .btn-primary{ background:#fff; color:var(--ink); }
   .cta-card .btn-primary:hover{ transform:translateY(-1px); }
+  .cta-card :focus-visible{ outline-color:#fff; }
   .cta-alt{
     margin-top:22px;
     padding-top:20px;
@@ -716,7 +721,7 @@
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="#hero" aria-label="상명피아노음악교습소 홈으로 이동">
-      상명피아노음악
+      상명피아노음악교습소
     </a>
     <nav class="site-nav" aria-label="주요 메뉴">
       <a href="#intro">소개</a>
