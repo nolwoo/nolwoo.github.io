@@ -16,7 +16,7 @@ export const SITE = {
 
   // 카카오톡 채널 홈 URL. 비워두면 버튼 클릭 시 "준비 중" 안내.
   // (카카오톡 채널 관리자센터 → 채널 → "채널 홈 URL" 복사)
-  kakaoUrl: "",
+  kakaoUrl: "http://pf.kakao.com/_bpxgiX",
 
   // 네이버 스마트스토어 — 실제 구매 후기는 여기서 확인.
   // 제품에 개별 storeUrl이 없으면 이 스토어 홈으로 연결.

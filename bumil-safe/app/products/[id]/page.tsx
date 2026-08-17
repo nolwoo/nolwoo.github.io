@@ -98,6 +98,12 @@ export default async function ProductDetail({
             <ul className="mt-6 space-y-2 border-t border-hairline pt-6 text-[15px]">
               <Spec label="분류" value={p.catLabel} />
               <Spec label="잠금방식" value={p.lock} />
+              {p.cat === "smart" && (
+                <Spec
+                  label="옵션"
+                  value="지문인식 추가 가능 (+100,000원, 상담 시 확정)"
+                />
+              )}
               <Spec label="공급" value="범일금고 본사 정품" />
               <Spec label="설치" value="영등포 전문 기사 방문 설치" />
             </ul>
