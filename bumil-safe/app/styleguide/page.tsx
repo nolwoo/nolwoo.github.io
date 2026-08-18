@@ -6,15 +6,19 @@ import { SectionHead } from "@/components/SectionHead";
 
 export const metadata = { title: "스타일가이드" };
 
+// 흑백 모노톤(2026-08-08 확정) — 컬러 액센트 없이 명도 차이로만 위계.
+// "Blue" 계열 토큰도 잉크로 통일돼 있지만 포커스 링·다크 섹션 강조 용도로 이름은 유지.
 const SWATCHES = [
-  { name: "Action Blue", varName: "--color-blue", hex: "#0066cc" },
-  { name: "Ink", varName: "--color-ink", hex: "#1d1d1f" },
-  { name: "Ink Muted", varName: "--color-ink-muted", hex: "#333333" },
-  { name: "Ink Faint", varName: "--color-ink-faint", hex: "#7a7a7a" },
-  { name: "Parchment", varName: "--color-parchment", hex: "#f5f5f7" },
-  { name: "Pearl", varName: "--color-pearl", hex: "#fafafc" },
-  { name: "Tile (dark)", varName: "--color-tile", hex: "#272729" },
-  { name: "Hairline", varName: "--color-hairline", hex: "#e0e0e0" },
+  { name: "Blue (잉크 통일)", varName: "--color-blue", hex: "#141414" },
+  { name: "Blue Focus", varName: "--color-blue-focus", hex: "#000000" },
+  { name: "Blue on Dark", varName: "--color-blue-on-dark", hex: "#ededea" },
+  { name: "Ink", varName: "--color-ink", hex: "#141414" },
+  { name: "Ink Muted", varName: "--color-ink-muted", hex: "rgba(20,20,20,.66)" },
+  { name: "Ink Faint", varName: "--color-ink-faint", hex: "rgba(20,20,20,.68)" },
+  { name: "Parchment", varName: "--color-parchment", hex: "#ececE9" },
+  { name: "Pearl", varName: "--color-pearl", hex: "#f6f6f4" },
+  { name: "Tile (dark)", varName: "--color-tile", hex: "#2a2a2a" },
+  { name: "Hairline", varName: "--color-hairline", hex: "rgba(20,20,20,.18)" },
   { name: "Kakao", varName: "--color-kakao", hex: "#fee500" },
 ];
 
