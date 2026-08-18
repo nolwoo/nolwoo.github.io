@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HEADER_HEIGHT_PX, NAV, SITE } from "@/lib/site";
@@ -12,6 +12,8 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const drawerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   // 홈 히어로(풀블리드 사진) 위에서만 헤더를 투명하게 띄운다 — 히어로를 완전히
   // 벗어나면(= #home-hero가 헤더 아래로 안 보이면) 원래대로. 스크롤 위치를 어림잡는
@@ -32,14 +34,34 @@ export function Header() {
   // isHome이 아니면 scrolled 값과 무관하게 항상 불투명 헤더
   const transparent = isHome && !scrolled;
 
-  // 모바일 드로어 — ESC로 닫기
+  // 모바일 드로어 — 열리면 포커스 이동·트랩, ESC로 닫기, 닫히면 햄버거 버튼으로 포커스 복귀
   useEffect(() => {
     if (!open) return;
+    const drawer = drawerRef.current;
+    const focusables = drawer?.querySelectorAll<HTMLElement>("a[href], button:not([disabled])");
+    const first = focusables?.[0];
+    const last = focusables?.[focusables.length - 1];
+    first?.focus();
+
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !first || !last) return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      menuButtonRef.current?.focus();
+    };
   }, [open]);
 
   return (
@@ -98,8 +120,11 @@ export function Header() {
 
         {/* 모바일 햄버거 */}
         <button
+          ref={menuButtonRef}
           className="lg:hidden flex flex-col gap-[5px] p-2"
           aria-label="메뉴 열기"
+          aria-expanded={open}
+          aria-controls="mobile-nav-drawer"
           onClick={() => setOpen(true)}
         >
           <span className={`h-[2px] w-[22px] rounded transition-colors ${transparent ? "bg-on-dark" : "bg-ink"}`} />
@@ -119,6 +144,8 @@ export function Header() {
             onClick={() => setOpen(false)}
           />
           <aside
+            id="mobile-nav-drawer"
+            ref={drawerRef}
             role="dialog"
             aria-modal="true"
             aria-label="메뉴"
