@@ -58,20 +58,31 @@ export function sortProducts(list: Product[], sort: SortKey): Product[] {
 export const getProduct = (id: string): Product | undefined =>
   PRODUCTS.find((p) => p.id === id);
 
-/* 색상 변형 그룹 — 상품명 끝 "(색상명)" 표기로 판별. 예: "OARC ... (새틴베이지)" */
-const colorSuffix = (name: string): string | null =>
-  name.match(/\(([^)]*)\)\s*$/)?.[1] ?? null;
-
-const nameWithoutColor = (name: string): string =>
-  name.replace(/\s*\([^)]*\)\s*$/, "").trim();
+/* 색상 변형 그룹 — 상품 계열별로 명시. 그룹 늘어나면 아래 배열에 추가 */
+const COLOR_GROUPS: { id: string; label: string }[][] = [
+  [
+    { id: "oarcfx", label: "기본형" },
+    { id: "oarc-satinbeige", label: "새틴베이지" },
+    { id: "oarc-satinwhite", label: "새틴화이트" },
+    { id: "oarc-shinewhite", label: "샤인화이트" },
+    { id: "oarc-satinpanel", label: "새틴 패널" },
+    { id: "oarc-shinepink", label: "샤인핑크" },
+    { id: "oarc-green", label: "그린오아르크" },
+    { id: "oarc-carnival", label: "카니발" },
+    { id: "oarc-bluestone", label: "블루스톤" },
+    { id: "oarc-architecture", label: "아키텍쳐" },
+    { id: "oarc-darkocean", label: "다크 오션" },
+    { id: "oarc-emerald", label: "에메랄드 오션" },
+    { id: "oarc-yellow", label: "옐로우오아르크" },
+  ],
+];
 
 export function getColorVariants(p: Product): { product: Product; color: string }[] {
-  const color = colorSuffix(p.name);
-  if (!color) return [];
-  const base = nameWithoutColor(p.name);
-  return PRODUCTS.filter((x) => nameWithoutColor(x.name) === base)
-    .map((x) => ({ product: x, color: colorSuffix(x.name)! }))
-    .filter((x) => x.color);
+  const group = COLOR_GROUPS.find((g) => g.some((m) => m.id === p.id));
+  if (!group) return [];
+  return group
+    .map((m) => ({ product: getProduct(m.id), color: m.label }))
+    .filter((x): x is { product: Product; color: string } => !!x.product);
 }
 
 /* 홈 인기 제품 N종 */
