@@ -58,6 +58,22 @@ export function sortProducts(list: Product[], sort: SortKey): Product[] {
 export const getProduct = (id: string): Product | undefined =>
   PRODUCTS.find((p) => p.id === id);
 
+/* 색상 변형 그룹 — 상품명 끝 "(색상명)" 표기로 판별. 예: "OARC ... (새틴베이지)" */
+const colorSuffix = (name: string): string | null =>
+  name.match(/\(([^)]*)\)\s*$/)?.[1] ?? null;
+
+const nameWithoutColor = (name: string): string =>
+  name.replace(/\s*\([^)]*\)\s*$/, "").trim();
+
+export function getColorVariants(p: Product): { product: Product; color: string }[] {
+  const color = colorSuffix(p.name);
+  if (!color) return [];
+  const base = nameWithoutColor(p.name);
+  return PRODUCTS.filter((x) => nameWithoutColor(x.name) === base)
+    .map((x) => ({ product: x, color: colorSuffix(x.name)! }))
+    .filter((x) => x.color);
+}
+
 /* 홈 인기 제품 N종 */
 export const getPopular = (n = 6): Product[] =>
   [...PRODUCTS]

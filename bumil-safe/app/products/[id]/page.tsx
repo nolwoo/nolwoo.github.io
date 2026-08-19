@@ -4,9 +4,11 @@ import type { Metadata } from "next";
 import { Container } from "@/components/Container";
 import { ConsultButtons } from "@/components/ConsultButtons";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductGallery } from "@/components/ProductGallery";
+import { ColorSwatches } from "@/components/ColorSwatches";
 import { ReviewSection } from "@/components/ReviewSection";
 import { PRODUCTS } from "@/lib/products";
-import { getProduct } from "@/lib/catalog";
+import { getProduct, getColorVariants } from "@/lib/catalog";
 
 // 정적 생성 — 40종을 미리 빌드 (검색·공유 대응)
 export function generateStaticParams() {
@@ -42,6 +44,8 @@ export default async function ProductDetail({
     (x) => x.cat === p.cat && x.id !== p.id,
   ).slice(0, 4);
 
+  const colorVariants = getColorVariants(p);
+
   return (
     <>
       <Container className="py-8">
@@ -53,19 +57,11 @@ export default async function ProductDetail({
       <section className="bg-canvas">
         <Container className="grid gap-12 pb-16 md:grid-cols-2">
           {/* 이미지 — 파치먼트 면 위 제품 그림자 */}
-          <div className="relative flex items-center justify-center rounded-lg bg-parchment p-10">
-            {p.best && (
-              <span className="absolute left-5 top-5 rounded-pill bg-ink px-3 py-1 text-[12px] font-semibold text-white">
-                BEST
-              </span>
-            )}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={p.img}
-              alt={p.name}
-              className="w-full max-w-[420px] [filter:drop-shadow(0_5px_30px_rgba(0,0,0,0.22))]"
-            />
-          </div>
+          <ProductGallery
+            images={[p.img, ...(p.images ?? [])]}
+            alt={p.name}
+            best={p.best}
+          />
 
           {/* 정보 */}
           <div className="flex flex-col">
@@ -95,7 +91,13 @@ export default async function ProductDetail({
               </p>
             )}
 
-            <ul className="mt-6 space-y-2 border-t border-hairline pt-6 text-[15px]">
+            <ColorSwatches variants={colorVariants} currentId={p.id} />
+
+            <ul
+              className={`mt-6 space-y-2 text-[15px] ${
+                colorVariants.length < 2 ? "border-t border-hairline pt-6" : ""
+              }`}
+            >
               <Spec label="분류" value={p.catLabel} />
               <Spec label="잠금방식" value={p.lock} />
               {p.cat === "smart" && (
