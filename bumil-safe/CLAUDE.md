@@ -32,12 +32,12 @@
 - 메시지 기둥 3가지: **본사 정품 · 전문 설치 · 구매 후 A/S**.
 - 매장: 서울 영등포구 영등포로 164 · 평일 09:00–18:00.
 
-## 상담 접수 기능 (Supabase)
-- 구매자: `/contact`의 `InquiryForm` → `POST /api/inquiry` → Supabase `inquiries` 테이블 저장.
-- 판매자: `/admin` (비밀번호 게이트, 쿠키 `bumil_admin`) → Supabase에서 읽어 목록 표시. 노션 아님.
-- DB 접근은 **서버에서만** (`lib/supabase.ts`, service_role 키). 키 없으면 graceful 안내(빌드 안 깨짐).
-- 환경변수(.env.local, git 제외): `SUPABASE_URL` · `SUPABASE_SERVICE_ROLE_KEY` · `ADMIN_PASSWORD`. 배포 시 Vercel 환경변수에도 동일하게.
-- `inquiries` 스키마: id·name·phone·product·message·status('신규')·created_at. 설정법은 `docs/SUPABASE_SETUP.md`.
+## 상담 접수 (2026-08-19부터 전화·카카오톡만)
+- 온라인 상담폼 + Supabase 저장 + `/admin` 접수 목록 기능은 **전면 제거**했다 (구현했었으나 되돌림).
+- `/contact`는 이제 `ConsultButtons`(카카오톡·전화)로만 안내한다. 폼·DB·관리자 페이지 없음.
+- 관련 파일(`lib/supabase.ts`·`lib/auth.ts`·`lib/notify.ts`·`lib/rate-limit.ts`·`components/InquiryForm.tsx`·
+  `components/AdminLogin.tsx`·`app/admin/`·`app/api/inquiry/`·`app/api/admin-login/`)은 삭제됨.
+  되살리려면 git 히스토리에서 복구.
 
 ## 구조 (자세히는 docs/plan.md)
 - `app/` 페이지(라우트) · `components/` 재사용 부품 · `lib/` 데이터(products·site) · `public/` 정적파일.

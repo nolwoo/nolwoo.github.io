@@ -47,7 +47,8 @@
 - [x] (옵션) 마퀴·스타일가이드 정리 — 마퀴는 위에서 결정. 스타일가이드는 흑백 모노톤 확정에 맞춰
       색상 견본 라벨을 실제 토큰 값으로 갱신 (2026-08-18)
 
-## 추가 기능 · 상담 접수 (Supabase)
+## 추가 기능 · 상담 접수 (Supabase) — 2026-08-19 전면 제거됨, 아래는 과거 기록
+- [x] **되돌림**: 온라인 상담폼·Supabase·`/admin` 전부 삭제. `/contact`는 전화·카카오톡만.
 - [x] Supabase 클라이언트(lib/supabase.ts, 서버 전용)
 - [x] API: POST /api/inquiry (저장) · /api/admin-login (로그인·로그아웃)
 - [x] 구매자 상담폼 InquiryForm → /contact 연결
