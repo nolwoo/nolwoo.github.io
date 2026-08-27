@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>학생 행동 관찰 노트 (교사용) · 지켜볼까, 지원할까</title>
+<!-- 검색 비노출 — 주소를 아는 교사만 들어오는 링크 공유 전용 도구.
+     학생의 건강 관련 추정이 담기는 성격이라 검색 유입은 의도하지 않는다. -->
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --ink: #1f2937;
+    --sub: #6b7280;
+    --line: #e5e7eb;
+    --accent: #2563eb;
+    --accent-soft: #eff6ff;
+    --green: #16a34a;  --green-soft: #f0fdf4;
+    --yellow: #ca8a04; --yellow-soft: #fefce8;
+    --orange: #ea580c; --orange-soft: #fff7ed;
+    --red: #dc2626;    --red-soft: #fef2f2;
+    --gray: #6b7280;   --gray-soft: #f3f4f6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px 80px; }
+  header.app { padding: 28px 0 12px; }
+  header.app h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  header.app p.tagline { color: var(--sub); font-size: 13.5px; margin-top: 2px; }
+
+  .disclaimer {
+    background: var(--accent-soft); border: 1px solid #dbeafe; border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; color: #1e40af; margin: 12px 0 4px;
+  }
+
+  /* child bar */
+  .childbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0 6px; }
+  .chip {
+    border: 1.5px solid var(--line); background: var(--card); border-radius: 999px;
+    padding: 5px 14px; font-size: 14px; cursor: pointer; color: var(--ink);
+  }
+  .chip.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .chip.add { border-style: dashed; color: var(--sub); }
+  .child-form { display: none; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+  .child-form.open { display: flex; }
+
+  nav.tabs {
+    position: sticky; top: 0; z-index: 10; background: var(--bg);
+    display: flex; gap: 2px; padding: 10px 0 12px; overflow-x: auto;
+  }
+  nav.tabs button {
+    border: none; background: transparent; padding: 8px 14px; border-radius: 8px;
+    font-size: 14.5px; cursor: pointer; color: var(--sub); white-space: nowrap; font-weight: 500;
+  }
+  nav.tabs button.active { background: var(--ink); color: #fff; }
+
+  section.tab { display: none; }
+  section.tab.visible { display: block; }
+
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 20px; margin-bottom: 16px;
+  }
+  .card h2 { font-size: 16.5px; margin-bottom: 4px; }
+  .card p.hint { color: var(--sub); font-size: 13px; margin-bottom: 14px; }
+  .card h3 { font-size: 14.5px; margin: 18px 0 8px; }
+
+  label.fld { display: block; font-size: 13.5px; font-weight: 600; margin: 12px 0 6px; }
+  input[type=date], input[type=text], textarea, select {
+    width: 100%; border: 1.5px solid var(--line); border-radius: 8px; padding: 9px 12px;
+    font-size: 14.5px; font-family: inherit; background: #fff; color: var(--ink);
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 64px; }
+
+  .seg { display: flex; gap: 8px; flex-wrap: wrap; }
+  .seg label {
+    border: 1.5px solid var(--line); border-radius: 8px; padding: 8px 14px; font-size: 14px;
+    cursor: pointer; background: #fff; user-select: none;
+  }
+  .seg input { display: none; }
+  .seg label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+  .symgroup { border: 1px solid var(--line); border-radius: 10px; margin-top: 10px; overflow: hidden; }
+  .symgroup > .ghead { background: var(--gray-soft); padding: 9px 14px; font-size: 13.5px; font-weight: 700; }
+  .symgroup label.sym {
+    display: flex; gap: 10px; align-items: flex-start; padding: 9px 14px; font-size: 14px;
+    border-top: 1px solid var(--line); cursor: pointer;
+  }
+  .symgroup label.sym:hover { background: #fafafa; }
+  .symgroup label.sym input { margin-top: 4px; accent-color: var(--accent); width: 16px; height: 16px; flex: none; }
+  .symgroup label.sym:has(input:checked) { background: var(--accent-soft); }
+  .symgroup.flag label.sym:has(input:checked) { background: var(--red-soft); }
+
+  button.primary {
+    background: var(--accent); color: #fff; border: none; border-radius: 9px;
+    padding: 11px 22px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 16px;
+  }
+  button.primary:hover { filter: brightness(1.08); }
+  button.ghost {
+    background: #fff; color: var(--ink); border: 1.5px solid var(--line); border-radius: 8px;
+    padding: 7px 14px; font-size: 13.5px; cursor: pointer;
+  }
+  button.danger-link { background: none; border: none; color: var(--red); font-size: 12.5px; cursor: pointer; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 999px;
+    font-size: 14px; opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 50;
+  }
+  .toast.show { opacity: 1; }
+
+  /* record list */
+  .rec { border-top: 1px solid var(--line); padding: 12px 2px; }
+  .rec:first-child { border-top: none; }
+  .rec .meta { display: flex; gap: 8px; align-items: center; font-size: 12.5px; color: var(--sub); }
+  .rec .meta .setting { background: var(--gray-soft); border-radius: 6px; padding: 1px 8px; font-weight: 600; color: var(--ink); }
+  .rec .note { font-size: 14.5px; margin: 4px 0; }
+  .rec .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+  .rec .tags span { font-size: 12px; background: var(--accent-soft); color: var(--accent); border-radius: 6px; padding: 1px 8px; }
+
+  /* assessment rating table */
+  table.rate { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 8px; }
+  table.rate th, table.rate td { border-top: 1px solid var(--line); padding: 8px 6px; text-align: center; vertical-align: middle; }
+  table.rate td.q { text-align: left; font-size: 13.5px; }
+  table.rate th { font-size: 12px; color: var(--sub); font-weight: 600; }
+  table.rate input[type=radio] { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+  .rate-scroll { overflow-x: auto; }
+
+  /* analysis */
+  .verdict { border-radius: 14px; padding: 22px; margin-bottom: 16px; border: 1px solid var(--line); }
+  .verdict .badge { display: inline-block; border-radius: 999px; padding: 4px 14px; font-size: 13.5px; font-weight: 700; }
+  .verdict h2 { font-size: 19px; margin: 10px 0 6px; }
+  .verdict p { font-size: 14.5px; }
+  .verdict .prob { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,.65); font-size: 13.5px; }
+  .verdict .ctxnote { margin-top: 10px; padding: 10px 14px; border-radius: 10px; background: rgba(255,255,255,.65); font-size: 13.5px; }
+  .v-collecting { background: var(--gray-soft); }   .v-collecting .badge { background: #e5e7eb; color: #374151; }
+  .v-low { background: var(--green-soft); }         .v-low .badge { background: #dcfce7; color: var(--green); }
+  .v-watch { background: var(--yellow-soft); }      .v-watch .badge { background: #fef9c3; color: var(--yellow); }
+  .v-emerging { background: var(--orange-soft); }   .v-emerging .badge { background: #ffedd5; color: var(--orange); }
+  .v-high { background: var(--red-soft); }          .v-high .badge { background: #fee2e2; color: var(--red); }
+
+  .dangerbox {
+    background: var(--red-soft); border: 1.5px solid #fecaca; border-radius: 12px;
+    padding: 14px 16px; font-size: 14px; color: #7f1d1d; margin-bottom: 14px;
+  }
+  .dangerbox b { color: var(--red); }
+
+  .progressline { margin: 8px 0; font-size: 13.5px; }
+  .bar { height: 8px; border-radius: 99px; background: #e5e7eb; overflow: hidden; margin-top: 3px; }
+  .bar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+  .bar > i.warnfill { background: var(--orange); }
+
+  ul.reasons { margin: 10px 0 0 2px; list-style: none; }
+  ul.reasons li { font-size: 14px; padding: 3px 0 3px 24px; position: relative; }
+  ul.reasons li::before { position: absolute; left: 0; }
+  ul.reasons li.ok::before { content: "✅"; }
+  ul.reasons li.no::before { content: "▫️"; }
+  ul.reasons li.warn::before { content: "⚠️"; }
+
+  table.symtab { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.symtab th, table.symtab td { border-top: 1px solid var(--line); padding: 7px 6px; text-align: left; }
+  table.symtab th { font-size: 12px; color: var(--sub); }
+  table.symtab td.num { text-align: center; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+  .dot.rep { background: var(--orange); }
+  .dot.obs { background: #fbbf24; }
+  .dot.none { background: #e5e7eb; }
+
+  .askparent {
+    background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; color: #5b21b6; margin: 18px 0 4px; line-height: 1.6;
+  }
+  .dutybox {
+    background: #fff7ed; border: 1.5px solid #fdba74; border-radius: 12px;
+    padding: 14px 16px; font-size: 13.5px; color: #7c2d12; margin: 18px 0 4px; line-height: 1.65;
+  }
+  .dutybox b { color: #c2410c; }
+  .unconfirmed {
+    background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 10px;
+    padding: 11px 14px; font-size: 13px; color: #3730a3; margin-top: 10px; line-height: 1.6;
+  }
+
+  .warnbox {
+    background: var(--yellow-soft); border: 1px solid #fde68a; border-radius: 10px;
+    padding: 10px 14px; font-size: 13.5px; color: #854d0e; margin-bottom: 14px;
+  }
+
+  /* action plan */
+  .plan-sec { margin-top: 16px; }
+  .plan-sec > .phead {
+    font-size: 14.5px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+    padding-bottom: 6px;
+  }
+  .plan-sec > .phead .pnum {
+    background: var(--ink); color: #fff; width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 12.5px; flex: none;
+  }
+  .plan-item { border-left: 3px solid var(--line); margin: 8px 0 8px 10px; padding: 2px 0 2px 14px; }
+  .plan-item .pt { font-size: 14px; font-weight: 600; }
+  .plan-item .pd { font-size: 13.5px; color: #374151; margin-top: 1px; }
+  .plan-item .src {
+    display: inline-block; font-size: 11px; color: var(--sub); background: var(--gray-soft);
+    border-radius: 5px; padding: 0 7px; margin-top: 3px;
+  }
+  .plan-item.urgent { border-left-color: var(--red); }
+  .plan-item.urgent .pt { color: var(--red); }
+
+  /* trend */
+  .tchart { display: flex; align-items: flex-end; gap: 5px; height: 90px; margin: 12px 2px 4px; }
+  .tchart .tbar { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; }
+  .tchart .tbar i { width: 100%; max-width: 40px; background: #93c5fd; border-radius: 4px 4px 0 0; min-height: 2px; }
+  .tchart .tbar.empty i { background: #e5e7eb; }
+  .tchart .tbar .tv { font-size: 10.5px; color: var(--sub); margin-bottom: 2px; }
+  .tlabels { display: flex; gap: 5px; }
+  .tlabels span { flex: 1; text-align: center; font-size: 10px; color: var(--sub); }
+  .trendtag { display: inline-block; border-radius: 999px; padding: 2px 12px; font-size: 13px; font-weight: 700; }
+  .trend-improving { background: var(--green-soft); color: var(--green); }
+  .trend-stable { background: var(--gray-soft); color: var(--gray); }
+  .trend-worsening { background: var(--red-soft); color: var(--red); }
+  .trend-insufficient { background: var(--gray-soft); color: var(--sub); }
+
+  /* context summary */
+  .ctxsum { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .ctxsum span { font-size: 12.5px; background: var(--gray-soft); border-radius: 6px; padding: 2px 10px; }
+  .ctxsum span.flag { background: var(--red-soft); color: var(--red); font-weight: 600; }
+
+  /* evidence tab */
+  .evidence h3 { font-size: 15px; margin: 20px 0 8px; }
+  .evidence p, .evidence li { font-size: 14px; color: #374151; }
+  .evidence ol { padding-left: 20px; }
+  .evidence ol li { margin-bottom: 8px; }
+  .evidence ul { padding-left: 20px; }
+  .evidence .refnote { font-size: 12.5px; color: var(--sub); }
+  .empty { color: var(--sub); font-size: 14px; padding: 16px 0; text-align: center; }
+
+  .toolrow { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+
+  .sharepanel {
+    border: 1.5px solid var(--accent); background: var(--accent-soft);
+    border-radius: 12px; padding: 16px; margin-top: 14px;
+  }
+  .sharepanel h3 { font-size: 15px; margin: 0 0 4px; }
+  .sharepanel .seg label { background: #fff; }
+  .sharepanel .excluded {
+    background: #fff; border: 1px solid #dbeafe; border-radius: 9px;
+    padding: 10px 12px; font-size: 12.5px; color: #1e40af; margin-top: 14px; line-height: 1.55;
+  }
+  .sharepreview {
+    background: #fff; border: 1px solid var(--line); border-radius: 9px;
+    padding: 10px 12px; font-size: 13px; margin-top: 10px;
+  }
+  .sharepreview b { color: var(--accent); }
+  @media (max-width: 560px) {
+    .card { padding: 16px 14px; }
+    header.app h1 { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="app">
+    <h1>학생 행동 관찰 노트 <span style="font-size:14px;font-weight:500;color:var(--sub)">교사용</span></h1>
+    <p class="tagline">교실에서 관찰한 언행을 기록하면, 그 기록을 근거로 "지켜볼 단계인지 · 지원을 시작할 단계인지"를 정리해 줍니다. DSM-5-TR · ICD-10 · AAP · NICE 지침 기반.</p>
+    <div class="disclaimer">
+      이 도구는 <b>교사의 관찰을 정리하는 보조 도구</b>이며 진단 도구가 아닙니다.
+      ADHD 진단은 소아청소년정신과 전문의만 내릴 수 있고, <b>교사가 보호자에게 진단명을 언급하는 것은
+      적절하지 않습니다</b> — 관찰한 <u>행동</u>을 전달하는 것이 교사의 역할입니다.
+      여기의 기록은 학교생활기록부가 아니며, 그대로 옮겨 적지 마세요.
+    </div>
+    <div class="disclaimer" style="background:#fff7ed;border-color:#fed7aa;color:#9a3412">
+      🔒 기록은 <b>이 브라우저에만</b> 저장되며 서버로 전송되지 않습니다. 그래도 학생의 건강 관련
+      추정이 담기는 민감한 기록이니, 이름 대신 <b>번호나 별명</b>으로 등록하시길 권합니다.
+    </div>
+    <div class="childbar" id="childbar"></div>
+    <div class="child-form" id="childForm">
+      <input type="text" id="childName" placeholder="번호 또는 별명 (예: 3-7)" style="width:180px">
+      <input type="date" id="childBirth" style="width:160px">
+      <button class="ghost" id="childSaveBtn">추가</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="log" class="active">✏️ 행동 기록</button>
+    <button data-tab="history">📚 기록 목록</button>
+    <button data-tab="assess">📋 정기 평가</button>
+    <button data-tab="analysis">🧭 판단·할 일</button>
+    <button data-tab="evidence">🔬 근거와 한계</button>
+  </nav>
+
+  <!-- ─── 행동 기록 ─── -->
+  <section class="tab visible" id="tab-log">
+    <div class="card">
+      <h2>오늘 관찰한 행동 기록하기</h2>
+      <p class="hint">눈에 띈 행동을 짧게 적고, 해당하는 증상 항목에 체크하세요. 해당 항목이 없으면 메모만 남겨도 됩니다.
+        판단은 기록이 쌓인 뒤 <b>판단·할 일</b> 탭에서 이루어집니다.</p>
+      <label class="fld">날짜</label>
+      <input type="date" id="recDate" style="max-width:200px">
+      <label class="fld">언제 있었던 일인가요?</label>
+      <div class="seg" id="recSetting">
+        <label><input type="radio" name="setting" value="class" checked>수업 중</label>
+        <label><input type="radio" name="setting" value="free">쉬는 시간 · 놀이</label>
+        <label><input type="radio" name="setting" value="move">이동 · 급식 · 특별실</label>
+      </div>
+      <label class="fld">행동 메모 <span style="font-weight:400;color:var(--sub)">— 해석이 아니라 보이는 대로</span></label>
+      <textarea id="recNote" placeholder="예: 2교시 수학 시간에 자리에서 4번 일어나 교실 뒤로 갔다 (좋은 예)&#10;예: 산만하고 의욕이 없다 (권하지 않음 — 해석은 판단을 흐립니다)"></textarea>
+      <label class="fld">해당하는 증상 항목 (DSM-5-TR 기준 18개 · 복수 선택)</label>
+      <div id="symChecks"></div>
+      <button class="primary" id="recSaveBtn">기록 저장</button>
+    </div>
+  </section>
+
+  <!-- ─── 기록 목록 ─── -->
+  <section class="tab" id="tab-history">
+    <div class="card">
+      <h2>누적 기록</h2>
+      <p class="hint" id="histSummary"></p>
+      <div id="recList"></div>
+      <div class="toolrow">
+        <button class="ghost" id="exportBtn">내 백업 파일 만들기</button>
+        <button class="ghost" id="importBtn">가져오기(합치기)</button>
+        <input type="file" id="importFile" accept=".json" style="display:none">
+      </div>
+      <p class="hint" style="margin-top:8px">
+        <b>내 백업 파일</b>은 모든 학생의 기록이 담긴 개인 보관용입니다 — 학기말 정리나 기기 이전용으로만
+        쓰고, <b>보호자·동료 교사를 포함해 누구에게도 이 파일 자체를 전달하지 마세요.</b>
+        보호자 상담에서는 파일이 아니라 해당 학생의 <b>관찰된 행동</b>만 말로 전하는 것이 원칙입니다.<br>
+        <b>가져오기</b>는 기존 기록을 지우지 않고 새 항목만 합칩니다.</p>
+
+    </div>
+  </section>
+
+  <!-- ─── 정기 평가 ─── -->
+  <section class="tab" id="tab-assess">
+    <div class="card">
+      <h2>정기 평가 (Vanderbilt/K-ARS 방식 18문항)</h2>
+      <p class="hint">지난 <b>1개월</b> 교실에서의 모습을 돌아보며 각 문항의 빈도를 표시하세요.
+        <b>4주에 한 번</b> 반복하면 "좋아지는 중인지, 나빠지는 중인지"의 추세를 볼 수 있고,
+        이것이 이 도구에서 가장 신뢰할 만한 근거가 됩니다.<br>
+        이 평가는 <b>교사 관찰분</b>입니다. DSM-5-TR은 가정을 포함한 두 가지 이상 상황에서의 확인을
+        요구하므로, 가정에서의 모습은 보호자만 답할 수 있고 이 도구는 그 부분을 <b>미확인</b>으로 둡니다.</p>
+      <h3 style="margin-top:0">수업·생활에서의 증상 빈도 (지난 1개월)</h3>
+      <div class="rate-scroll" id="assessForm"></div>
+      <h3>학교 생활의 어려움 (지난 1개월)</h3>
+      <div class="rate-scroll" id="impairForm"></div>
+      <button class="primary" id="assessSaveBtn">평가 저장</button>
+    </div>
+    <div class="card">
+      <h2>평가 이력</h2>
+      <div id="assessList"></div>
+    </div>
+  </section>
+
+  <!-- ─── 판단·할 일 ─── -->
+  <section class="tab" id="tab-analysis">
+    <div id="analysisBody"></div>
+  </section>
+
+  <!-- ─── 근거와 한계 ─── -->
+  <section class="tab" id="tab-evidence">
+    <div class="card evidence">
+      <h2>이 도구가 판단하는 방식과 그 근거</h2>
+      <div class="unconfirmed" style="margin-bottom:18px">이 도구는 <b>부모용 관찰 도구를 교사용으로 고쳐 만든 것</b>입니다.
+        증상 문항·채점 규칙·단계 기준은 원본 그대로이지만, 교사가 확인할 수 없는 항목(부모 성향 척도)은
+        제외했고, 확인할 수 없는 요건(진단기준 C)은 삭제하지 않고 <b>미확인으로 표시</b>했습니다.
+        자세한 내용은 아래 9번을 보세요.</div>
+
+      <h3>1. 증상 문항은 DSM-5-TR 진단기준을 그대로 사용합니다</h3>
+      <p>기록·평가에 쓰이는 18개 문항(부주의 9 + 과잉행동·충동성 9)은 미국정신의학회
+        <b>DSM-5-TR</b>(2022)의 ADHD 진단기준 A와 동일하며, 국내 표준화된 K-ARS(한국어판 ADHD 평가척도)와
+        미국 소아과학회가 권장하는 Vanderbilt 척도도 같은 문항 체계를 사용합니다. DSM-5-TR은 2013년 DSM-5의
+        본문·부호를 개정한 것으로, <b>ADHD 진단기준(증상 목록) 자체는 DSM-5와 동일</b>합니다 — 그래서
+        이 체크리스트가 오래된 DSM-5 문헌과도, 최신 DSM-5-TR과도 그대로 일치합니다.</p>
+      <p>세계보건기구(WHO)의 <b>ICD-10</b>은 같은 증상군을 <b>"과잉운동장애"(Hyperkinetic Disorder, F90)</b>라는
+        별도 진단명으로 분류하며, DSM-5-TR보다 <b>더 엄격한 기준</b>을 요구합니다: 부주의·과잉행동
+        <b>두 영역 모두</b>에서 이상 수준이 확인돼야 하고(DSM-5-TR은 한 영역만 충족해도 진단), 어릴 때부터 시작됐어야
+        하며, 가정과 학교 등 <b>여러 상황에서 직접 관찰로 확인</b>되어야 합니다. 그 결과 ICD-10 기준으로는
+        아동의 약 <b>1%</b>만 해당하는 반면 DSM 계열 기준으로는 약 <b>5%</b>가 해당할 만큼, 두 기준의 범위 차이가
+        큽니다(독일 BELLA 전국표본 연구). 이 도구는 더 널리 쓰이고 문항이 상세한 DSM-5-TR을 기본 채점
+        기준으로 쓰되, "판단·할 일" 탭의 요건 확인에 ICD-10 기준으로 보면 더 신중한 해석이 필요하다는 점을
+        함께 표시합니다.</p>
+
+      <h3>2. "기다려도 되는가"의 기준 — 계획된 지켜보기(watchful waiting)</h3>
+      <p>영국 NICE 지침(NG87)은 ADHD가 의심되지만 아직 확실하지 않은 아동에 대해
+        <b>최대 10주의 '계획된 지켜보기'</b>를 권고하고, 동시에 <b>진단을 기다리지 말고</b>
+        부모 대상 그룹 지원(부모교육)을 먼저 연계하도록 합니다. 즉 "그냥 방치하며 기다리기"가 아니라
+        "환경을 개선하면서 정해진 기간 관찰하고, 그래도 지속·악화하면 전문 평가로 넘어가기"가
+        근거 기반의 올바른 기다림입니다. 이 도구의 관찰 타이머와 단계 상향 규칙은 이 권고를 따릅니다.</p>
+
+      <h3>3. "개입해야 하는가"의 기준</h3>
+      <p>DSM-5-TR은 17세 미만에서 <b>한 영역 6개 이상의 증상</b>이 ① 발달수준에 맞지 않게
+        ② <b>6개월 이상 지속</b>되고 ③ <b>두 가지 이상의 상황(가정+학교 등)</b>에서 나타나며
+        ④ 학업·사회적 기능을 실제로 저해할 때 진단을 고려하도록 합니다. 이 도구의 판단 단계는
+        이 네 가지 요건을 기록 데이터에서 각각 확인하는 방식입니다. 정기 평가 채점은 Vanderbilt 척도의
+        공개된 채점 규칙("자주/매우 자주" 문항이 영역당 6개 이상 + 기능 손상 동반 시 선별 양성)을 그대로 적용했습니다.
+        ICD-10 기준으로 보면 이보다 한 단계 더 엄격합니다 — 부주의·과잉행동 <b>두 영역 모두</b>에서 기준을
+        충족해야 "과잉운동장애"에 해당하므로, 한 영역만 기준을 넘는 경우 DSM-5-TR상 ADHD 선별 신호는 될 수
+        있어도 ICD-10 기준의 과잉운동장애로는 보지 않습니다.</p>
+
+      <h3>4. 일시적인 행동과 구분하기 — 먼저 걸러내야 할 다른 원인</h3>
+      <p>ADHD처럼 보이지만 다른 원인인 경우가 많습니다. AAP·NICE 지침이 감별하도록 요구하는 항목을
+        '상황 체크'에 넣되, <b>교사가 직접 확인할 수 있는 것과 보호자만 아는 것을 구분</b>했습니다:</p>
+      <ul>
+        <li><b>시력·청력 문제</b> (교사 확인 가능) — 잘 안 보이거나 안 들리는 것이 "집중을 안 한다"로 오인됩니다.
+          학생건강검사 결과로 확인할 수 있고, 자리를 앞으로 옮기는 것만으로 달라지기도 합니다.</li>
+        <li><b>학습 어려움</b> (교사 확인 가능) — 읽기·쓰기·셈이 또래보다 뚜렷이 어려우면 "집중을 안 하는" 것이
+          아니라 "따라갈 수 없어 딴짓을 하는" 것일 수 있습니다(DSM-5-TR 감별진단).</li>
+        <li><b>수면 문제</b> (보호자만 확인 가능) — 수면 부족·코골이(수면무호흡)만으로도 낮의 부주의·과잉행동이
+          나타납니다. ADHD와 가장 흔하게 혼동되는 원인인데, 교사는 알 수 없는 영역입니다.</li>
+        <li><b>적응 반응</b> (보호자만 확인 가능) — 동생 출생, 이사, 전학, 가족 갈등 같은 큰 변화 후 수 주~수개월의
+          행동 변화는 흔한 적응 과정일 수 있습니다(DSM-5-TR 감별진단).</li>
+        <li><b>발달 수준</b> — 특히 취학 전·저학년 연령의 활동성·충동성은 정상 발달 범위가 넓습니다.</li>
+      </ul>
+      <p>보호자 항목이 '모름'으로 남아 있으면 이 도구는 그것을 <b>비어 있는 값이 아니라 미확인 신호로</b>
+        표시합니다. 교사 관찰만으로 판단이 실제보다 확실해 보이는 것을 막기 위한 장치입니다.</p>
+
+      <h3>5. 교사가 할 수 있는 개입은 무엇인가</h3>
+      <p>이 도구가 제안하는 것은 <b>교실 행동 개입</b>뿐입니다. Evans 2018 체계적 검토에서 근거 등급이 높은
+        심리사회적 개입은 부모 행동훈련·<b>교실 행동 개입</b>·조직화 기술 훈련 세 가지인데, 이 중 교사의
+        영역은 뒤의 둘입니다. 자리 배치, 지시 분할, 즉시적·구체적 강화, 활동 전환 예고는 진단 여부와
+        무관하게 효과가 있고 다른 학생에게도 해가 없어, <b>판단이 확정되기 전에 시작해도 되는</b> 조치입니다.</p>
+      <p>참고로 치료 결정은 교사의 영역이 아닙니다 — 만 6세 미만은 부모 행동훈련이 1차이고 만 6세 이상은
+        약물·행동치료 병합이 최적이라는 것이 근거이지만(AAP 2019, MTA 1999), 이는 전문의와 보호자가
+        논의할 사항입니다. <b>교사가 약물이나 특정 치료를 권유하거나 만류하는 것은 적절하지 않습니다.</b></p>
+
+      <h3>6. 가족력을 보조 신호로만 쓰는 이유</h3>
+      <p>쌍둥이 연구 메타분석에서 ADHD의 유전율은 약 70~80%(평균 약 74%)로 매우 높고, 부모·형제 등 1촌
+        가족 중 ADHD가 있으면 위험은 <b>약 2~8배</b> 높아집니다(Faraone 2019·2021). 그래서 가족력은
+        판단에 의미 있는 정보이지만, 이 도구에서는 <b>보조 신호로만</b> 쓰고 단계를 올리는 근거로는 쓰지
+        않습니다 — 교사는 이를 직접 확인할 수 없고, 보호자가 상담에서 알려준 경우에만 존재하는 정보이기 때문입니다.</p>
+      <p><b>부모용 도구에 있던 '부모 성향 체크(ASRS)'는 이 교사용에서 제외했습니다.</b> 그 항목은 보호자가
+        <u>자기 자신</u>에 대해 답하는 성인 자기보고 척도라, 교사가 대신 답할 수 있는 종류의 정보가 아닙니다.</p>
+      <p><b>상담에서 주의할 점:</b> "부모 양육 탓"이라는 통념은 근거가 없습니다. 양육 방식은 경과와 가족의
+        삶의 질에 영향을 주지만 ADHD 자체를 만들지 않습니다(Faraone 2021). 보호자가 죄책감을 느끼면
+        오히려 대화가 닫히므로, 상담에서는 원인 이야기를 꺼내지 않는 편이 낫습니다.</p>
+
+      <h3>7. 왜 "확률 몇 %"를 단정하지 않나요?</h3>
+      <p>어떤 선별 도구도 개인의 ADHD 확률을 정밀하게 산출하지 못합니다. 아동 ADHD 유병률(기저율)은
+        메타분석 기준 약 5~7%이고, Vanderbilt류 척도의 민감도·특이도(약 80% 수준)를 베이즈 정리로 결합하면
+        <b>선별 양성이 나와도 실제 ADHD일 확률은 대략 20~40% 수준</b>입니다. 그래서 이 도구는
+        "선별 양성 = ADHD"가 아니라 "보호자와 이야기를 나눠볼 근거가 충분함"으로 해석하며,
+        판단 카드에 추정 범위를 함께 표시합니다. 게다가 이 수치는 가정 상황까지 확인됐을 때의 값이므로,
+        교사 관찰만 있는 이 도구에서는 실제로 더 불확실합니다.</p>
+
+      <h3>8. 기록이 쌓일수록 판단이 정확해지는 이유</h3>
+      <p>핵심 요건인 <b>지속성(6개월)</b>과 <b>추세(좋아지는 중인가 나빠지는 중인가)</b>는 한 번의 설문으로는
+        알 수 없고 누적 관찰로만 확인됩니다. 특히 추세는 "지켜보기 vs 지원 시작"을 가르는 핵심 신호입니다:
+        교실 조정 후 개선되면 지켜보기가 옳았던 것이고, 10주가 지나도 지속·악화하면 다음 단계로 넘어갈
+        근거가 됩니다. 기록 초기에 판단을 유보하는 것은 이 도구의 한계가 아니라 올바른 태도입니다.</p>
+
+      <h3>9. 이 교사용 도구가 확인할 수 <u>없는</u> 것 — 가장 중요한 한계</h3>
+      <p>DSM-5-TR 진단기준 <b>C</b>는 증상이 <b>두 가지 이상의 상황</b>(가정과 학교 등)에서 나타날 것을
+        요구합니다. 교사가 관찰하는 수업·쉬는 시간·이동은 <b>모두 '학교'라는 한 상황 안의 장면</b>이므로,
+        아무리 많이 기록해도 이 요건은 충족되지 않습니다. 그래서 이 도구는 기준 C를 "미충족"이 아니라
+        <b>"미확인"</b>으로 표시하고, 판단 카드마다 그 사실을 함께 보여줍니다.</p>
+      <p>부모용 원본은 이 요건이 최상위 단계의 세 번째 관문이었지만, 교사용에서는 그 자리를 교사가 실제로
+        관찰할 수 있는 <b>학교 생활에서의 기능 손상</b>이 대신합니다. 따라서 최상위 단계가 뜨더라도 그것은
+        "전문 평가가 필요하다"가 아니라 <b>"담임 혼자 감당할 범위를 넘었으니 교내 상의와 보호자 상담이
+        필요하다"</b>는 뜻입니다. 전문 평가를 받을지 결정하는 것은 보호자의 몫입니다.</p>
+
+      <h3>10. 교사가 지켜야 할 선 — 진단명·기록·신고</h3>
+      <ul>
+        <li><b>진단명을 말하지 않습니다.</b> "ADHD인 것 같다", "검사를 받아보시라"는 교사가 할 말이 아니며
+          보호자 갈등의 가장 흔한 원인입니다. 교사가 전달할 것은 <b>관찰된 행동과 그 빈도</b>이고,
+          해석과 결정은 보호자·전문의의 몫입니다.</li>
+        <li><b>이 기록은 학교생활기록부가 아닙니다.</b> 여기에는 교사의 추정이 섞여 있으므로 공식 기록에
+          그대로 옮겨 적지 마세요. 백업 파일에는 학급 전체 학생의 기록이 함께 들어 있으므로
+          보호자·동료에게 파일 자체를 전달해서도 안 됩니다.</li>
+        <li><b>학대가 의심되면 기록이 아니라 신고입니다.</b> 「아동학대범죄의 처벌 등에 관한 특례법」
+          제10조에 따라 교원은 <b>신고의무자</b>이며, 직무 수행 중 아동학대범죄를 알게 되거나
+          <b>의심이 있는 경우</b> 시·도, 시·군·구 또는 수사기관에 <b>즉시 신고</b>해야 합니다(신고전화 112).
+          확증은 필요하지 않으며, 정당한 사유 없이 신고하지 않으면 과태료가 부과됩니다.
+          그래서 이 도구는 학대 의심을 '체크해서 점수에 반영하는 항목'으로 두지 않았습니다.</li>
+      </ul>
+
+      <h3>11. 연령 관련 주의</h3>
+      <p>미국 소아과학회(AAP) 지침상 ADHD 평가·진단은 <b>만 4세부터</b> 권장됩니다. 만 4세 미만
+        유아의 산만함·충동성은 정상 발달 범위와 구분이 어렵습니다. K-ARS·Vanderbilt의 규준은
+        주로 초등학령기(6~12세)에서 만들어졌습니다. 영유아는 영유아건강검진의 발달선별검사(K-DST)와
+        발달클리닉이 더 적절한 경로입니다.</p>
+
+      <h3>참고 문헌</h3>
+      <ol>
+        <li>American Psychiatric Association. <i>Diagnostic and Statistical Manual of Mental Disorders, 5th ed., Text Revision (DSM-5-TR)</i>. 2022 — ADHD 진단기준·감별진단.</li>
+        <li>Wolraich ML, et al. Clinical Practice Guideline for the Diagnosis, Evaluation, and Treatment of ADHD in Children and Adolescents. <i>Pediatrics</i>. 2019;144(4):e20192528 — 미국소아과학회(AAP) 진료지침: 연령별 1차 치료 권고.</li>
+        <li>NICE. Attention deficit hyperactivity disorder: diagnosis and management (NG87). 2018 — 최대 10주 계획된 지켜보기, 진단 전 부모 그룹지원 연계, 환경 조정.</li>
+        <li>MTA Cooperative Group. A 14-month randomized clinical trial of treatment strategies for attention-deficit/hyperactivity disorder. <i>Arch Gen Psychiatry</i>. 1999;56(12):1073–1086 — 약물·행동치료 비교의 대표 무작위 임상시험.</li>
+        <li>Evans SW, Owens JS, Wymbs BT, Ray AR. Evidence-Based Psychosocial Treatments for Children and Adolescents With ADHD. <i>J Clin Child Adolesc Psychol</i>. 2018;47(2):157–198 — 심리사회적 치료 근거 등급.</li>
+        <li>Wolraich ML, et al. Psychometric properties of the Vanderbilt ADHD Diagnostic Parent Rating Scale in a referred population. <i>J Pediatr Psychol</i>. 2003;28(8):559–568.</li>
+        <li>소유경(So YK) 외. 한국어판 부모·교사 ADHD 평가 척도의 신뢰도와 타당도 연구. <i>신경정신의학</i>. 2002;41(2):283–289 — K-ARS 표준화.</li>
+        <li>김영신 외. 한국어판 부모 및 교사용 ADHD 평가 척도(K-ARS)의 규준연구. <i>신경정신의학</i>. 2003 — 국내 규준.</li>
+        <li>DuPaul GJ, et al. <i>ADHD Rating Scale—IV: Checklists, Norms, and Clinical Interpretation</i>. Guilford Press; 1998 — K-ARS의 원척도.</li>
+        <li>Thomas R, et al. Prevalence of attention-deficit/hyperactivity disorder: a systematic review and meta-analysis. <i>Pediatrics</i>. 2015;135(4):e994–e1001 — 유병률 약 7.2%.</li>
+        <li>Polanczyk G, et al. The worldwide prevalence of ADHD: a systematic review and metaregression analysis. <i>Am J Psychiatry</i>. 2007;164(6):942–948 — 유병률 약 5.3%.</li>
+        <li>WHO. Guidelines on physical activity, sedentary behaviour and sleep for children under 5 years of age. 2019 — 영유아 신체활동·스크린·수면 권고.</li>
+        <li>Faraone SV, Larsson H. Genetics of attention deficit hyperactivity disorder. <i>Mol Psychiatry</i>. 2019;24(4):562–575 — 쌍둥이 연구 기반 유전율 약 74%.</li>
+        <li>Faraone SV, et al. The World Federation of ADHD International Consensus Statement: 208 evidence-based conclusions about the disorder. <i>Neurosci Biobehav Rev</i>. 2021;128:789–818 — 유전율·가족 위험(1촌 2~8배) 등 국제 합의.</li>
+        <li>「아동학대범죄의 처벌 등에 관한 특례법」 제10조 (아동학대범죄 신고의무와 절차) — 교원 등 신고의무자의 즉시 신고 의무.</li>
+        <li>World Health Organization. <i>The ICD-10 Classification of Mental and Behavioural Disorders: Diagnostic Criteria for Research</i>. Geneva: WHO; 1993 — 과잉운동장애(F90) 진단기준.</li>
+        <li>Döpfner M, et al. How often do children meet ICD-10/DSM-IV criteria of attention deficit-/hyperactivity disorder and hyperkinetic disorder? Parent-based prevalence rates in a national sample — results of the BELLA study. <i>Eur Child Adolesc Psychiatry</i>. 2008;17(Suppl 1):59–70 — ICD-10(약 1%) vs DSM(약 5%) 유병률 비교.</li>
+      </ol>
+      <p class="refnote">이 페이지의 판단 로직은 위 문헌의 공개된 기준(증상 개수·지속기간·상황 수·기능 손상·채점 규칙·지켜보기 기간·치료 권고)만
+        사용하며, 저작권이 있는 상용 척도(Conners 등)는 사용하지 않았습니다. 한국 기관 안내(정신건강복지센터, Wee클래스 등)는
+        제도 안내일 뿐이며 지역별 사업 내용은 다를 수 있습니다.</p>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* ── DSM-5-TR 기준 A의 18개 증상 (K-ARS/Vanderbilt와 동일 문항 체계) ── */
+const SYMPTOMS = [
+  { d: "IA", t: "세부적인 것에 주의를 기울이지 못하고, 활동에서 부주의한 실수를 자주 한다" },
+  { d: "IA", t: "과제나 놀이에 지속적으로 집중하기 어려워한다" },
+  { d: "IA", t: "직접 말을 걸어도 듣지 않는 것처럼 보일 때가 많다" },
+  { d: "IA", t: "지시를 끝까지 따르지 못하고 숙제·심부름·과제를 끝내지 못한다" },
+  { d: "IA", t: "과제와 활동을 순서 있게 조직하는 것을 어려워한다" },
+  { d: "IA", t: "지속적인 정신적 노력이 필요한 일(숙제·긴 과제 등)을 피하거나 몹시 싫어한다" },
+  { d: "IA", t: "과제나 활동에 필요한 물건(장난감·학용품·책 등)을 자주 잃어버린다" },
+  { d: "IA", t: "외부 자극에 의해 쉽게 산만해진다" },
+  { d: "IA", t: "일상적인 활동(할 일·약속 등)을 자주 잊어버린다" },
+  { d: "HI", t: "손발을 가만두지 못하거나 앉아서도 몸을 계속 꼼지락거린다" },
+  { d: "HI", t: "앉아 있어야 하는 상황(교실·식탁 등)에서 자리를 뜬다" },
+  { d: "HI", t: "부적절한 상황에서 지나치게 뛰어다니거나 기어오른다" },
+  { d: "HI", t: "조용히 놀거나 여가 활동에 참여하지 못한다" },
+  { d: "HI", t: "끊임없이 움직이며 마치 모터가 달린 것처럼 행동한다" },
+  { d: "HI", t: "말을 지나치게 많이 한다" },
+  { d: "HI", t: "질문이 끝나기도 전에 불쑥 대답한다" },
+  { d: "HI", t: "자기 차례를 기다리지 못한다" },
+  { d: "HI", t: "다른 사람의 대화나 놀이에 끼어들거나 방해한다" },
+];
+const RATE_LABELS = ["전혀 아니다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"];
+const IMPAIR_QS = [
+  "수업 참여 · 과제 수행",
+  "또래 관계",
+  "규칙 지키기 · 안전 (이동 · 급식 · 특별실 등)",
+];
+const IMPAIR_LABELS = ["문제없음", "괜찮은 편", "보통", "어려움 있음", "매우 어려움"];
+/* 교사가 관찰할 수 있는 것은 모두 '학교 안'이다. DSM-5-TR이 요구하는 '두 가지 이상 상황'
+   (가정+학교)은 아래 어떤 조합으로도 충족되지 않는다 — analyze()의 crossSetting 참고. */
+const SETTING_LABELS = { class: "수업 중", free: "쉬는 시간 · 놀이", move: "이동 · 급식 · 특별실" };
+
+/* ── 상황 체크 항목 ── */
+const STRESSORS = [
+  { id: "sibling", t: "동생 출생" },
+  { id: "move", t: "이사 · 전학" },
+  { id: "family", t: "가족 갈등 · 이별 · 상실" },
+  { id: "newclass", t: "새 학년 · 새 학급" },
+  { id: "illness", t: "큰 병치레 · 입원" },
+];
+/* 학대·따돌림은 여기에 두지 않는다 — 교사는 신고의무자이므로 '점수에 반영되는 체크박스'가
+   아니라 즉시 신고 경로를 안내하는 별도 UI(REPORT_DUTY)로 처리한다. */
+const RED_FLAGS = [
+  { id: "selfharm", t: "자해를 하거나, 죽음·자해에 대한 말을 한다" },
+  { id: "aggression", t: "자신이나 남을 다치게 할 정도의 심한 공격 행동이 잦다" },
+  { id: "regression", t: "하던 말이나 행동 기술을 잃어버리는 퇴행이 있다" },
+  { id: "social", t: "눈맞춤 · 이름 부르면 반응 · 또래와의 상호작용이 거의 없다" },
+];
+const ONSET_LABELS = { lt3m: "최근 3개월 내", m3to6: "3~6개월 전", m6to12: "6개월~1년 전", early: "아주 어릴 때부터" };
+const FAMILY_OPTS = [
+  { id: "parent-dx", t: "부모 중 ADHD 진단받은 사람 있음" },
+  { id: "parent-sus", t: "부모 중 진단은 없지만 비슷한 특성이 어릴 때부터 뚜렷함" },
+  { id: "sibling", t: "형제자매 중 ADHD 진단·의심" },
+];
+
+/* ── 아동학대 신고의무 ──
+   근거: 「아동학대범죄의 처벌 등에 관한 특례법」 제10조 — 신고의무자가 직무 수행 중
+   아동학대범죄를 알게 되거나 그 의심이 있는 경우 시·도, 시·군·구 또는 수사기관에 즉시 신고.
+   초·중등 교원은 신고의무자에 해당하며, 정당한 사유 없이 신고하지 않으면 과태료가 부과된다.
+   → 이 앱은 이 항목을 '판단 점수'로 다루지 않는다. 확인·기록의 대상이 아니라 즉시 행동의 대상이다. */
+const REPORT_DUTY = {
+  t: "학대가 의심되는 정황이 있다",
+  d: "멍·상처가 반복되거나 설명이 바뀜 · 계절에 맞지 않는 옷 · 방임(결석·위생·끼니) 정황 · 아이가 직접 학대를 말함 등",
+};
+
+
+/* ── 저장소 ── */
+const STORE_KEY = "adhdScreenerV1";
+let state = load();
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) {
+      const s = JSON.parse(raw);
+      s.deleted = s.deleted || [];               // 삭제 이력(기기 간 삭제 전파용)
+      return s;
+    }
+  } catch (e) {}
+  return { children: [], activeChildId: null, records: [], assessments: [], deleted: [] };
+}
+function save() {
+  localStorage.setItem(STORE_KEY, JSON.stringify(state));
+}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function today() { return new Date().toISOString().slice(0, 10); }
+function fmt(d) { return d; }
+function daysBetween(a, b) { return Math.round((new Date(b) - new Date(a)) / 86400000); }
+function ageOf(child) {
+  if (!child || !child.birth) return null;
+  return (Date.now() - new Date(child.birth).getTime()) / (365.25 * 86400000);
+}
+function activeChild() { return state.children.find(c => c.id === state.activeChildId) || null; }
+function childRecords() { return state.records.filter(r => r.childId === state.activeChildId).sort((a, b) => a.date.localeCompare(b.date)); }
+function childAssessments() { return state.assessments.filter(a => a.childId === state.activeChildId).sort((a, b) => a.date.localeCompare(b.date)); }
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+/* ── 학생 관리 ── */
+function renderChildBar() {
+  const bar = document.getElementById("childbar");
+  bar.innerHTML = "";
+  state.children.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "chip" + (c.id === state.activeChildId ? " active" : "");
+    const age = ageOf(c);
+    b.textContent = c.name + (age != null ? ` (만 ${Math.floor(age)}세)` : "");
+    b.onclick = () => { state.activeChildId = c.id; save(); renderAll(); };
+    bar.appendChild(b);
+  });
+  const add = document.createElement("button");
+  add.className = "chip add";
+  add.textContent = "＋ 학생 추가";
+  add.onclick = () => document.getElementById("childForm").classList.toggle("open");
+  bar.appendChild(add);
+}
+document.getElementById("childSaveBtn").onclick = () => {
+  const name = document.getElementById("childName").value.trim();
+  const birth = document.getElementById("childBirth").value;
+  if (!name) { toast("번호 또는 별명을 입력하세요"); return; }
+  const c = { id: uid(), name, birth };
+  state.children.push(c);
+  state.activeChildId = c.id;
+  save();
+  document.getElementById("childName").value = "";
+  document.getElementById("childForm").classList.remove("open");
+  renderAll();
+  toast(`${name} 학생을 추가했어요`);
+};
+
+/* ── 행동 기록 폼 ── */
+function buildSymChecks() {
+  const wrap = document.getElementById("symChecks");
+  wrap.innerHTML = "";
+  [["IA", "부주의 (Inattention)"], ["HI", "과잉행동 · 충동성 (Hyperactivity-Impulsivity)"]].forEach(([dom, title]) => {
+    const g = document.createElement("div");
+    g.className = "symgroup";
+    g.innerHTML = `<div class="ghead">${title}</div>`;
+    SYMPTOMS.forEach((s, i) => {
+      if (s.d !== dom) return;
+      const l = document.createElement("label");
+      l.className = "sym";
+      l.innerHTML = `<input type="checkbox" value="${i}"><span>${s.t}</span>`;
+      g.appendChild(l);
+    });
+    wrap.appendChild(g);
+  });
+}
+document.getElementById("recSaveBtn").onclick = () => {
+  if (!activeChild()) { toast("먼저 학생을 추가하세요"); return; }
+  const note = document.getElementById("recNote").value.trim();
+  const symptoms = [...document.querySelectorAll("#symChecks input:checked")].map(x => +x.value);
+  if (!note && symptoms.length === 0) { toast("메모 또는 증상 체크가 필요해요"); return; }
+  state.records.push({
+    id: uid(),
+    childId: state.activeChildId,
+    date: document.getElementById("recDate").value || today(),
+    setting: document.querySelector('#recSetting input:checked').value,
+    note, symptoms,
+  });
+  save();
+  document.getElementById("recNote").value = "";
+  document.querySelectorAll("#symChecks input:checked").forEach(x => x.checked = false);
+  renderAll();
+  toast("기록했어요 · 누적 " + childRecords().length + "건");
+};
+
+/* ── 기록 목록 ── */
+function renderHistory() {
+  const list = document.getElementById("recList");
+  const recs = childRecords().slice().reverse();
+  const sum = document.getElementById("histSummary");
+  if (!activeChild()) { sum.textContent = ""; list.innerHTML = `<div class="empty">학생을 먼저 추가하세요.</div>`; return; }
+  if (recs.length === 0) { sum.textContent = "아직 기록이 없습니다."; list.innerHTML = `<div class="empty">첫 기록을 남겨보세요.</div>`; return; }
+  const first = recs[recs.length - 1].date, last = recs[0].date;
+  sum.textContent = `총 ${recs.length}건 · ${first} ~ ${last} (${daysBetween(first, last)}일)`;
+  list.innerHTML = "";
+  recs.forEach(r => {
+    const div = document.createElement("div");
+    div.className = "rec";
+    div.innerHTML = `
+      <div class="meta"><span>${fmt(r.date)}</span><span class="setting">${SETTING_LABELS[r.setting]}</span>
+        <button class="danger-link" data-del="${r.id}">삭제</button></div>
+      ${r.note ? `<div class="note">${escapeHtml(r.note)}</div>` : ""}
+      <div class="tags">${r.symptoms.map(i => `<span>${SYMPTOMS[i].t.slice(0, 22)}…</span>`).join("")}</div>`;
+    list.appendChild(div);
+  });
+  list.querySelectorAll("[data-del]").forEach(b => b.onclick = () => {
+    if (!confirm("이 기록을 삭제할까요?")) return;
+    state.deleted.push(b.dataset.del);
+    state.records = state.records.filter(r => r.id !== b.dataset.del);
+    save(); renderAll();
+  });
+}
+function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+/* ── 정기 평가 폼 ── */
+function buildAssessForm() {
+  const head = `<tr><th style="text-align:left">문항 (지난 1개월)</th>${RATE_LABELS.map(l => `<th>${l}</th>`).join("")}</tr>`;
+  const rows = SYMPTOMS.map((s, i) =>
+    `<tr><td class="q">${i + 1}. ${s.t}</td>${[0, 1, 2, 3].map(v =>
+      `<td><input type="radio" name="as-${i}" value="${v}" ${v === 0 ? "checked" : ""}></td>`).join("")}</tr>`).join("");
+  document.getElementById("assessForm").innerHTML = `<table class="rate">${head}${rows}</table>`;
+  const ihead = `<tr><th style="text-align:left">영역</th>${IMPAIR_LABELS.map(l => `<th>${l}</th>`).join("")}</tr>`;
+  const irows = IMPAIR_QS.map((q, i) =>
+    `<tr><td class="q">${q}</td>${[1, 2, 3, 4, 5].map(v =>
+      `<td><input type="radio" name="im-${i}" value="${v}" ${v === 1 ? "checked" : ""}></td>`).join("")}</tr>`).join("");
+  document.getElementById("impairForm").innerHTML = `<table class="rate">${ihead}${irows}</table>`;
+}
+document.getElementById("assessSaveBtn").onclick = () => {
+  if (!activeChild()) { toast("먼저 학생을 추가하세요"); return; }
+  const ratings = SYMPTOMS.map((_, i) => +document.querySelector(`input[name=as-${i}]:checked`).value);
+  const impair = IMPAIR_QS.map((_, i) => +document.querySelector(`input[name=im-${i}]:checked`).value);
+  state.assessments.push({
+    id: uid(), childId: state.activeChildId, date: today(),
+    respondent: "teacher",
+    ratings, impair,
+  });
+  save(); renderAll();
+  toast("평가를 저장했어요");
+};
+function scoreAssessment(a) {
+  const ia = a.ratings.slice(0, 9).filter(v => v >= 2).length;
+  const hi = a.ratings.slice(9).filter(v => v >= 2).length;
+  const impaired = Math.max(...a.impair) >= 4;
+  return { ia, hi, impaired, positive: (ia >= 6 || hi >= 6) && impaired };
+}
+function renderAssessList() {
+  const el = document.getElementById("assessList");
+  const list = childAssessments().slice().reverse();
+  if (list.length === 0) { el.innerHTML = `<div class="empty">아직 평가 이력이 없습니다.</div>`; return; }
+  el.innerHTML = `<table class="symtab"><tr><th>날짜</th><th>평가자</th><th>부주의</th><th>과잉·충동</th><th>기능손상</th><th>선별결과</th><th></th></tr>` +
+    list.map(a => {
+      const s = scoreAssessment(a);
+      return `<tr><td>${a.date}</td><td>교사</td>
+        <td class="num">${s.ia}/9</td><td class="num">${s.hi}/9</td>
+        <td class="num">${s.impaired ? "있음" : "없음"}</td>
+        <td>${s.positive ? "⚠️ 양성" : "음성"}</td>
+        <td><button class="danger-link" data-adel="${a.id}">삭제</button></td></tr>`;
+    }).join("") + `</table>`;
+  el.querySelectorAll("[data-adel]").forEach(b => b.onclick = () => {
+    if (!confirm("이 평가를 삭제할까요?")) return;
+    state.deleted.push(b.dataset.adel);
+    state.assessments = state.assessments.filter(a => a.id !== b.dataset.adel);
+    save(); renderAll();
+  });
+}
+
+/* ── 분석 로직 ──
+   DSM-5-TR 요건: 한 영역 6개 이상 증상 + 6개월 이상 지속 + 2가지 이상 상황 + 기능 손상.
+   행동일지에서 증상별 "반복 관찰"(3회 이상·14일 이상에 걸쳐)을 세고,
+   정기 평가는 Vanderbilt 채점(2점 이상 문항 수, 영역당 6개 + 손상 동반 시 양성)을 적용. */
+function analyze() {
+  const recs = childRecords();
+  const asmts = childAssessments();
+  const perSym = SYMPTOMS.map((_, i) => {
+    const dates = recs.filter(r => r.symptoms.includes(i)).map(r => r.date).sort();
+    const n = dates.length;
+    const span = n >= 2 ? daysBetween(dates[0], dates[n - 1]) : 0;
+    const settings = new Set(recs.filter(r => r.symptoms.includes(i)).map(r => r.setting));
+    const status = (n >= 3 && span >= 14) ? "repeated" : (n >= 1 ? "observed" : "none");
+    return { n, span, settings, status };
+  });
+  const iaRep = perSym.slice(0, 9).filter(s => s.status === "repeated").length;
+  const hiRep = perSym.slice(9).filter(s => s.status === "repeated").length;
+  const spanDays = recs.length >= 2 ? daysBetween(recs[0].date, recs[recs.length - 1].date) : 0;
+  const settings = new Set(recs.map(r => r.setting));
+
+  const latestBy = {};
+  asmts.forEach(a => latestBy[a.respondent] = a);   // 정렬돼 있으므로 마지막이 최신
+  const ta = latestBy.teacher ? scoreAssessment(latestBy.teacher) : null;
+
+  const ia = Math.max(iaRep, ta ? ta.ia : 0);
+  const hi = Math.max(hiRep, ta ? ta.hi : 0);
+  const impaired = !!(ta && ta.impaired);
+  const sufficient = (recs.length >= 10 && spanDays >= 28) || asmts.length >= 1;
+  const maxDomain = Math.max(ia, hi);
+
+  /* DSM-5-TR 기준 C(두 가지 이상 상황)는 교사 단독 관찰로는 확인할 수 없다.
+     수업/쉬는시간/이동은 모두 '학교'라는 한 상황 안의 장면이므로 교차 상황이 아니다.
+     따라서 충족·미충족이 아니라 '미확인'으로 두고, 원본에서 이 요건이 하던 역할
+     (최상위 단계의 세 번째 관문)은 교사가 실제로 관찰할 수 있는 기능 손상으로 대신한다. */
+  const crossSetting = null;   // null = 미확인 (교사 단독으로는 판정 불가)
+
+  let tier;
+  if (!sufficient) tier = "collecting";
+  else if (maxDomain >= 6) tier = (spanDays >= 180 && impaired) ? "high" : "emerging";
+  else if (maxDomain >= 4) tier = "watch";
+  else tier = "low";
+
+  // 관찰 타이머: 증상이 처음 기록된 날부터 경과일
+  const firstSym = recs.find(r => r.symptoms.length > 0);
+  const watchDays = firstSym ? daysBetween(firstSym.date, recs[recs.length - 1].date) : 0;
+
+  return { recs, asmts, perSym, iaRep, hiRep, ia, hi, spanDays, settings, ta, crossSetting, impaired, sufficient, tier, maxDomain, watchDays };
+}
+
+/* ── 추세: 좋아지는 중인가, 나빠지는 중인가 ── */
+function computeTrend(recs, asmts) {
+  const out = { label: "insufficient", details: [] };
+  const signals = [];
+  ["teacher"].forEach(resp => {
+    const list = asmts.filter(x => x.respondent === resp);
+    if (list.length >= 2) {
+      const prev = list[list.length - 2], last = list[list.length - 1];
+      const s0 = prev.ratings.reduce((a, b) => a + b, 0);
+      const s1 = last.ratings.reduce((a, b) => a + b, 0);
+      let sig = "stable";
+      if (s1 - s0 <= -4 && s1 <= s0 * 0.8) sig = "improving";
+      else if (s1 - s0 >= 4 && s1 >= s0 * 1.2) sig = "worsening";
+      signals.push(sig);
+      out.details.push(`교사 평가 총점 ${s0} → ${s1} (${prev.date} → ${last.date})`);
+    }
+  });
+  if (recs.length > 0) {
+    const lastDate = new Date(recs[recs.length - 1].date);
+    const cut1 = new Date(lastDate.getTime() - 28 * 86400000);
+    const cut2 = new Date(lastDate.getTime() - 56 * 86400000);
+    const recent = recs.filter(r => new Date(r.date) > cut1);
+    const prior = recs.filter(r => { const d = new Date(r.date); return d <= cut1 && d > cut2; });
+    if (recent.length >= 5 && prior.length >= 5) {
+      const avg = l => l.reduce((a, r) => a + r.symptoms.length, 0) / l.length;
+      const a1 = avg(prior), a2 = avg(recent);
+      let sig = "stable";
+      if (a2 <= a1 * 0.7) sig = "improving";
+      else if (a2 >= a1 * 1.3) sig = "worsening";
+      signals.push(sig);
+      out.details.push(`행동일지 기록당 증상 수 ${a1.toFixed(1)} → ${a2.toFixed(1)} (직전 4주 → 최근 4주)`);
+    }
+  }
+  if (signals.length === 0) return out;
+  if (signals.includes("worsening")) out.label = "worsening";
+  else if (signals.includes("improving")) out.label = "improving";
+  else out.label = "stable";
+  return out;
+}
+const TREND_LABELS = {
+  improving: ["개선 추세", "trend-improving", "좋아지고 있습니다 — '기다리며 지켜보기'를 지지하는 신호입니다."],
+  stable: ["큰 변화 없음", "trend-stable", "뚜렷한 변화가 없습니다 — 관찰 기한(10주)이 지나도 그대로라면 개입 강도를 올릴 근거가 됩니다."],
+  worsening: ["악화 추세", "trend-worsening", "나빠지고 있습니다 — 기다림보다 개입을 앞당길 것을 지지하는 신호입니다."],
+  insufficient: ["추세 판단 불가", "trend-insufficient", "같은 평가자의 정기 평가 2회 이상, 또는 8주 이상의 꾸준한 일지가 쌓이면 추세를 보여드립니다."],
+};
+
+/* ── 주간 차트 데이터 (최근 12주, 주별 증상 태그 수) ── */
+function weeklyCounts(recs) {
+  const weeks = [];
+  const now = new Date(today());
+  for (let w = 11; w >= 0; w--) {
+    const end = new Date(now.getTime() - w * 7 * 86400000);
+    const start = new Date(end.getTime() - 7 * 86400000);
+    const inWeek = recs.filter(r => { const d = new Date(r.date); return d > start && d <= end; });
+    weeks.push({
+      label: `${end.getMonth() + 1}/${end.getDate()}`,
+      tags: inWeek.reduce((a, r) => a + r.symptoms.length, 0),
+      recs: inWeek.length,
+    });
+  }
+  return weeks;
+}
+
+/* ── 판단 단계 ── */
+const TIERS = {
+  collecting: { cls: "v-collecting", badge: "관찰 축적 단계", title: "아직 판단하지 않습니다",
+    desc: "판단을 내리기에는 기록이 부족합니다. 서두를 필요 없어요 — 지속성과 추세는 시간이 쌓여야만 확인할 수 있는 요건입니다. 아래 '지금 할 일'의 기록 요령부터 시작하세요.",
+    prob: "추정 불가 단계입니다. 참고로 아동 ADHD의 기저 유병률은 약 5~7%입니다 (Thomas 2015; Polanczyk 2007)." },
+  low: { cls: "v-low", badge: "지켜봐도 좋음", title: "지금은 평소대로 지켜봐도 좋습니다",
+    desc: "반복 관찰된 증상 수가 선별 기준(한 영역 6개)에 크게 못 미칩니다. 현재 기록상 이 행동들은 해당 연령에서 흔히 지나가는 수준일 가능성이 높습니다. 특별한 조치 없이, 눈에 띄는 행동이 있을 때만 기록을 이어가세요.",
+    prob: "대략적 추정: 기저 유병률(약 5~7%)보다 낮거나 비슷한 수준으로 볼 수 있습니다." },
+  watch: { cls: "v-watch", badge: "구조화된 지켜보기", title: "'그냥 기다리기' 말고 '계획된 지켜보기'가 필요합니다",
+    desc: "한 영역에서 4~5개 증상이 반복되고 있습니다. NICE 지침은 이런 단계에서 최대 10주의 계획된 관찰을 권합니다: 아래의 교실 조정을 시작하면서 정해진 기간 관찰하고, 개선되면 그대로 두고, 10주가 지나도 지속·악화하면 다음 단계로 넘어가는 방식입니다.",
+    prob: "대략적 추정: 기저 유병률(5~7%)과 비슷하거나 약간 높은 수준(~10%). 아직 판정을 내릴 단계는 아닙니다." },
+  emerging: { cls: "v-emerging", badge: "교실 지원 시작 권고", title: "지켜보기보다, 교실 지원을 시작할 단계입니다",
+    desc: "한 영역에서 6개 이상 증상이 확인되었습니다. 나머지 요건(6개월 지속, 가정을 포함한 두 가지 이상 상황)이 확인되기를 기다리는 동안에도 교실 환경 조정은 지금 시작하는 것이 근거 기반 권고입니다(NICE: 진단을 기다리지 말 것). 교실 조정은 ADHD 여부와 무관하게 도움이 되므로 지금 시작해 손해가 없습니다.",
+    prob: "대략적 추정: 10~25% 수준. 선별 도구 특성상 이 단계여도 다수는 ADHD가 아닙니다 — 그래서 이 단계의 행동은 '전문기관 연계'가 아니라 '교실에서 할 수 있는 조정'입니다." },
+  high: { cls: "v-high", badge: "보호자 상담 · 교내 연계 권고", title: "학교 안의 조정만으로는 부족해 보입니다 — 보호자 상담을 준비하세요",
+    desc: "증상 개수와 지속기간(6개월 이상), 그리고 수업·또래관계·안전에서의 실제 어려움이 모두 확인되었습니다. 이 정도로 오래 지속되며 기능에 영향을 주는 행동은 담임 혼자 감당할 단계를 넘었습니다. 다만 <b>전문 평가를 받을지 결정하는 것은 보호자의 몫</b>이며, 교사가 할 일은 관찰 기록을 근거로 보호자와 상담하고 교내 자원(전문상담교사·Wee클래스·특수교육지원센터)에 연계하는 것입니다. 아래 '지금 할 일'에 상담 준비 방법이 있습니다.",
+    prob: "대략적 추정: 문헌 기반으로 20~40% 수준입니다 (유병률 5~7% × Vanderbilt류 민감도·특이도 약 80%를 베이즈 결합). 게다가 이 수치는 가정 상황이 확인됐을 때의 값이라, 교사 관찰만 있는 지금은 이보다 더 불확실합니다. 선별 양성은 진단이 아니며, ADHD가 아니어도 이 정도 지속된 어려움은 상담이 도움이 됩니다." },
+};
+/* ── 행동 지침 생성 (교사용) ──
+   근거: NICE NG87 (지켜보기 10주·환경조정·진단 전 지원 연계), AAP 2019 (감별·연령),
+   Evans 2018 (교실 행동 개입의 근거등급), DSM-5-TR (감별진단).
+   원본(부모용)의 '부모 행동훈련·병원 예약·약물 원칙'은 교사가 실행할 수 없으므로
+   교실 조정 · 교내 자원 연계 · 보호자 상담 준비로 대체했다.
+   원칙: 교사가 보호자에게 진단명을 말하도록 유도하는 문구는 넣지 않는다. */
+function buildActionPlan(a, child, trend) {
+  const ctx = child.context || null;
+  const age = ageOf(child);
+  const famList = (ctx && ctx.family) || [];
+  const famAny = famList.length > 0;
+  const plan = [];
+
+  /* 1단계: ADHD처럼 보이는 다른 원인 걸러내기 — 교사가 확인 가능한 것 / 보호자만 아는 것 */
+  const sec1 = { head: "먼저 걸러낼 것 — ADHD처럼 보이는 다른 원인", items: [] };
+  if (!ctx) {
+    sec1.items.push({ t: "위의 '상황 체크'를 먼저 작성하세요 (2분)", d: "수면·시청각·최근 생활 변화는 ADHD와 똑같은 행동을 만드는 대표적 원인입니다. 교사가 바로 알 수 없는 항목은 '모름'으로 두면 되고, 그 자체가 판단에서 중요한 정보로 쓰입니다.", src: "AAP 2019 · NICE NG87 감별" });
+  } else {
+    if (ctx.senses !== "checked") sec1.items.push({ t: "시력·청력부터 확인하기 — 교사가 가장 먼저 할 수 있는 일", d: "칠판이 안 보이거나 잘 안 들리는 학생은 '집중하지 않는 학생'처럼 보입니다. 학생건강검사 결과를 확인하고, 자리를 앞으로 옮겼을 때 달라지는지 2주만 관찰해 보세요. 이것만으로 설명되는 경우가 드물지 않습니다.", src: "NICE NG87 감별" });
+    if (ctx.sleep === "problem") sec1.items.push({ t: "수면 문제 — 보호자 상담에서 확인할 항목", d: "수면 부족·심한 코골이만으로도 낮의 부주의·과잉행동이 나타납니다. 교사가 직접 확인할 수 없으니, 보호자 상담 때 '요즘 몇 시에 자고 아침에 깨우기 힘든지'를 물어보세요. 진단명 이야기 없이도 자연스럽게 확인할 수 있는 질문입니다.", src: "AAP 2019 감별진단" });
+    if (ctx.sleep === "unknown") sec1.items.push({ t: "수면 상태가 아직 확인되지 않았습니다", d: "수면은 ADHD와 가장 흔하게 혼동되는 원인인데 교사는 알 수 없는 영역입니다. 판단의 정확도를 위해 보호자 상담 때 꼭 확인하세요.", src: "AAP 2019 감별진단" });
+    if (ctx.stressors && ctx.stressors.length > 0) sec1.items.push({ t: "최근 큰 변화의 영향 고려하기 (" + ctx.stressors.map(id => (STRESSORS.find(s => s.id === id) || {}).t).filter(Boolean).join(", ") + ")", d: "큰 변화 후 수 주~수개월의 행동 변화는 흔한 적응 반응일 수 있습니다. 이 경우 필요한 것은 의뢰가 아니라 예측 가능한 학급 일과와 정서적 안정입니다. 변화 시점 이후 2~3개월간 행동이 점차 잦아드는지 지켜보세요. 반대로 변화와 무관하게 그 전부터 있던 행동이라면 적응 반응으로 보기 어렵습니다.", src: "DSM-5-TR 감별(적응 반응)" });
+    if (ctx.learning === "suspect") sec1.items.push({ t: "학습 어려움과 구분하기", d: "읽기·쓰기·셈이 또래보다 뚜렷이 어려운 학생은 '집중을 안 하는' 것이 아니라 '따라갈 수 없어서 딴짓을 하는' 것일 수 있습니다. 난이도를 낮춘 과제에서도 같은 행동이 나오는지 비교해 보면 구분에 도움이 됩니다.", src: "DSM-5-TR 감별진단" });
+    if (sec1.items.length === 0) sec1.items.push({ t: "확인된 다른 원인 신호는 없습니다", d: "시청각·수면·생활 변화·학습 요인이 특별히 걸러지지 않았습니다. 아래 단계의 판단을 그대로 따르면 됩니다.", src: "" });
+  }
+  plan.push(sec1);
+
+  /* 2단계: 모든 단계 공통 — 교실에서 지금 시작할 수 있는 조정 */
+  plan.push({ head: "교실에서 지금 시작할 것 (어느 단계든 해가 없고 도움됩니다)", items: [
+    { t: "자리와 동선 조정", d: "교사 시선이 자주 닿는 앞쪽·중앙으로, 창가나 출입문처럼 자극이 많은 자리는 피합니다. 옆자리는 차분한 또래로. 이것만으로도 수업 중 이탈이 줄어드는 경우가 많습니다.", src: "Evans 2018 (교실 행동 개입)" },
+    { t: "지시는 짧게, 한 번에 하나", d: "눈을 맞추고 한 문장으로. \"교과서 펴고 3번 문제 풀고 다 하면 가져와\"가 아니라 \"교과서 47쪽 펴자\" → 확인 후 다음 지시. 지시 후 학생이 스스로 한 번 말해보게 하면 더 확실합니다.", src: "NICE NG87 환경조정" },
+    { t: "과제는 잘게 쪼개고 중간 점검", d: "한 번에 5~10분 단위로 나누고, 남은 시간을 눈으로 볼 수 있게(타이머·체크리스트) 해 주세요. 다 끝낸 뒤가 아니라 중간에 한 번 봐 주는 것이 핵심입니다.", src: "Evans 2018" },
+    { t: "잘한 행동을 그 자리에서 구체적으로 짚어 주기", d: "\"잘했어\"보다 \"끝까지 자리에 앉아서 다 풀었네\"처럼 행동을 짚어서. 문제행동에는 큰 반응 대신 일관된 낮은 톤의 결과를. 지적 대 인정의 비율을 뒤집는 것이 교실 행동 개입의 핵심 원리입니다.", src: "Evans 2018 (교실 행동 개입)" },
+    { t: "활동 전환을 미리 예고하기", d: "\"5분 뒤에 정리할 거야\", \"이거 끝나면 체육관 갈 거야\"처럼 다음을 예고하면 전환 시점의 문제행동이 눈에 띄게 줄어듭니다.", src: "NICE NG87 환경조정" },
+    { t: "에너지를 쓸 합법적 통로 만들기", d: "학습지 걷기·칠판 지우기 심부름 등 자리에서 일어날 수 있는 역할을 주면, 무단 이탈이 줄고 학생도 지적받는 횟수가 줄어듭니다.", src: "Evans 2018" },
+  ]});
+
+  /* 3단계: 단계별 다음 행동 */
+  const sec3 = { head: "다음 단계 — 현재 판단에 따른 구체적 행동", items: [] };
+  const tier = a.tier;
+  if (tier === "collecting") {
+    sec3.items.push(
+      { t: "주 2~3회, 장면을 다양하게 기록하기", d: "수업 중만이 아니라 쉬는 시간·이동·급식 장면도 포함하세요. 특정 장면에서만 나타나는지, 어디서나 나타나는지가 중요한 정보입니다. 10건·4주 이상 쌓이면 1차 판단이 시작됩니다.", src: "" },
+      { t: "첫 정기 평가 해두기", d: "지금 상태를 기준점으로 남겨두면 4주 뒤 평가와 비교해 추세를 볼 수 있습니다. 정기 평가 1회만으로도 1차 판단이 가능해집니다.", src: "" },
+      { t: "기록은 해석이 아니라 행동으로", d: "\"산만하다\"가 아니라 \"2교시에 자리에서 4번 일어났다\"처럼 적으세요. 나중에 보호자 상담을 하게 될 때, 판단이 아닌 사실만이 설득력을 갖습니다.", src: "" },
+    );
+  } else if (tier === "low") {
+    sec3.items.push(
+      { t: "특별한 조치는 필요하지 않습니다", d: "눈에 띄는 행동이 있을 때만 기록하고, 학기에 한 번 정도 정기 평가로 확인하면 충분합니다.", src: "" },
+      { t: "행동이 갑자기 늘면 다시 확인", d: "학기 초·행사 기간·자리 변경 후에 일시적으로 늘 수 있습니다. 2~3주 이상 지속되면 기록 빈도를 올리세요.", src: "" },
+    );
+  } else if (tier === "watch") {
+    const overdue = a.watchDays >= 70 && trend.label !== "improving";
+    if (overdue) {
+      sec3.items.push(
+        { t: "교내 전문가와 먼저 상의하기", d: "관찰 기한을 넘겼습니다. 보호자 상담 전에 전문상담교사·Wee클래스 담당 선생님께 기록을 보여주고 의견을 구하세요. 담임 혼자 판단하지 않는 것이 학생에게도 교사에게도 안전합니다.", src: "" },
+        { t: "보호자 상담 일정 잡기", d: "학교에서 관찰된 행동을 공유하고, 가정에서는 어떤지 물어보는 자리입니다. 진단명을 꺼내는 자리가 아닙니다.", src: "NICE NG87" },
+      );
+    } else {
+      sec3.items.push(
+        { t: "오늘부터 8~10주짜리 '관찰 계획' 시작", d: "위의 교실 조정을 실행하면서 주 2~3회 기록, 4주 후와 8주 후에 정기 평가를 하세요. 아래 관찰 타이머가 경과를 보여줍니다.", src: "NICE NG87 (최대 10주 지켜보기)" },
+        { t: "조정을 했는지도 함께 기록하기", d: "자리를 옮긴 날, 과제를 쪼갠 날을 메모에 적어두면 \"조정 후 좋아졌는지\"를 판단할 수 있습니다. 이것이 다음 단계 결정의 근거가 됩니다.", src: "NICE NG87" },
+        { t: "10주 후에도 그대로거나 나빠지면 → 다음 단계로", d: "그때는 '더 지켜보기'의 근거가 없어집니다. 교내 전문상담교사와 상의하고 보호자 상담을 준비하세요.", src: "NICE NG87" },
+      );
+    }
+  } else if (tier === "emerging") {
+    if (!a.ta) sec3.items.push({ t: "정기 평가를 아직 하지 않았습니다 (중요)", d: "행동일지만으로는 빈도를 체계적으로 비교하기 어렵습니다. 정기 평가 탭에서 18문항 평가를 한 번 해두면 판단의 정확도와 추세 확인이 크게 좋아집니다.", src: "" });
+    sec3.items.push(
+      { t: "교실 조정을 '계획'으로 만들기", d: "위의 조정 중 2~3개를 골라 4주간 일관되게 적용하세요. 그때그때 다르게 대응하면 효과도 없고 무엇이 통했는지도 알 수 없습니다. 목표 행동은 1~2개로 좁히는 것이 원칙입니다.", src: "Evans 2018 (교실 행동 개입)" },
+      { t: "교내 자원 알아보기 — 아직 외부 의뢰 단계는 아닙니다", d: "전문상담교사·Wee클래스가 있다면 이 단계에서 상의해 두면 좋습니다. 학교에 따라 학습 지원이나 소집단 프로그램을 연계할 수 있습니다.", src: "" },
+      { t: "8~10주 내 뚜렷한 개선이 없으면 보호자 상담으로", d: "조정을 일관되게 했는데도 그대로라면, 학교 안에서 할 수 있는 범위를 넘은 것입니다. 그때 보호자와 상담하세요.", src: "NICE NG87" },
+    );
+  } else if (tier === "high") {
+    sec3.items.push(
+      { t: "보호자 상담 전에 교내 전문가와 먼저 상의", d: "전문상담교사·Wee클래스, 필요하면 특수교육지원센터에 기록을 보여주고 상담 방식을 같이 정하세요. 담임 혼자 보호자에게 이야기를 꺼내는 것보다 훨씬 안전하고, 학교의 공식 지원 경로로도 이어집니다.", src: "" },
+      { t: "상담에서 말할 것 — 행동만, 진단명은 말하지 않기", d: "\"ADHD인 것 같다\", \"검사를 받아보셔야 한다\"는 교사가 할 말이 아니며 갈등의 가장 흔한 원인입니다. 대신 이렇게: \"2학기 들어 수업 중에 자리에서 일어나는 일이 주 3~4회 있고, 모둠활동에서 차례를 기다리기 어려워하는 모습이 반복됩니다. 집에서는 어떤가요?\" — 관찰된 사실과 빈도, 그리고 질문으로 끝냅니다.", src: "" },
+      { t: "상담에 가져갈 것", d: "① 이 앱의 기록에서 뽑은 구체적 장면 2~3개(날짜·상황·행동) ② 그동안 교실에서 시도한 조정과 그 결과 ③ 정기 평가 추세. 다만 <b>앱의 백업 파일 자체를 보호자에게 전달하지는 마세요</b> — 다른 학생의 기록과 교사의 추정이 함께 담겨 있습니다.", src: "" },
+      { t: "보호자가 받아들이지 않아도 교실 지원은 계속", d: "흔한 일이고, 설득하는 것이 교사의 역할은 아닙니다. 보호자의 판단과 무관하게 교실 조정은 계속 유지하고 기록도 이어가세요. 시간이 지나 보호자가 먼저 물어보는 경우가 많습니다.", src: "" },
+      { t: "전문 평가는 보호자가 결정합니다", d: "보호자가 상담 경로를 물으면, 소아청소년정신과 외에 시군구 정신건강복지센터 아동청소년팀(무료)과 학교 Wee센터가 있다고 안내할 수 있습니다. 교사가 특정 병원을 지정하거나 검사를 권유하는 형태는 피하세요.", src: "AAP 2019" },
+    );
+  }
+  /* 가족력 반영 (보호자 상담에서 확인된 경우에만 존재) */
+  if (famAny && (tier === "watch" || tier === "emerging" || tier === "high")) {
+    sec3.items.push({ t: "가족력 신호 — 관찰을 느슨하게 하지 마세요", d: "1촌 가족의 ADHD 신호는 기저 위험을 약 2~8배 높입니다. 관찰 계획을 건너뛰지 말고, 10주 기한이 지나도 지속되면 교내 상의를 미루지 마세요. 다만 이 정보는 보호자가 알려준 것이므로, 상담에서 이를 근거로 삼아 말하는 것은 피하는 것이 좋습니다.", src: "Faraone 2019 · 2021" });
+  }
+
+  /* 추세 기반 보정 */
+  if ((tier === "watch" || tier === "emerging") && trend.label === "worsening") {
+    sec3.items.unshift({ t: "추세가 나빠지고 있습니다 — 일정을 앞당기세요", d: "관찰 기간을 다 채울 필요가 없습니다. 교실 조정을 바로 강화하고, 교내 전문상담교사와의 상의도 앞당기는 것을 권합니다.", src: "NICE NG87" });
+  }
+  if ((tier === "watch" || tier === "emerging") && a.watchDays >= 70 && trend.label !== "improving") {
+    sec3.items.unshift({ t: "관찰 10주가 지났는데 개선 신호가 없습니다", d: "NICE 권고 관찰 상한(10주)을 넘겼습니다. '더 지켜보기'는 이제 근거가 없습니다 — 교내 상의와 보호자 상담 단계로 넘어가세요.", src: "NICE NG87" });
+  }
+  plan.push(sec3);
+
+  /* 4단계: 연령 특이 사항 */
+  if (age != null && age < 6) {
+    plan.push({ head: "만 6세 미만이라면", items: [
+      { t: "이 연령의 활동성은 정상 범위가 매우 넓습니다", d: "AAP 지침상 ADHD 평가는 만 4세부터 권장되고, K-ARS·Vanderbilt의 규준은 주로 초등학령기(6~12세)에서 만들어졌습니다. 취학 전 아동은 같은 점수라도 훨씬 신중하게 해석해야 하며, 이 앱은 판단보다 기록 축적용으로 쓰는 편이 적절합니다.", src: "AAP 2019 (진단은 만 4세부터)" },
+    ]});
+  }
+  return plan;
+}
+
+/* ── 상황 체크 카드 ── */
+function contextFormHtml(child) {
+  const ctx = child.context || {};
+  const st = ctx.stressors || [];
+  const rf = ctx.redflags || [];
+  const onsetOpt = (v, t) => `<label><input type="radio" name="ctx-onset" value="${v}" ${ctx.onset === v ? "checked" : ""}>${t}</label>`;
+  return `
+    <p class="hint" style="margin-top:0">교사가 직접 알 수 없는 항목이 많습니다. <b>모르면 '모름'으로 두세요</b> —
+      비워두는 것보다 정확하고, "아직 확인되지 않았다"는 사실 자체가 판단에 반영됩니다.</p>
+
+    <label class="fld">이 행동들은 언제부터였나요? <span style="font-weight:400;color:var(--sub)">(담임으로서 아는 범위 또는 이전 학년 기록 기준)</span></label>
+    <div class="seg">${Object.entries(ONSET_LABELS).map(([v, t]) => onsetOpt(v, t)).join("")}</div>
+
+    <label class="fld">시력·청력 <span style="font-weight:400;color:var(--sub)">— 학생건강검사로 확인 가능</span></label>
+    <div class="seg">
+      <label><input type="radio" name="ctx-senses" value="checked" ${ctx.senses === "checked" ? "checked" : ""}>확인함 · 정상</label>
+      <label><input type="radio" name="ctx-senses" value="problem" ${ctx.senses === "problem" ? "checked" : ""}>이상 소견 있음</label>
+      <label><input type="radio" name="ctx-senses" value="unchecked" ${!ctx.senses || ctx.senses === "unchecked" ? "checked" : ""}>확인 안 함 / 모름</label>
+    </div>
+
+    <label class="fld">학습 수준 <span style="font-weight:400;color:var(--sub)">— 교사가 가장 잘 아는 영역</span></label>
+    <div class="seg">
+      <label><input type="radio" name="ctx-learning" value="ok" ${ctx.learning === "ok" ? "checked" : ""}>또래 수준을 따라감</label>
+      <label><input type="radio" name="ctx-learning" value="suspect" ${ctx.learning === "suspect" ? "checked" : ""}>읽기·쓰기·셈이 또래보다 뚜렷이 어려움</label>
+      <label><input type="radio" name="ctx-learning" value="unknown" ${!ctx.learning || ctx.learning === "unknown" ? "checked" : ""}>아직 판단 어려움</label>
+    </div>
+
+    <div class="askparent">
+      <b>👪 여기부터는 보호자만 알 수 있는 항목입니다</b> — 상담에서 확인되기 전에는 '모름'으로 두세요.
+      추측으로 채우면 판단이 실제보다 확실해 보이게 됩니다.
+    </div>
+
+    <label class="fld">잠은 잘 자나요?</label>
+    <div class="seg">
+      <label><input type="radio" name="ctx-sleep" value="good" ${ctx.sleep === "good" ? "checked" : ""}>잘 자는 편</label>
+      <label><input type="radio" name="ctx-sleep" value="problem" ${ctx.sleep === "problem" ? "checked" : ""}>문제 있음 (늦게 잠 · 자주 깸 · 심한 코골이)</label>
+      <label><input type="radio" name="ctx-sleep" value="unknown" ${!ctx.sleep || ctx.sleep === "unknown" ? "checked" : ""}>모름</label>
+    </div>
+
+    <label class="fld">최근 6개월 사이 큰 변화가 있었나요? (확인된 것만)</label>
+    <div class="seg">${STRESSORS.map(s => `<label><input type="checkbox" name="ctx-stress" value="${s.id}" ${st.includes(s.id) ? "checked" : ""}>${s.t}</label>`).join("")}</div>
+
+    <label class="fld">가족 중 ADHD 진단·유사 특성이 있나요? (보호자가 알려준 경우만 · 없으면 그냥 두세요)</label>
+    <div class="seg">${FAMILY_OPTS.map(f => `<label><input type="checkbox" name="ctx-fam" value="${f.id}" ${(ctx.family || []).includes(f.id) ? "checked" : ""}>${f.t}</label>`).join("")}</div>
+
+    <label class="fld" style="color:var(--red)">다음 중 관찰된 것이 있나요? (판단 단계와 무관하게 빠른 조치가 필요한 신호)</label>
+    <div class="symgroup flag">${RED_FLAGS.map(f => `<label class="sym"><input type="checkbox" name="ctx-flag" value="${f.id}" ${rf.includes(f.id) ? "checked" : ""}><span>${f.t}</span></label>`).join("")}</div>
+
+    <div class="dutybox">
+      <b>⚖️ ${REPORT_DUTY.t}</b>
+      <p style="margin:4px 0 8px">${REPORT_DUTY.d}</p>
+      <p style="margin:0">해당한다면 이 앱에 기록할 일이 아니라 <b>즉시 신고할 일</b>입니다.
+        「아동학대범죄의 처벌 등에 관한 특례법」 제10조에 따라 <b>교원은 신고의무자</b>이며,
+        직무 중 학대를 알게 되거나 <b>의심이 있는 경우</b> 시·군·구 또는 수사기관에 즉시 신고해야 합니다
+        (신고전화 <b>112</b>). 확증은 필요하지 않고, 정당한 사유 없이 신고하지 않으면 과태료가 부과됩니다.
+        학교장·교감과 공유하되, 신고 자체를 미루는 사유가 되지는 않습니다.</p>
+    </div>
+
+    <button class="primary" id="ctxSaveBtn">상황 체크 저장</button>`;
+}
+function contextSummaryHtml(ctx) {
+  const chips = [];
+  if (ctx.onset) chips.push(`시작: ${ONSET_LABELS[ctx.onset]}`);
+  (ctx.stressors || []).forEach(id => { const s = STRESSORS.find(x => x.id === id); if (s) chips.push(s.t); });
+  chips.push(ctx.sleep === "problem" ? "수면 문제 있음" : ctx.sleep === "good" ? "수면 양호" : "수면 미확인 (보호자)");
+  chips.push(ctx.senses === "checked" ? "시력·청력 정상" : ctx.senses === "problem" ? "시력·청력 이상 소견" : "시력·청력 미확인");
+  chips.push(ctx.learning === "suspect" ? "학습 어려움 뚜렷" : ctx.learning === "ok" ? "학습 또래 수준" : "학습 판단 유보");
+  (ctx.family || []).forEach(id => { const f = FAMILY_OPTS.find(x => x.id === id); if (f) chips.push("🧬 " + f.t); });
+  let html = chips.map(c => `<span>${c}</span>`).join("");
+  (ctx.redflags || []).forEach(id => { const f = RED_FLAGS.find(x => x.id === id); if (f) html += `<span class="flag">⚠ ${f.t.slice(0, 16)}…</span>`; });
+  return html;
+}
+
+
+/* ── 판단·할 일 탭 렌더 ── */
+function renderAnalysis() {
+  const body = document.getElementById("analysisBody");
+  const child = activeChild();
+  if (!child) { body.innerHTML = `<div class="card"><div class="empty">학생을 먼저 추가하세요.</div></div>`; return; }
+  const a = analyze();
+  const trend = computeTrend(a.recs, a.asmts);
+  const t = TIERS[a.tier];
+  const age = ageOf(child);
+  const ctx = child.context || null;
+
+  let html = "";
+
+  /* 위험 신호 배너 — 어떤 판단 단계보다 우선 */
+  if (ctx && ctx.redflags && ctx.redflags.length > 0) {
+    const flags = ctx.redflags.map(id => (RED_FLAGS.find(f => f.id === id) || {}).t).filter(Boolean);
+    html += `<div class="dangerbox"><b>⚠️ 아래 신호는 ADHD 판단과 무관하게, 기다리지 말고 오늘 조치가 필요합니다.</b><br>
+      ${flags.map(f => "· " + f).join("<br>")}<br>
+      <span style="font-size:13px">담임 혼자 감당하지 마세요 — <b>전문상담교사·Wee클래스와 관리자(교감·교장)에게 오늘 공유</b>하고,
+      보호자 연락 여부와 방식을 함께 정하세요. 자해·죽음에 대한 언급이 있다면 정신건강 위기상담전화
+      <b>1577-0199</b>(24시간)에서 교사도 대응 방법을 상담할 수 있습니다.</span></div>`;
+  }
+
+  if (age != null && age < 4) {
+    html += `<div class="warnbox">⚠️ <b>${escapeHtml(child.name)}</b> 학생은 현재 만 ${age.toFixed(1)}세입니다. AAP 지침상 ADHD 평가는
+      <b>만 4세부터</b> 권장되며, 그 이전의 산만함·충동성은 정상 발달과 구분이 어렵습니다.
+      지금은 판단 목적보다는 <b>관찰 기록을 쌓아두는 용도</b>로 사용하세요.</div>`;
+  }
+
+  /* 상황 체크 */
+  const ctxOpen = !ctx;
+  html += `<div class="card"><h2>상황 체크 ${ctx ? "" : "(2분 · 판단 정확도를 크게 높입니다)"}</h2>
+    ${ctx ? `<p class="hint">마지막 업데이트: ${ctx.updated || "-"} · 보호자 상담 등으로 새로 알게 되면 수정하세요.</p>
+      <div class="ctxsum">${contextSummaryHtml(ctx)}</div>
+      <div class="toolrow"><button class="ghost" id="ctxEditBtn">수정</button></div>
+      <div id="ctxFormWrap" style="display:none">${contextFormHtml(child)}</div>`
+    : `<p class="hint">ADHD처럼 보이지만 실제로는 시력·청력, 수면, 학습 어려움, 최근 생활 변화 때문인 경우가 많습니다.
+      이 체크는 그 가능성을 걸러내기 위한 것입니다 — 모르는 항목은 '모름'으로 두면 됩니다.</p>
+      <div id="ctxFormWrap">${contextFormHtml(child)}</div>`}
+  </div>`;
+
+
+  /* 가족력·부모 성향 신호 */
+  const fam = (ctx && ctx.family) || [];
+  const famStrong = fam.includes("parent-dx") || fam.includes("sibling");
+  const famSignal = famStrong || fam.includes("parent-sus");
+
+  /* 판단 카드 */
+  let ctxnote = "";
+  if (ctx && a.tier !== "collecting" && a.tier !== "low") {
+    const transientSignals = [];
+    if (ctx.onset === "lt3m" && ctx.stressors && ctx.stressors.length > 0) transientSignals.push("행동 시작 시점(3개월 내)이 최근 생활 변화와 겹칩니다 — 적응 반응 가능성");
+    if (ctx.sleep === "problem") transientSignals.push("수면 문제가 있습니다 — 수면만으로 비슷한 행동이 나타날 수 있음");
+    if (!ctx.sleep || ctx.sleep === "unknown") transientSignals.push("수면 상태가 미확인입니다 — 보호자만 답할 수 있는 항목이고, ADHD와 가장 흔하게 혼동되는 원인입니다");
+    if (ctx.senses === "problem") transientSignals.push("시력·청력에 이상 소견이 있습니다 — 이것만으로 수업 중 행동이 설명될 수 있습니다");
+    else if (ctx.senses !== "checked") transientSignals.push("시력·청력이 확인되지 않았습니다 — 학생건강검사로 바로 확인 가능합니다");
+    if (ctx.learning === "suspect") transientSignals.push("학습이 또래보다 뚜렷이 어렵습니다 — '집중을 안 하는' 것이 아니라 '따라갈 수 없어 딴짓을 하는' 것일 수 있습니다");
+    if (transientSignals.length > 0) {
+      ctxnote = `<div class="ctxnote">🔍 <b>일시적 원인 가능성 체크:</b><br>${transientSignals.map(s => "· " + s).join("<br>")}<br>
+        → 아래 '먼저 걸러낼 것'을 해결한 뒤의 행동 변화가 진짜 판단 재료입니다.</div>`;
+    } else if (ctx.onset === "early") {
+      ctxnote = `<div class="ctxnote">🔍 행동이 어릴 때부터 지속되어 왔고 특별한 촉발 요인이 없습니다 — 일시적 반응보다는 기질적 특성일 가능성을 시사합니다.</div>`;
+    }
+  }
+  if (famSignal && a.tier !== "collecting") {
+    ctxnote += `<div class="ctxnote">🧬 <b>가족력 신호 있음:</b>
+      ADHD는 유전율이 약 74%로 매우 높고, 부모·형제에게 신호가 있으면 기저 위험이 약 2~8배 높아집니다.
+      지금의 행동이 일시적 반응이 아닐 가능성을 높이는 정보입니다 (Faraone 2019·2021).
+      단, 이는 보호자가 알려준 정보이므로 상담에서 이를 근거로 삼아 말하는 것은 피하세요.</div>`;
+  }
+  const probExtra = famSignal && (a.tier === "watch" || a.tier === "emerging" || a.tier === "high")
+    ? " 가족력 신호를 반영하면 이 범위의 <b>상단</b>에 가깝게 보는 것이 합리적입니다."
+    : "";
+  html += `<div class="verdict ${t.cls}">
+    <span class="badge">${t.badge}</span>
+    <h2>${t.title}</h2>
+    <p>${t.desc}</p>
+    ${ctxnote}
+    <div class="prob">📐 ${t.prob}${probExtra}</div>
+    ${a.tier !== "collecting" ? `<div class="unconfirmed">🏫 <b>이 판단은 학교에서 관찰한 것만 근거로 합니다.</b>
+      DSM-5-TR은 가정을 포함한 <b>두 가지 이상 상황</b>에서의 확인을 요구하는데(기준 C), 이 요건은
+      교사 단독으로는 확인할 수 없어 <b>미확인</b>으로 남습니다. 집에서는 전혀 다른 모습일 수도 있고,
+      반대로 집에서 더 뚜렷할 수도 있습니다 — 어느 쪽이든 여기 표시된 단계보다 실제는 더 불확실합니다.</div>` : ""}
+  </div>`;
+
+  /* 추세 카드 */
+  const [tl, tcls, tdesc] = TREND_LABELS[trend.label];
+  const weeks = weeklyCounts(a.recs);
+  const maxTag = Math.max(1, ...weeks.map(w => w.tags));
+  html += `<div class="card"><h2>추세 — 좋아지는 중인가, 나빠지는 중인가</h2>
+    <p class="hint">'기다림 vs 개입'을 가르는 핵심 신호입니다. 환경 조정 후 좋아지면 기다림이 옳았던 것이고, 그대로거나 나빠지면 개입 강도를 올릴 근거가 됩니다.</p>
+    <span class="trendtag ${tcls}">${tl}</span>
+    <p style="font-size:13.5px;margin-top:8px">${tdesc}</p>
+    ${trend.details.length ? `<ul class="reasons">${trend.details.map(d => `<li class="no">${d}</li>`).join("")}</ul>` : ""}
+    ${a.recs.length > 0 ? `
+      <h3>최근 12주 · 주별 관찰된 증상 수</h3>
+      <div class="tchart">${weeks.map(w => `<div class="tbar ${w.recs === 0 ? "empty" : ""}">
+        <span class="tv">${w.tags > 0 ? w.tags : ""}</span>
+        <i style="height:${w.recs === 0 ? 3 : Math.max(4, Math.round(w.tags / maxTag * 72))}px" title="${w.label} 주 · 기록 ${w.recs}건 · 증상 ${w.tags}회"></i>
+      </div>`).join("")}</div>
+      <div class="tlabels">${weeks.map((w, i) => `<span>${i % 2 ? "" : w.label}</span>`).join("")}</div>
+      <p class="hint" style="margin-top:6px">회색 막대는 기록이 없던 주입니다 (증상이 없던 것과 다를 수 있어요 — 꾸준한 기록이 추세의 정확도를 만듭니다).</p>` : ""}
+  </div>`;
+
+  /* 관찰 타이머 */
+  if ((a.tier === "watch" || a.tier === "emerging") && a.watchDays > 0) {
+    const wk = (a.watchDays / 7).toFixed(1);
+    const pct = Math.min(100, Math.round(a.watchDays / 70 * 100));
+    html += `<div class="card"><h2>계획된 지켜보기 타이머</h2>
+      <p class="hint">NICE 지침 기준, 환경 조정을 하며 지켜보는 기간은 <b>최대 10주</b>입니다. 그 이후에도 지속·악화하면 '더 기다리기'는 근거가 없습니다.</p>
+      <div class="progressline">증상 첫 기록 후 <b>${wk}주</b> 경과 (관찰 상한 10주)
+        <div class="bar"><i class="${a.watchDays >= 70 ? "warnfill" : ""}" style="width:${pct}%"></i></div></div>
+      ${a.watchDays >= 70 ? `<p style="font-size:13.5px;color:var(--orange)"><b>10주를 넘겼습니다.</b> 추세가 '개선'이 아니라면 아래 다음 단계(전문 평가)로 넘어가세요.</p>` : ""}
+    </div>`;
+  }
+
+  /* 지금 할 일 */
+  const plan = buildActionPlan(a, child, trend);
+  html += `<div class="card"><h2>지금 할 일</h2>
+    <p class="hint">현재 판단 단계(${t.badge}) · 상황 체크 · 추세를 반영해 만든 행동 지침입니다. 각 항목의 근거 출처가 함께 표시됩니다.</p>
+    ${plan.map((sec, si) => `<div class="plan-sec">
+      <div class="phead"><span class="pnum">${si + 1}</span>${sec.head}</div>
+      ${sec.items.map(it => `<div class="plan-item${it.urgent ? " urgent" : ""}">
+        <div class="pt">${it.t}</div>
+        <div class="pd">${it.d}</div>
+        ${it.src ? `<span class="src">근거: ${it.src}</span>` : ""}
+      </div>`).join("")}
+    </div>`).join("")}
+  </div>`;
+
+  /* 데이터 현황 */
+  const recGoal = Math.min(100, Math.round(a.recs.length / 10 * 100));
+  const spanGoal = Math.min(100, Math.round(a.spanDays / 28 * 100));
+  html += `<div class="card"><h2>데이터 현황</h2>
+    <div class="progressline">행동 기록 ${a.recs.length}건 <span style="color:var(--sub)">(1차 판단 기준 10건)</span>
+      <div class="bar"><i style="width:${recGoal}%"></i></div></div>
+    <div class="progressline">관찰 기간 ${a.spanDays}일 <span style="color:var(--sub)">(1차 기준 28일 · 지속성 기준 180일)</span>
+      <div class="bar"><i style="width:${spanGoal}%"></i></div></div>
+    <div class="progressline">정기 평가 ${a.asmts.length}회 <span style="color:var(--sub)">(4주 간격 2회 이상이면 추세를 볼 수 있어요)</span></div>
+  </div>`;
+
+  /* DSM-5-TR 요건 체크 */
+  const li = (ok, text, warn) => `<li class="${ok ? "ok" : warn ? "warn" : "no"}">${text}</li>`;
+  const bothDomains = a.ia >= 6 && a.hi >= 6;
+  html += `<div class="card"><h2>DSM-5-TR 요건 확인</h2>
+    <p class="hint">진단이 아니라, 진단기준의 각 요건이 기록에서 확인되는지를 보여줍니다.
+      ⚠️ 표시는 "아니오"가 아니라 <b>"이 도구로는 확인할 수 없음"</b>이라는 뜻입니다.</p>
+    <ul class="reasons">
+      ${li(a.ia >= 6, `부주의 증상: <b>${a.ia}/9</b> (기준 6개 이상) — 일지 반복관찰 ${a.iaRep}개${a.ta ? `, 교사평가 ${a.ta.ia}개` : ""}`)}
+      ${li(a.hi >= 6, `과잉행동·충동성 증상: <b>${a.hi}/9</b> (기준 6개 이상) — 일지 반복관찰 ${a.hiRep}개${a.ta ? `, 교사평가 ${a.ta.hi}개` : ""}`)}
+      ${li(a.spanDays >= 180, `6개월 이상 지속: 현재 관찰 기간 <b>${a.spanDays}일</b> / 180일`)}
+      ${li(false, `두 가지 이상 상황에서 관찰(기준 C): <b>교사 단독으로는 확인 불가</b> — 기록된 장면
+        (${[...a.settings].map(s => SETTING_LABELS[s]).join(" / ") || "없음"})은 모두 <b>학교 안</b>입니다.
+        가정에서의 모습은 보호자만 답할 수 있어 이 요건은 미확인으로 남습니다.`, true)}
+      ${li(a.impaired, `학교 생활에서의 실제 어려움 동반: ${a.impaired ? "정기 평가에서 확인됨" : "정기 평가로 확인 필요"}`)}
+      ${(a.ia > 0 || a.hi > 0) ? li(bothDomains, `<span title="WHO ICD-10 참고">ICD-10(과잉운동장애) 참고 기준</span>: 부주의·과잉행동 <b>두 영역 모두</b> 6개 이상 ${bothDomains ? "— 충족" : "— 미충족 (DSM-5-TR보다 엄격한 기준)"}`, !bothDomains) : ""}
+      ${ctx ? li(famSignal, `가족력 (진단기준 외 보조 신호 · 보호자 확인 항목): ${famSignal ? (famStrong ? "강한 신호 있음 — 기저 위험 약 2~8배" : "의심 신호 있음") : "확인된 내용 없음"}`) : ""}
+      ${a.asmts.length === 0 ? li(false, "정기 평가(18문항)가 아직 없습니다 — 한 번만 해두어도 판단 정확도가 크게 올라갑니다", true) : ""}
+    </ul></div>`;
+
+  /* 증상별 현황 */
+  if (a.recs.length > 0) {
+    const row = (s, i) => {
+      const p = a.perSym[i];
+      const dot = p.status === "repeated" ? "rep" : p.status === "observed" ? "obs" : "none";
+      return `<tr><td><span class="dot ${dot}"></span></td><td>${s.t}</td>
+        <td class="num">${p.n || "–"}</td>
+        <td class="num">${p.n ? [...p.settings].map(x => SETTING_LABELS[x]).join("·") : "–"}</td></tr>`;
+    };
+    html += `<div class="card"><h2>증상별 관찰 현황 (행동일지 기준)</h2>
+      <p class="hint"><span class="dot rep"></span> 반복 관찰(3회 이상·2주 이상에 걸쳐) &nbsp;
+         <span class="dot obs"></span> 관찰됨 &nbsp; <span class="dot none"></span> 관찰 없음</p>
+      <div class="rate-scroll"><table class="symtab">
+        <tr><th></th><th>증상</th><th>횟수</th><th>상황</th></tr>
+        ${SYMPTOMS.map(row).join("")}
+      </table></div></div>`;
+  }
+
+  body.innerHTML = html;
+
+  /* 상황 체크 핸들러 */
+  const editBtn = document.getElementById("ctxEditBtn");
+  if (editBtn) editBtn.onclick = () => {
+    const w = document.getElementById("ctxFormWrap");
+    w.style.display = w.style.display === "none" ? "block" : "none";
+  };
+  const ctxSave = document.getElementById("ctxSaveBtn");
+  if (ctxSave) ctxSave.onclick = () => {
+    const get = n => { const el = document.querySelector(`input[name=${n}]:checked`); return el ? el.value : null; };
+    child.context = {
+      onset: get("ctx-onset"),
+      stressors: [...document.querySelectorAll("input[name=ctx-stress]:checked")].map(x => x.value),
+      sleep: get("ctx-sleep"),
+      senses: get("ctx-senses"),
+      learning: get("ctx-learning"),
+      family: [...document.querySelectorAll("input[name=ctx-fam]:checked")].map(x => x.value),
+      redflags: [...document.querySelectorAll("input[name=ctx-flag]:checked")].map(x => x.value),
+      updated: today(),
+    };
+    save(); renderAnalysis();
+    toast("상황 체크를 저장했어요");
+  };
+
+}
+
+/* ── 내보내기 / 가져오기 ── */
+function downloadJson(obj, filename) {
+  const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+/* 내 백업 = 전체 (개인 보관용) */
+document.getElementById("exportBtn").onclick = () => {
+  downloadJson(state, `학생관찰-백업-${today()}.json`);
+  toast("전체 백업을 저장했어요 — 학생 기록이 담겨 있으니 전달하지 마세요");
+};
+
+document.getElementById("importBtn").onclick = () => document.getElementById("importFile").click();
+
+/* 가져오기 = 합치기. 기존 데이터는 절대 삭제·수정하지 않고, 없는 항목만 추가한다.
+   - 학생: id가 같거나 이름이 같으면 같은 학생으로 보고 그 학생에게 기록을 붙인다
+   - 기록·평가: id가 이미 있으면 건너뜀 (같은 파일을 두 번 가져와도 중복 없음) */
+function mergeData(data) {
+  const added = { children: 0, records: 0, assessments: 0, deleted: 0 };
+  state.deleted = state.deleted || [];
+
+  /* 상대가 삭제한 항목은 이쪽에서도 제거 (삭제 전파) */
+  const incDel = new Set(data.deleted || []);
+  if (incDel.size > 0) {
+    const before = state.records.length + state.assessments.length;
+    state.records = state.records.filter(r => !incDel.has(r.id));
+    state.assessments = state.assessments.filter(a => !incDel.has(a.id));
+    added.deleted = before - (state.records.length + state.assessments.length);
+  }
+  /* 이쪽에서 삭제한 항목은 다시 받지 않음 */
+  const myDel = new Set(state.deleted);
+
+  const idMap = {};   // 가져온 파일의 childId → 이 기기의 childId
+  const adoptContext = (local, inc) => {
+    /* 상황 체크는 더 최근에 저장한 쪽을 사용 */
+    if (inc.context && (!local.context || (inc.context.updated || "") > (local.context.updated || ""))) local.context = inc.context;
+  };
+  (data.children || []).forEach(inc => {
+    const byId = state.children.find(c => c.id === inc.id);
+    if (byId) { idMap[inc.id] = byId.id; adoptContext(byId, inc); return; }
+    const byName = state.children.find(c => (c.name || "").trim() === (inc.name || "").trim() && (inc.name || "").trim());
+    if (byName) { idMap[inc.id] = byName.id; adoptContext(byName, inc); return; }
+    state.children.push(inc); idMap[inc.id] = inc.id; added.children++;
+  });
+  const recIds = new Set(state.records.map(r => r.id));
+  (data.records || []).forEach(r => {
+    if (recIds.has(r.id) || myDel.has(r.id) || incDel.has(r.id)) return;
+    state.records.push({ ...r, childId: idMap[r.childId] || r.childId });
+    added.records++;
+  });
+  const asIds = new Set(state.assessments.map(a => a.id));
+  (data.assessments || []).forEach(a => {
+    if (asIds.has(a.id) || myDel.has(a.id) || incDel.has(a.id)) return;
+    state.assessments.push({ ...a, childId: idMap[a.childId] || a.childId });
+    added.assessments++;
+  });
+  /* 삭제 이력 합집합 유지 */
+  state.deleted = [...new Set([...state.deleted, ...incDel])];
+  if (!state.activeChildId && state.children.length > 0) state.activeChildId = state.children[0].id;
+  return added;
+}
+document.getElementById("importFile").onchange = e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const data = JSON.parse(rd.result);
+      if (!Array.isArray(data.children) || !Array.isArray(data.records)) throw new Error();
+      const res = mergeData(data);
+      save(); renderAll();
+      const parts = [];
+      if (res.children) parts.push(`학생 ${res.children}명`);
+      if (res.records) parts.push(`기록 ${res.records}건`);
+      if (res.assessments) parts.push(`평가 ${res.assessments}건`);
+      if (res.deleted) parts.push(`삭제 반영 ${res.deleted}건`);
+      toast(parts.length ? `합치기 완료 — ${parts.join(" · ")} 추가됨 (기존 기록은 그대로)` : "새로 추가할 항목이 없었어요 (기존 기록은 그대로)");
+    } catch { toast("올바른 백업 파일이 아니에요"); }
+  };
+  rd.readAsText(f);
+  e.target.value = "";   // 같은 파일 재선택 허용
+};
+
+/* ── 탭 ── */
+document.getElementById("tabs").addEventListener("click", e => {
+  const btn = e.target.closest("button[data-tab]");
+  if (!btn) return;
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("active", b === btn));
+  document.querySelectorAll("section.tab").forEach(s => s.classList.toggle("visible", s.id === "tab-" + btn.dataset.tab));
+  if (btn.dataset.tab === "analysis") renderAnalysis();
+});
+
+/* ── init ── */
+function renderAll() {
+  renderChildBar();
+  renderHistory();
+  renderAssessList();
+  renderAnalysis();
+}
+document.getElementById("recDate").value = today();
+buildSymChecks();
+buildAssessForm();
+renderAll();
+</script>
+
+</body>
+</html>

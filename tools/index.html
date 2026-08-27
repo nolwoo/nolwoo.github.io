@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>교육 도구 모음 · 놀우</title>
+<meta name="description" content="교실에서 쓰려고 직접 만든 도구들을 한곳에 모았습니다.">
+<!-- 검색 비노출: 주소를 아는 사람만 들어오는 '링크 공유 전용' 페이지로 둔다.
+     nofollow까지 두는 이유 — 이 허브가 유일한 내부 링크 경로라, 이걸 따라가지 못하게 해야
+     teacher-guard 등 하위 도구도 지금처럼 검색에 노출되지 않는 상태로 남는다.
+     나중에 공개로 바꾸려면 이 meta 한 줄만 지우면 된다. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #46BFA6;
+    --primary-deep: #2F9C85;
+    --secondary: #86D9C9;
+    --ink: #3f4a47;
+    --ink-soft: #7b8784;
+    --bg: #ffffff;
+    --bg-warm: #F1FBF8;
+    --line: #f0e7df;
+    --radius: 14px;
+    --max: 1000px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+
+  /* ── 헤더 ── */
+  header.top {
+    background: var(--bg-warm);
+    border-bottom: 1px solid var(--line);
+    padding: 54px 0 46px;
+  }
+  header.top .eyebrow {
+    display: inline-block;
+    font-size: 13px; font-weight: 700; letter-spacing: .12em;
+    color: var(--primary-deep); margin-bottom: 10px;
+  }
+  header.top h1 {
+    font-size: clamp(26px, 4.2vw, 36px);
+    font-weight: 900; letter-spacing: -.4px; line-height: 1.3;
+  }
+  header.top p.lead {
+    margin-top: 12px; font-size: 15.5px; color: var(--ink-soft); max-width: 640px;
+  }
+
+  /* ── 섹션 ── */
+  section.group { padding: 46px 0 0; }
+  section.group:last-of-type { padding-bottom: 8px; }
+  .ghead { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .ghead h2 { font-size: 19px; font-weight: 700; letter-spacing: -.2px; }
+  .ghead .gsub { font-size: 13.5px; color: var(--ink-soft); }
+
+  /* ── 카드 ── */
+  .grid {
+    display: grid; gap: 14px; margin-top: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  }
+  .card {
+    display: flex; flex-direction: column; gap: 7px;
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 20px 20px 18px; background: var(--bg);
+    text-decoration: none; color: inherit;
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+  a.card:hover {
+    border-color: var(--secondary);
+    box-shadow: 0 6px 20px rgba(70, 191, 166, .13);
+    transform: translateY(-2px);
+  }
+  a.card:focus-visible {
+    outline: 3px solid var(--primary-deep);
+    outline-offset: 3px;
+  }
+  .card .ctop { display: flex; align-items: center; gap: 9px; }
+  .card .icon { font-size: 21px; line-height: 1; }
+  .card h3 { font-size: 16.5px; font-weight: 700; letter-spacing: -.2px; }
+  .card p { font-size: 14px; color: var(--ink-soft); }
+  .card .go {
+    margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--primary-deep);
+  }
+  .card .host {
+    font-size: 12px; color: var(--ink-soft); opacity: .85;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  /* 아직 공개하지 않은 도구 */
+  .card.pending { background: #fafafa; border-style: dashed; }
+  .card.pending h3 { color: var(--ink-soft); }
+  .badge {
+    display: inline-block; font-size: 11.5px; font-weight: 700;
+    border-radius: 999px; padding: 2px 9px;
+    background: var(--line); color: var(--ink-soft);
+  }
+
+  /* ── 안내 ── */
+  .note {
+    margin: 40px 0 0; padding: 16px 18px;
+    background: var(--bg-warm); border: 1px solid var(--line);
+    border-radius: var(--radius); font-size: 13.5px; color: var(--ink-soft);
+  }
+  .note b { color: var(--ink); }
+
+  footer.bot {
+    margin-top: 46px; padding: 26px 0 40px;
+    border-top: 1px solid var(--line);
+    font-size: 13px; color: var(--ink-soft);
+  }
+  footer.bot a { color: var(--primary-deep); font-weight: 600; }
+  footer.bot a:focus-visible { outline: 3px solid var(--primary-deep); outline-offset: 3px; }
+
+  @media (max-width: 560px) {
+    header.top { padding: 40px 0 34px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <span class="eyebrow">TEACHING TOOLS</span>
+    <h1>교실에서 쓰려고<br>직접 만든 도구들</h1>
+    <p class="lead">수업과 학급 운영에 필요한데 마땅한 게 없어서 하나씩 만들었습니다.
+      모두 무료이고, 기록은 각자 브라우저에만 저장됩니다.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="group">
+    <div class="ghead">
+      <h2>교사가 쓰는 도구</h2>
+      <span class="gsub">기록하고 판단하는 데 쓰는 것들</span>
+    </div>
+    <div class="grid">
+
+      <a class="card" href="https://class-memo.vercel.app" target="_blank" rel="noopener">
+        <div class="ctop"><span class="icon" aria-hidden="true">📝</span><h3>학급 기록 도구</h3></div>
+        <p>관찰 메모·숙제·교우관계·체험학습을 한곳에서 관리하고, 쌓인 기록으로 상담 자료와
+          행동특성 초안을 만듭니다.</p>
+        <span class="host">class-memo.vercel.app</span>
+        <span class="go">열기 →</span>
+      </a>
+
+      <a class="card" href="https://nolwoo.github.io/teacher-guard/" target="_blank" rel="noopener">
+        <div class="ctop"><span class="icon" aria-hidden="true">🧭</span><h3>교실 나침반</h3></div>
+        <p>내가 한 생활지도가 아동학대에 해당할 수 있는지, 법령과 대법원 판례가 실제로 쓰는
+          기준으로 점검합니다.</p>
+        <span class="host">nolwoo.github.io/teacher-guard</span>
+        <span class="go">열기 →</span>
+      </a>
+
+      <a class="card" href="https://nolwoo.github.io/adhd-teacher/" target="_blank" rel="noopener">
+        <div class="ctop"><span class="icon" aria-hidden="true">🔎</span><h3>학생 행동 관찰 노트</h3></div>
+        <p>교실에서 관찰한 언행을 기록하면, 지켜볼 단계인지 교실 지원을 시작할 단계인지
+          정리해 줍니다.</p>
+        <span class="host">nolwoo.github.io/adhd-teacher</span>
+        <span class="go">열기 →</span>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="ghead">
+      <h2>학생이 직접 쓰는 도구</h2>
+      <span class="gsub">수업 시간에 열어 주면 되는 것들</span>
+    </div>
+    <div class="grid">
+
+      <a class="card" href="https://hanja-nori.vercel.app" target="_blank" rel="noopener">
+        <div class="ctop"><span class="icon" aria-hidden="true">🀄</span><h3>한자놀이</h3></div>
+        <p>급수별 한자를 게임으로 익힙니다. 설치 없이 휴대폰과 태블릿에서 바로 열립니다.</p>
+        <span class="host">hanja-nori.vercel.app</span>
+        <span class="go">열기 →</span>
+      </a>
+
+      <a class="card" href="https://claude.ai/code/artifact/9d438a63-a03a-4fd4-a9bb-3ce9be06e64c" target="_blank" rel="noopener">
+        <div class="ctop"><span class="icon" aria-hidden="true">🌱</span><h3>나의 흥미 탐험</h3></div>
+        <p>여섯 가지 흥미 유형으로 자기 성향을 알아보고, 어울리는 직업을 찾아봅니다.</p>
+        <span class="host">claude.ai</span>
+        <span class="go">열기 →</span>
+      </a>
+
+    </div>
+  </section>
+
+  <div class="note">
+    <b>개인정보 안내</b> — 여기 있는 도구는 입력한 내용을 서버로 보내지 않고
+    각자의 브라우저에만 저장합니다. 그래서 기기를 바꾸거나 브라우저 기록을 지우면
+    저장한 내용도 함께 사라집니다. 중요한 기록은 각 도구의 백업 기능으로 따로 받아 두세요.
+  </div>
+
+  <footer class="bot">
+    만든 사람 · 놀우 &nbsp;|&nbsp;
+    <a href="mailto:uni4eber@gmail.com">uni4eber@gmail.com</a>
+  </footer>
+
+</div>
+
+</body>
+</html>
