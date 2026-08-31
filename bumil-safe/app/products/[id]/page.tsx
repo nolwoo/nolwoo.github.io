@@ -9,6 +9,8 @@ import { ColorSwatches } from "@/components/ColorSwatches";
 import { ReviewSection } from "@/components/ReviewSection";
 import { PRODUCTS } from "@/lib/products";
 import { getProduct, getColorVariants } from "@/lib/catalog";
+import { SITE } from "@/lib/site";
+import { SITE_URL } from "@/lib/seo";
 
 // 정적 생성 — 40종을 미리 빌드 (검색·공유 대응)
 export function generateStaticParams() {
@@ -24,10 +26,18 @@ export async function generateMetadata({
   const { id } = await params;
   const p = getProduct(id);
   if (!p) return { title: "제품을 찾을 수 없습니다" };
+  const description = `${p.catLabel} · ${p.lock} · ${p.price}원. 영등포 금고 전문점에서 범일금고 본사 정품을 직접 설치해 드립니다.`;
   return {
     title: p.name,
-    description: `${p.catLabel} · ${p.lock} · ${p.price}원. 영등포 금고 전문점에서 범일금고 본사 정품을 직접 설치해 드립니다.`,
+    description,
     alternates: { canonical: `/products/${p.id}` },
+    // 카카오톡·네이버 공유 시 공용 og-image 대신 해당 제품 사진이 뜨도록
+    openGraph: {
+      title: p.name,
+      description,
+      url: `${SITE_URL}/products/${p.id}`,
+      images: [{ url: p.img, alt: p.name }],
+    },
   };
 }
 
@@ -46,8 +56,55 @@ export default async function ProductDetail({
 
   const colorVariants = getColorVariants(p);
 
+  // 제품 구조화 데이터 — 구글 검색결과에 가격·별점이 함께 노출될 수 있음.
+  // 화면에 보이는 값(가격·평점·리뷰수)과 일치시킨다.
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: p.name,
+    image: [p.img, ...(p.images ?? [])],
+    description: `${p.catLabel} · ${p.lock} · 범일금고 본사 정품. 영등포 전문 기사 방문 설치.`,
+    brand: { "@type": "Brand", name: "범일금고" },
+    category: p.catLabel,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "KRW",
+      price: p.price.replace(/[^0-9]/g, ""),
+      availability: "https://schema.org/InStock",
+      url: `${SITE_URL}/products/${p.id}`,
+      seller: { "@type": "Store", name: `${SITE.brand} ${SITE.branch}` },
+    },
+    ...(p.reviews > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: p.rating,
+            reviewCount: p.reviews,
+          },
+        }
+      : {}),
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "홈", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "제품", item: `${SITE_URL}/products` },
+      { "@type": "ListItem", position: 3, name: p.name },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Container className="py-8">
         <Link href="/products" className="text-[14px] text-blue hover:underline">
           ← 전체 금고로

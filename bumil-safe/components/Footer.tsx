@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { NAV, SITE } from "@/lib/site";
+import { PhoneLink } from "./PhoneLink";
 
 /* "평일 09:00–18:00 (주말·공휴일 상담 가능)" → 본 시간 / 괄호 부가설명 분리 */
 function splitHours(hours: string): [string, string | null] {
@@ -44,9 +45,9 @@ export function Footer() {
               <h5 className="mb-3 text-[14px] font-semibold text-ink">상담</h5>
               <ul className="space-y-1.5 text-[14px]">
                 <li>
-                  <a href={SITE.phoneHref} className="hover:text-blue">
+                  <PhoneLink className="hover:text-blue" location="footer">
                     {SITE.phone}
-                  </a>
+                  </PhoneLink>
                 </li>
                 <li>
                   {hoursMain}

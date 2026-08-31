@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { SITE } from "@/lib/site";
+import { trackConsult } from "@/lib/track";
 
 const KEY = "bumil_banner_hidden_until";
 
@@ -38,7 +39,11 @@ export function TopBanner() {
         <p>
           범일금고 <strong className="font-semibold text-on-dark">본사 정품</strong>을
           영등포에서 직접 설치해 드립니다 · 상담{" "}
-          <a href={SITE.phoneHref} className="font-semibold text-blue-on-dark">
+          <a
+            href={SITE.phoneHref}
+            className="font-semibold text-blue-on-dark"
+            onClick={() => trackConsult("phone", "topbanner")}
+          >
             {SITE.phone}
           </a>
         </p>

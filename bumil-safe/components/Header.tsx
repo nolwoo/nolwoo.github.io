@@ -115,7 +115,7 @@ export function Header() {
 
         {/* 데스크톱 상담 CTA */}
         <div className="hidden lg:block">
-          <ConsultButtons size="sm" phoneOutline onDark={transparent} />
+          <ConsultButtons size="sm" phoneOutline onDark={transparent} location="header" />
         </div>
 
         {/* 모바일 햄버거 */}
@@ -174,6 +174,7 @@ export function Header() {
                 size="md"
                 phoneOutline
                 className="flex-col items-stretch [&>a]:w-full"
+                location="mobile-drawer"
               />
             </div>
           </aside>

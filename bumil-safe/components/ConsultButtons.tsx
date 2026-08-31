@@ -1,6 +1,7 @@
 "use client";
 
 import { SITE } from "@/lib/site";
+import { trackConsult } from "@/lib/track";
 import { Button } from "./Button";
 
 /* 아이콘 — 이모지 대신 라인 SVG (프리미엄 톤 유지) */
@@ -26,6 +27,7 @@ export function ConsultButtons({
   showPhoneNumber = false,
   onDark = false,
   phoneOutline = false,
+  location = "page",
 }: {
   size?: "sm" | "md" | "lg";
   className?: string;
@@ -33,6 +35,8 @@ export function ConsultButtons({
   onDark?: boolean;
   /* 헤더 등 상시 노출 자리용 — 전화 버튼도 카카오처럼 조용한 아웃라인으로 */
   phoneOutline?: boolean;
+  /* GA4 consult_click 이벤트의 위치 라벨 (header / hero / footer 등) */
+  location?: string;
 }) {
   function onKakao(e: React.MouseEvent) {
     if (!SITE.kakaoUrl) {
@@ -40,6 +44,7 @@ export function ConsultButtons({
       alert("카카오톡 상담 채널을 준비 중입니다.\n전화로 편히 문의해 주세요: " + SITE.phone);
       return;
     }
+    trackConsult("kakao", location);
   }
 
   const kakaoVariant = onDark ? "kakao-dark" : "kakao";
@@ -63,7 +68,12 @@ export function ConsultButtons({
       >
         <span className="text-kakao"><ChatIcon /></span> 카카오톡 상담
       </Button>
-      <Button variant={phoneVariant} size={size} href={SITE.phoneHref}>
+      <Button
+        variant={phoneVariant}
+        size={size}
+        href={SITE.phoneHref}
+        onClick={() => trackConsult("phone", location)}
+      >
         <PhoneIcon /> {showPhoneNumber ? SITE.phone : "전화 상담"}
       </Button>
     </div>
