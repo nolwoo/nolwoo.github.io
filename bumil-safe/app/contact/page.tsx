@@ -3,7 +3,7 @@ import { SectionHead } from "@/components/SectionHead";
 import { ConsultButtons } from "@/components/ConsultButtons";
 
 export const metadata = {
-  title: "상담",
+  title: "금고 상담·견적",
   description:
     "영등포 금고 상담을 신청하세요. 설치 환경만 알려주시면 맞는 금고를 추천해 드립니다. 전화·카카오톡 상담도 가능합니다.",
   alternates: { canonical: "/contact" },

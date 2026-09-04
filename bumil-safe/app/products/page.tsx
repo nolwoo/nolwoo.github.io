@@ -4,7 +4,7 @@ import { ProductBrowser } from "@/components/ProductBrowser";
 import { ConsultButtons } from "@/components/ConsultButtons";
 
 export const metadata = {
-  title: "전체 금고 보기",
+  title: "가정용·사무용 금고 40종",
   description:
     "영등포 금고 대리점이 취급하는 범일금고 정품 40종. 디자인금고·지문인식금고·가정용·사무용 금고를 한눈에 비교해 보세요.",
   alternates: { canonical: "/products" },
