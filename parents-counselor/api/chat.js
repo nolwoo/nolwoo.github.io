@@ -25,7 +25,8 @@ export default async function handler(req, res) {
     // Vercel은 req.body를 자동 파싱하지만, 안전하게 양쪽 다 처리한다.
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body || {};
     const mode = ['urgent', 'reflection', 'chat'].includes(body.mode) ? body.mode : 'chat';
-    const reply = await getReply(body.messages, process.env.ANTHROPIC_API_KEY, mode);
+    const profile = body.profile && typeof body.profile === 'object' ? body.profile : null;
+    const reply = await getReply(body.messages, process.env.ANTHROPIC_API_KEY, mode, profile);
     res.status(200).json({ reply });
   } catch (err) {
     console.error(err);

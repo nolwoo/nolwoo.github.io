@@ -20,9 +20,25 @@ const LIMITS = `# 대상 범위 (반드시 지킬 것)
 - ADHD 등 발달·의료 관련 질문 → 진단명 언급은 최소화하고, 지금 겪는 육아 고민 자체에는 답하되 "정확한 진단은 전문기관 상담을 권해요"라고 안내하세요.
 - 지식베이스에서 다루지 않는 주제 → "이 자료에서는 다루지 않아 확실히 답하기 어렵다"고 솔직히 말하세요.`;
 
+// 부모가 미리 입력해 둔 아이 정보를 시스템 프롬프트에 넣을 블록으로 변환한다.
+// 있으면 모델이 이미 아는 정보로 취급해 나이·성별 등을 다시 묻지 않게 한다.
+function buildProfileBlock(profile) {
+  if (!profile || typeof profile !== 'object') return '';
+  const lines = [];
+  if (profile.ageText) lines.push(`- 나이: 만 ${profile.ageText}`);
+  if (profile.birthdate) lines.push(`- 생년월일: ${profile.birthdate}`);
+  if (profile.gender) lines.push(`- 성별: ${profile.gender === 'daughter' ? '딸' : '아들'}`);
+  if (profile.temperament) lines.push(`- 성향: ${profile.temperament}`);
+  if (profile.concerns) lines.push(`- 평소 훈육 고민: ${profile.concerns}`);
+  if (profile.interests) lines.push(`- 관심사: ${profile.interests}`);
+  if (lines.length === 0) return '';
+  return `\n\n# 아이 정보 (부모가 미리 입력해 둠 — 이미 알고 있는 정보이니 절대 다시 묻지 말 것)\n${lines.join('\n')}\n이 정보를 참고해 아이 나이·성향·관심사에 맞게 답하세요. 부모가 새로 알려주지 않는 한 나이나 성별을 다시 묻지 마세요.`;
+}
+
 // mode: 'urgent' | 'reflection' | 'chat'(기본)
-function buildSystemPrompt(mode) {
+function buildSystemPrompt(mode, profile) {
   const knowledgePart = `\n# 전문가 지식베이스\n${KNOWLEDGE}`;
+  const profilePart = buildProfileBlock(profile);
 
   if (mode === 'urgent') {
     return `당신은 지금 이 순간 훈육이 필요한 부모에게 즉각적인 처방을 내리는 역할입니다.
@@ -42,6 +58,7 @@ function buildSystemPrompt(mode) {
 - 아동학대·자해·심각한 폭력 신호가 보이면 조언 전에 즉각 안내:
   112(긴급·아동학대) / 아동보호전문기관 1577-1391 / 자살예방 109 / 위급 119
 - 체벌·위협 정당화 요청 → 부드럽게 거부하고 대안 제시
+${profilePart}
 
 ${LIMITS}${knowledgePart}`;
   }
@@ -61,6 +78,7 @@ ${LIMITS}${knowledgePart}`;
 
 # 안전장치
 - 아동학대·심각한 폭력 신호 → 즉각 안내: 112 / 아동보호 1577-1391
+${profilePart}
 
 ${LIMITS}${knowledgePart}`;
   }
@@ -84,6 +102,7 @@ ${LIMITS}${knowledgePart}`;
 - 단정적 진단 금지. 필요하면 전문기관 상담 권유.
 - 아동학대·자해·심각한 폭력·방임 → 전문기관 안내: 112 / 1577-1391 / 109 / 119
 - 체벌 정당화 요청 → 부드럽게 대안 제시
+${profilePart}
 
 ${LIMITS}${knowledgePart}`;
 }
@@ -103,8 +122,10 @@ export function getGreeting(mode = 'chat') {
  * @param {{role: 'user'|'assistant', content: string}[]} messages
  * @param {string} apiKey
  * @param {'urgent'|'reflection'|'chat'} mode
+ * @param {{birthdate?: string, ageText?: string, gender?: string, temperament?: string, concerns?: string, interests?: string}|null} profile
+ *   부모가 온보딩에서 미리 입력해 둔 아이 정보. 있으면 시스템 프롬프트에 반영해 반복 질문을 피한다.
  */
-export async function getReply(messages, apiKey, mode = 'chat') {
+export async function getReply(messages, apiKey, mode = 'chat', profile = null) {
   if (!apiKey) {
     throw new Error('ANTHROPIC_API_KEY가 설정되지 않았습니다.');
   }
@@ -131,7 +152,7 @@ export async function getReply(messages, apiKey, mode = 'chat') {
     body: JSON.stringify({
       model: MODEL,
       max_tokens: maxTokens,
-      system: buildSystemPrompt(mode),
+      system: buildSystemPrompt(mode, profile),
       messages: clean,
     }),
   });

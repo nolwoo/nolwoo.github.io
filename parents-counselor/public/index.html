@@ -246,6 +246,72 @@
     pointer-events: none;
   }
   .toast.show { opacity: 1; }
+
+  /* ---------- Profile chip (home) ---------- */
+  .profile-chip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 16px;
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    background: var(--surface-soft);
+  }
+  .profile-chip-text { font-size: 13px; color: var(--body); line-height: 1.5; }
+  .profile-chip-btn {
+    flex: none;
+    border: none;
+    background: var(--ink);
+    color: var(--on-primary);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 9999px;
+    cursor: pointer;
+  }
+
+  /* ---------- Profile form ---------- */
+  .profile-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 18px; }
+  .profile-intro { margin: 0; font-size: 13px; color: var(--body); line-height: 1.6; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .field .hint { font-size: 12px; font-weight: 400; color: var(--mute); }
+  .field input, .field select, .field textarea {
+    font: inherit;
+    font-size: 15px;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 10px 12px;
+    outline: none;
+    resize: none;
+    background: var(--canvas);
+    color: var(--ink);
+    width: 100%;
+  }
+  .field textarea { min-height: 44px; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--ink); }
+  .profile-actions { border-top: 1px solid var(--hairline); padding: 14px 20px 18px; display: flex; flex-direction: column; gap: 10px; background: var(--canvas); }
+  .btn-primary {
+    width: 100%;
+    border: none;
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px;
+    border-radius: 9999px;
+    cursor: pointer;
+  }
+  .btn-link {
+    border: none;
+    background: none;
+    color: var(--body);
+    font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 4px;
+  }
 </style>
 </head>
 <body>
@@ -255,6 +321,10 @@
       <div class="home-header">
         <h1>아들 맞춤 처방전</h1>
         <p>미취학 남아(0~7세)를 키우는 부모를 위한 두 가지 도구예요.</p>
+      </div>
+      <div class="profile-chip">
+        <span class="profile-chip-text" id="profile-chip-text"></span>
+        <button class="profile-chip-btn" id="profile-chip-btn"></button>
       </div>
       <div class="mode-cards">
         <a href="#urgent" class="mode-card urgent">
@@ -284,7 +354,7 @@
       <div class="chat" id="chat-urgent"></div>
       <div class="composer">
         <div class="row">
-          <textarea id="input-urgent" rows="1" placeholder="예: 5살 아들이 동생을 때렸어요"></textarea>
+          <textarea id="input-urgent" rows="1" placeholder="예: 동생을 때렸어요"></textarea>
           <button class="send" id="send-urgent" title="보내기">➤</button>
         </div>
         <p class="disclaimer">전문가 관점을 전하는 참고용 · 의학적 진단 아님<br>위급 상황은 112(아동학대)·119·자살예방상담 109</p>
@@ -310,6 +380,43 @@
       </div>
     </section>
 
+    <section id="view-profile" class="view">
+      <header class="chat-header">
+        <button class="back-btn" data-back title="홈으로">←</button>
+        <h2>아이 정보</h2>
+      </header>
+      <div class="profile-body">
+        <p class="profile-intro">한 번만 입력해 두면 다음부터는 반복해서 묻지 않고, 그때그때 상황이나 행동만 말씀해 주시면 돼요.</p>
+        <div class="field">
+          <label for="profile-birthdate">생년월일</label>
+          <input type="date" id="profile-birthdate" />
+        </div>
+        <div class="field">
+          <label for="profile-gender">성별</label>
+          <select id="profile-gender">
+            <option value="son">아들</option>
+            <option value="daughter">딸</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="profile-temperament">성향 <span class="hint">(선택)</span></label>
+          <textarea id="profile-temperament" rows="2" placeholder="예: 에너지 넘치고 승부욕이 강해요, 낯을 많이 가려요"></textarea>
+        </div>
+        <div class="field">
+          <label for="profile-concerns">요즘 훈육 고민 <span class="hint">(선택)</span></label>
+          <textarea id="profile-concerns" rows="2" placeholder="예: 떼쓰기, 동생과의 다툼, 편식"></textarea>
+        </div>
+        <div class="field">
+          <label for="profile-interests">관심사 <span class="hint">(선택)</span></label>
+          <textarea id="profile-interests" rows="2" placeholder="예: 공룡, 자동차, 로봇"></textarea>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button class="btn-primary" id="profile-save">저장하고 시작하기</button>
+        <button class="btn-link" id="profile-skip">나중에 입력할게요</button>
+      </div>
+    </section>
+
     <div class="overlay" id="history-overlay">
       <div class="overlay-panel">
         <header class="overlay-header">
@@ -326,13 +433,24 @@
 <script>
   const FAIL_MSG = '연결에 문제가 생겼어요. 잠시 후 다시 시도해 주세요.';
   const STORAGE_KEY = 'parenting-reflections';
+  const PROFILE_KEY = 'parenting-child-profile';
   const MAX_REFLECTIONS = 30;
 
   const viewEls = {
     home: document.getElementById('view-home'),
     urgent: document.getElementById('view-urgent'),
     reflect: document.getElementById('view-reflect'),
+    profile: document.getElementById('view-profile'),
   };
+  const profileChipTextEl = document.getElementById('profile-chip-text');
+  const profileChipBtnEl = document.getElementById('profile-chip-btn');
+  const profileBirthdateEl = document.getElementById('profile-birthdate');
+  const profileGenderEl = document.getElementById('profile-gender');
+  const profileTemperamentEl = document.getElementById('profile-temperament');
+  const profileConcernsEl = document.getElementById('profile-concerns');
+  const profileInterestsEl = document.getElementById('profile-interests');
+  const profileSaveEl = document.getElementById('profile-save');
+  const profileSkipEl = document.getElementById('profile-skip');
   const chatUrgentEl = document.getElementById('chat-urgent');
   const chatReflectEl = document.getElementById('chat-reflect');
   const inputUrgentEl = document.getElementById('input-urgent');
@@ -432,10 +550,11 @@
     const typing = showTyping(chatEl);
 
     try {
+      const profile = getProfile();
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ messages: history, mode }),
+        body: JSON.stringify({ messages: history, mode, profile: profile && !profile.skipped ? profile : null }),
       });
       const data = await res.json();
       typing.remove();
@@ -464,6 +583,86 @@
     reflectHistory = [];
     currentReflectionId = null;
     chatReflectEl.innerHTML = '';
+  }
+
+  function ageInfo(birthdateStr) {
+    if (!birthdateStr) return '';
+    const b = new Date(birthdateStr + 'T00:00:00');
+    if (isNaN(b.getTime())) return '';
+    const now = new Date();
+    let years = now.getFullYear() - b.getFullYear();
+    let months = now.getMonth() - b.getMonth();
+    if (now.getDate() < b.getDate()) months -= 1;
+    if (months < 0) { years -= 1; months += 12; }
+    if (years < 0) return '';
+    return years + '세' + (months > 0 ? ' ' + months + '개월' : '');
+  }
+
+  function getProfile() {
+    try {
+      const raw = localStorage.getItem(PROFILE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function saveProfile(p) {
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(p));
+  }
+
+  function hasProfileDecision() {
+    return !!getProfile();
+  }
+
+  function renderProfileChip() {
+    const p = getProfile();
+    if (p && !p.skipped) {
+      const bits = [];
+      if (p.ageText) bits.push('만 ' + p.ageText);
+      bits.push(p.gender === 'daughter' ? '딸' : '아들');
+      if (p.temperament) bits.push(p.temperament.slice(0, 16));
+      profileChipTextEl.textContent = bits.join(' · ');
+      profileChipBtnEl.textContent = '수정';
+    } else {
+      profileChipTextEl.textContent = '아이 정보를 입력해 두면 다음부턴 상황만 바로 말할 수 있어요';
+      profileChipBtnEl.textContent = '입력하기';
+    }
+  }
+
+  function populateProfileForm() {
+    const p = getProfile();
+    const valid = p && !p.skipped;
+    profileBirthdateEl.value = valid && p.birthdate ? p.birthdate : '';
+    profileGenderEl.value = valid && p.gender ? p.gender : 'son';
+    profileTemperamentEl.value = valid && p.temperament ? p.temperament : '';
+    profileConcernsEl.value = valid && p.concerns ? p.concerns : '';
+    profileInterestsEl.value = valid && p.interests ? p.interests : '';
+  }
+
+  function saveProfileFromForm() {
+    const birthdate = profileBirthdateEl.value;
+    if (!birthdate) {
+      showToast('생년월일을 입력해 주세요');
+      profileBirthdateEl.focus();
+      return;
+    }
+    saveProfile({
+      birthdate,
+      ageText: ageInfo(birthdate),
+      gender: profileGenderEl.value,
+      temperament: profileTemperamentEl.value.trim(),
+      concerns: profileConcernsEl.value.trim(),
+      interests: profileInterestsEl.value.trim(),
+      savedAt: new Date().toISOString(),
+    });
+    showToast('저장했어요');
+    location.hash = '#home';
+  }
+
+  function skipProfile() {
+    saveProfile({ skipped: true, savedAt: new Date().toISOString() });
+    location.hash = '#home';
   }
 
   function getReflections() {
@@ -548,6 +747,8 @@
   }
 
   async function handleEnter(route) {
+    if (route === 'home') renderProfileChip();
+    if (route === 'profile') populateProfileForm();
     if (route === 'urgent' && urgentHistory.length === 0) {
       const g = await fetchGreeting('urgent');
       addMessage(chatUrgentEl, 'bot', g);
@@ -580,6 +781,10 @@
     btn.addEventListener('click', () => { location.hash = '#home'; });
   });
 
+  profileChipBtnEl.addEventListener('click', () => { location.hash = '#profile'; });
+  profileSaveEl.addEventListener('click', saveProfileFromForm);
+  profileSkipEl.addEventListener('click', skipProfile);
+
   document.getElementById('save-reflect').addEventListener('click', () => autoSaveReflect(false));
   document.getElementById('open-history').addEventListener('click', openHistory);
   document.getElementById('close-history').addEventListener('click', closeHistory);
@@ -601,8 +806,12 @@
   window.addEventListener('beforeunload', () => { if (reflectHistory.length > 0) autoSaveReflect(true); });
 
   prevRoute = currentRoute();
-  render();
-  handleEnter(prevRoute);
+  if (!hasProfileDecision() && prevRoute !== 'profile') {
+    location.hash = '#profile';
+  } else {
+    render();
+    handleEnter(prevRoute);
+  }
 </script>
 </body>
 </html>

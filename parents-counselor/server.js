@@ -60,15 +60,17 @@ async function handleChat(req, res) {
   const body = await readBody(req);
   let messages;
   let mode = 'chat';
+  let profile = null;
   try {
     const parsed = JSON.parse(body);
     messages = parsed.messages;
     if (['urgent', 'reflection', 'chat'].includes(parsed.mode)) mode = parsed.mode;
+    if (parsed.profile && typeof parsed.profile === 'object') profile = parsed.profile;
   } catch {
     return sendJson(res, 400, { error: '잘못된 요청 형식이에요.' });
   }
   try {
-    const reply = await getReply(messages, process.env.ANTHROPIC_API_KEY, mode);
+    const reply = await getReply(messages, process.env.ANTHROPIC_API_KEY, mode, profile);
     sendJson(res, 200, { reply });
   } catch (err) {
     console.error(err);
