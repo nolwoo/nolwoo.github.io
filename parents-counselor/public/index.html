@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>아들 맞춤 처방전</title>
-<meta name="description" content="미취학 남아(0~7세) 부모를 위한 즉각 처방 + 훈육 회고 도구. 최민준 소장·조선미 교수·Becky Kennedy·미국소아과학회(AAP) 관점에 근거해 답합니다." />
+<meta name="description" content="미취학 남아(0~7세) 부모를 위한 즉각 처방 + 훈육 회고 도구. 최민준 소장·조선미 교수·하정훈 전문의 등 전문가와 미국소아과학회(AAP)·WHO 등 공식 자료에 근거해 답합니다." />
 <style>
   :root {
     --primary: #000000;
@@ -383,20 +383,13 @@
     <section id="view-profile" class="view">
       <header class="chat-header">
         <button class="back-btn" data-back title="홈으로">←</button>
-        <h2>아이 정보</h2>
+        <h2>아들 정보</h2>
       </header>
       <div class="profile-body">
-        <p class="profile-intro">한 번만 입력해 두면 다음부터는 반복해서 묻지 않고, 그때그때 상황이나 행동만 말씀해 주시면 돼요.</p>
+        <p class="profile-intro">한 번만 입력해 두면 다음부터는 다시 묻지 않아요.<br>그때그때 상황이나 행동만 말씀해 주시면 돼요.</p>
         <div class="field">
           <label for="profile-birthdate">생년월일</label>
           <input type="date" id="profile-birthdate" />
-        </div>
-        <div class="field">
-          <label for="profile-gender">성별</label>
-          <select id="profile-gender">
-            <option value="son">아들</option>
-            <option value="daughter">딸</option>
-          </select>
         </div>
         <div class="field">
           <label for="profile-temperament">성향 <span class="hint">(선택)</span></label>
@@ -445,7 +438,6 @@
   const profileChipTextEl = document.getElementById('profile-chip-text');
   const profileChipBtnEl = document.getElementById('profile-chip-btn');
   const profileBirthdateEl = document.getElementById('profile-birthdate');
-  const profileGenderEl = document.getElementById('profile-gender');
   const profileTemperamentEl = document.getElementById('profile-temperament');
   const profileConcernsEl = document.getElementById('profile-concerns');
   const profileInterestsEl = document.getElementById('profile-interests');
@@ -619,13 +611,12 @@
     const p = getProfile();
     if (p && !p.skipped) {
       const bits = [];
-      if (p.ageText) bits.push('만 ' + p.ageText);
-      bits.push(p.gender === 'daughter' ? '딸' : '아들');
+      if (p.ageText) bits.push('만 ' + p.ageText + ' 아들');
       if (p.temperament) bits.push(p.temperament.slice(0, 16));
       profileChipTextEl.textContent = bits.join(' · ');
       profileChipBtnEl.textContent = '수정';
     } else {
-      profileChipTextEl.textContent = '아이 정보를 입력해 두면 다음부턴 상황만 바로 말할 수 있어요';
+      profileChipTextEl.textContent = '아들 정보를 입력해 두면 다음부턴 상황만 바로 말할 수 있어요';
       profileChipBtnEl.textContent = '입력하기';
     }
   }
@@ -634,7 +625,6 @@
     const p = getProfile();
     const valid = p && !p.skipped;
     profileBirthdateEl.value = valid && p.birthdate ? p.birthdate : '';
-    profileGenderEl.value = valid && p.gender ? p.gender : 'son';
     profileTemperamentEl.value = valid && p.temperament ? p.temperament : '';
     profileConcernsEl.value = valid && p.concerns ? p.concerns : '';
     profileInterestsEl.value = valid && p.interests ? p.interests : '';
@@ -650,7 +640,6 @@
     saveProfile({
       birthdate,
       ageText: ageInfo(birthdate),
-      gender: profileGenderEl.value,
       temperament: profileTemperamentEl.value.trim(),
       concerns: profileConcernsEl.value.trim(),
       interests: profileInterestsEl.value.trim(),

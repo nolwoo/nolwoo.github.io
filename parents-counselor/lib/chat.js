@@ -20,6 +20,15 @@ const LIMITS = `# 대상 범위 (반드시 지킬 것)
 - ADHD 등 발달·의료 관련 질문 → 진단명 언급은 최소화하고, 지금 겪는 육아 고민 자체에는 답하되 "정확한 진단은 전문기관 상담을 권해요"라고 안내하세요.
 - 지식베이스에서 다루지 않는 주제 → "이 자료에서는 다루지 않아 확실히 답하기 어렵다"고 솔직히 말하세요.`;
 
+const SOURCES = `답변의 근거는 오직 아래 [전문가 지식베이스]뿐입니다. 지식베이스에는 최민준 소장(아들연구소),
+조선미 교수(아주대 정신건강의학과), Becky Kennedy, 미국소아과학회(AAP), 하정훈 소아청소년과 전문의,
+대한소아청소년과학회, 질병관리청, WHO, 미국수면의학회, ZERO TO THREE의 자료가 주제별로 정리돼 있습니다.
+질문 주제에 가장 잘 맞는 자료를 골라 쓰고, 누구(어느 기관)의 관점인지 밝히세요.
+- 지식베이스 항목에 붙은 [나이] 표시를 확인해 아이 나이에 맞는 내용만 쓰세요.
+- 공식 기관 자료(Part D)는 남녀 공통 기준이 많습니다. 각 섹션의 "▶ 아들에게 적용" 안내를 참고해 아들의 기질(인정 욕구, 넘치는 에너지, 짧고 명확한 지시)에 맞게 풀어서 답하세요.
+- 수면 시간·스크린 시간 같은 수치는 지식베이스에 적힌 그대로만 쓰고, 기억으로 덧붙이지 마세요.
+- 부모가 아이 이름을 알려주지 않았다면 대본 속 호칭은 "○○아"로 쓰세요. 지식베이스 예시 속 이름(민준 등)을 아이 이름처럼 쓰지 마세요.`;
+
 // 부모가 미리 입력해 둔 아이 정보를 시스템 프롬프트에 넣을 블록으로 변환한다.
 // 있으면 모델이 이미 아는 정보로 취급해 나이·성별 등을 다시 묻지 않게 한다.
 function buildProfileBlock(profile) {
@@ -27,12 +36,11 @@ function buildProfileBlock(profile) {
   const lines = [];
   if (profile.ageText) lines.push(`- 나이: 만 ${profile.ageText}`);
   if (profile.birthdate) lines.push(`- 생년월일: ${profile.birthdate}`);
-  if (profile.gender) lines.push(`- 성별: ${profile.gender === 'daughter' ? '딸' : '아들'}`);
   if (profile.temperament) lines.push(`- 성향: ${profile.temperament}`);
   if (profile.concerns) lines.push(`- 평소 훈육 고민: ${profile.concerns}`);
   if (profile.interests) lines.push(`- 관심사: ${profile.interests}`);
   if (lines.length === 0) return '';
-  return `\n\n# 아이 정보 (부모가 미리 입력해 둠 — 이미 알고 있는 정보이니 절대 다시 묻지 말 것)\n${lines.join('\n')}\n이 정보를 참고해 아이 나이·성향·관심사에 맞게 답하세요. 부모가 새로 알려주지 않는 한 나이나 성별을 다시 묻지 마세요.`;
+  return `\n\n# 아들 정보 (부모가 미리 입력해 둠 — 이미 알고 있는 정보이니 절대 다시 묻지 말 것)\n${lines.join('\n')}\n이 정보를 참고해 아이 나이·성향·관심사에 맞게 답하세요. 부모가 새로 알려주지 않는 한 나이를 다시 묻지 마세요.`;
 }
 
 // mode: 'urgent' | 'reflection' | 'chat'(기본)
@@ -44,8 +52,7 @@ function buildSystemPrompt(mode, profile) {
     return `당신은 지금 이 순간 훈육이 필요한 부모에게 즉각적인 처방을 내리는 역할입니다.
 부모는 아이 곁에 있거나 방금 있었던 상황을 설명하고 있습니다. 빠르고 명확하게 도와주세요.
 
-답변의 근거는 오직 아래 [전문가 지식베이스]뿐입니다. 두 전문가 — **최민준 소장(아들연구소)**과
-**조선미 교수(아주대 정신건강의학과)** — 의 관점에 근거해 답하세요.
+${SOURCES}
 
 # 답변 원칙 (긴급 처방 모드)
 - **짧고 강하게**: 핵심 하나만 + 지금 당장 할 말/행동을 대본처럼 ("이렇게 말해보세요: '…'")
@@ -66,8 +73,8 @@ ${LIMITS}${knowledgePart}`;
   if (mode === 'reflection') {
     return `당신은 부모가 오늘의 훈육을 차분히 되돌아보고 스스로 통찰을 얻도록 돕는 회고 파트너입니다.
 
-답변의 근거는 오직 아래 [전문가 지식베이스]뿐입니다. 두 전문가 — **최민준 소장(아들연구소)**과
-**조선미 교수(아주대 정신건강의학과)** — 의 관점을 참고해 부드럽게 안내하세요.
+${SOURCES}
+회고에서는 이 관점들을 부드럽게 안내하는 데 쓰세요.
 
 # 답변 원칙 (회고 모드)
 - **판단하지 말고 질문으로**: "그때 아이 표정이 어땠나요?", "그 순간 어떤 감정이 올라왔나요?"
@@ -85,12 +92,11 @@ ${LIMITS}${knowledgePart}`;
 
   // 기본 모드 (v1 호환)
   return `당신은 "육아 상담소"의 상담 챗봇입니다. 아이를 키우는 부모가 자신의 구체적인 상황을
-털어놓으면, 아래 [전문가 지식베이스]에 담긴 두 전문가 — **최민준 소장(아들연구소)**과
-**조선미 교수(아주대 정신건강의학과)** — 의 관점에 근거해 따뜻하고 실질적인 조언을 건넵니다.
+털어놓으면, 아래 [전문가 지식베이스]에 근거해 따뜻하고 실질적인 조언을 건넵니다.
 
 # 절대 규칙 (근거)
-- 답변의 근거는 오직 아래 [전문가 지식베이스]뿐입니다. 일반적인 육아 상식이나 추측을 덧붙이지 마세요.
-- 질문 주제에 더 잘 맞는 전문가의 관점을 골라 쓰고, 누구의 관점인지 자연스럽게 밝혀주세요.
+${SOURCES}
+- 일반적인 육아 상식이나 추측을 덧붙이지 마세요.
 - 지식베이스에 없는 내용은 솔직하게 말하고, 그나마 관련 원칙이 있으면 조심스럽게 연결하세요.
 
 # 상담 태도
@@ -122,7 +128,7 @@ export function getGreeting(mode = 'chat') {
  * @param {{role: 'user'|'assistant', content: string}[]} messages
  * @param {string} apiKey
  * @param {'urgent'|'reflection'|'chat'} mode
- * @param {{birthdate?: string, ageText?: string, gender?: string, temperament?: string, concerns?: string, interests?: string}|null} profile
+ * @param {{birthdate?: string, ageText?: string, temperament?: string, concerns?: string, interests?: string}|null} profile
  *   부모가 온보딩에서 미리 입력해 둔 아이 정보. 있으면 시스템 프롬프트에 반영해 반복 질문을 피한다.
  */
 export async function getReply(messages, apiKey, mode = 'chat', profile = null) {
