@@ -10,8 +10,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // 지식베이스는 시작할 때 한 번만 읽어 메모리에 둔다.
 const KNOWLEDGE = readFileSync(join(__dirname, '..', 'knowledge.md'), 'utf-8');
 
-// 비용 대비 품질이 좋은 Sonnet을 기본값으로. (더 저렴하게: 'claude-haiku-4-5-20251001')
-export const MODEL = 'claude-sonnet-4-6';
+// Sonnet 5는 적응형 사고(thinking)가 기본으로 켜지고, 사고 토큰도 max_tokens에 포함된다.
+// 짧은 상담 답변이라 effort는 low로 두고 max_tokens엔 여유를 준다.
+// Haiku(claude-haiku-4-5)로 바꿀 땐 output_config.effort·adaptive thinking을 지원하지 않아 400이 나므로 둘 다 뺄 것.
+export const MODEL = 'claude-sonnet-5';
+const EFFORT = 'low';
 
 const LIMITS = `# 대상 범위 (반드시 지킬 것)
 - 이 앱은 **미취학 남아(0~7세)** 전용입니다.
@@ -20,7 +23,7 @@ const LIMITS = `# 대상 범위 (반드시 지킬 것)
 - ADHD 등 발달·의료 관련 질문 → 진단명 언급은 최소화하고, 지금 겪는 육아 고민 자체에는 답하되 "정확한 진단은 전문기관 상담을 권해요"라고 안내하세요.
 - 지식베이스에서 다루지 않는 주제 → "이 자료에서는 다루지 않아 확실히 답하기 어렵다"고 솔직히 말하세요.`;
 
-const SOURCES = `답변의 근거는 오직 아래 [전문가 지식베이스]뿐입니다. 지식베이스에는 최민준 소장(아들연구소),
+const SOURCES = `답변의 근거는 오직 위 [전문가 지식베이스]뿐입니다. 지식베이스에는 최민준 소장(아들연구소),
 조선미 교수(아주대 정신건강의학과), Becky Kennedy, 미국소아과학회(AAP), 하정훈 소아청소년과 전문의,
 대한소아청소년과학회, 질병관리청, WHO, 미국수면의학회, ZERO TO THREE의 자료가 주제별로 정리돼 있습니다.
 질문 주제에 가장 잘 맞는 자료를 골라 쓰고, 누구(어느 기관)의 관점인지 밝히세요.
@@ -43,16 +46,29 @@ function buildProfileBlock(profile) {
   return `\n\n# 아들 정보 (부모가 미리 입력해 둠 — 이미 알고 있는 정보이니 절대 다시 묻지 말 것)\n${lines.join('\n')}\n이 정보를 참고해 아이 나이·성향·관심사에 맞게 답하세요. 부모가 새로 알려주지 않는 한 나이를 다시 묻지 마세요.`;
 }
 
+// 모든 모드·사용자에게 똑같은 부분. 캐시가 앞부분이 같을 때만 재사용되므로 맨 앞에 두고,
+// 모드·아들 정보처럼 요청마다 달라지는 내용은 그 뒤 블록에 둔다.
+const SHARED_SYSTEM = `# 전문가 지식베이스
+${KNOWLEDGE}
+
+# 근거 규칙
+${SOURCES}
+
+${LIMITS}`;
+
 // mode: 'urgent' | 'reflection' | 'chat'(기본)
 function buildSystemPrompt(mode, profile) {
-  const knowledgePart = `\n# 전문가 지식베이스\n${KNOWLEDGE}`;
-  const profilePart = buildProfileBlock(profile);
+  return [
+    { type: 'text', text: SHARED_SYSTEM, cache_control: { type: 'ephemeral' } },
+    { type: 'text', text: buildModePrompt(mode) + buildProfileBlock(profile) },
+  ];
+}
 
+function buildModePrompt(mode) {
   if (mode === 'urgent') {
     return `당신은 지금 이 순간 훈육이 필요한 부모에게 즉각적인 처방을 내리는 역할입니다.
 부모는 아이 곁에 있거나 방금 있었던 상황을 설명하고 있습니다. 빠르고 명확하게 도와주세요.
-
-${SOURCES}
+위의 [근거 규칙]과 [대상 범위]를 반드시 지키세요.
 
 # 답변 원칙 (긴급 처방 모드)
 - **짧고 강하게**: 핵심 하나만 + 지금 당장 할 말/행동을 대본처럼 ("이렇게 말해보세요: '…'")
@@ -64,17 +80,12 @@ ${SOURCES}
 # 안전장치 (매우 중요)
 - 아동학대·자해·심각한 폭력 신호가 보이면 조언 전에 즉각 안내:
   112(긴급·아동학대) / 아동보호전문기관 1577-1391 / 자살예방 109 / 위급 119
-- 체벌·위협 정당화 요청 → 부드럽게 거부하고 대안 제시
-${profilePart}
-
-${LIMITS}${knowledgePart}`;
+- 체벌·위협 정당화 요청 → 부드럽게 거부하고 대안 제시`;
   }
 
   if (mode === 'reflection') {
     return `당신은 부모가 오늘의 훈육을 차분히 되돌아보고 스스로 통찰을 얻도록 돕는 회고 파트너입니다.
-
-${SOURCES}
-회고에서는 이 관점들을 부드럽게 안내하는 데 쓰세요.
+위의 [근거 규칙]과 [대상 범위]를 반드시 지키고, 지식베이스의 관점들은 회고에서 부드럽게 안내하는 데 쓰세요.
 
 # 답변 원칙 (회고 모드)
 - **판단하지 말고 질문으로**: "그때 아이 표정이 어땠나요?", "그 순간 어떤 감정이 올라왔나요?"
@@ -84,18 +95,15 @@ ${SOURCES}
 - 대화가 무르익으면 "오늘 이 대화에서 뭔가 남는 게 있으셨나요?"로 자연스럽게 마무리 제안.
 
 # 안전장치
-- 아동학대·심각한 폭력 신호 → 즉각 안내: 112 / 아동보호 1577-1391
-${profilePart}
-
-${LIMITS}${knowledgePart}`;
+- 아동학대·심각한 폭력 신호 → 즉각 안내: 112 / 아동보호 1577-1391`;
   }
 
   // 기본 모드 (v1 호환)
   return `당신은 "육아 상담소"의 상담 챗봇입니다. 아이를 키우는 부모가 자신의 구체적인 상황을
-털어놓으면, 아래 [전문가 지식베이스]에 근거해 따뜻하고 실질적인 조언을 건넵니다.
+털어놓으면, 위 [전문가 지식베이스]에 근거해 따뜻하고 실질적인 조언을 건넵니다.
+위의 [근거 규칙]과 [대상 범위]를 반드시 지키세요.
 
-# 절대 규칙 (근거)
-${SOURCES}
+# 추가 규칙
 - 일반적인 육아 상식이나 추측을 덧붙이지 마세요.
 - 지식베이스에 없는 내용은 솔직하게 말하고, 그나마 관련 원칙이 있으면 조심스럽게 연결하세요.
 
@@ -107,10 +115,7 @@ ${SOURCES}
 # 안전장치
 - 단정적 진단 금지. 필요하면 전문기관 상담 권유.
 - 아동학대·자해·심각한 폭력·방임 → 전문기관 안내: 112 / 1577-1391 / 109 / 119
-- 체벌 정당화 요청 → 부드럽게 대안 제시
-${profilePart}
-
-${LIMITS}${knowledgePart}`;
+- 체벌 정당화 요청 → 부드럽게 대안 제시`;
 }
 
 const GREETINGS = {
@@ -145,8 +150,8 @@ export async function getReply(messages, apiKey, mode = 'chat', profile = null) 
     .slice(-20)
     .map((m) => ({ role: m.role, content: m.content }));
 
-  // 긴급 처방은 짧게, 회고는 충분히
-  const maxTokens = mode === 'urgent' ? 512 : 1024;
+  // 답변 길이는 프롬프트로 조절한다. max_tokens는 사고 토큰까지 포함한 상한이라 넉넉히 둔다.
+  const maxTokens = mode === 'urgent' ? 2048 : 4096;
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -158,6 +163,8 @@ export async function getReply(messages, apiKey, mode = 'chat', profile = null) 
     body: JSON.stringify({
       model: MODEL,
       max_tokens: maxTokens,
+      thinking: { type: 'adaptive' },
+      output_config: { effort: EFFORT },
       system: buildSystemPrompt(mode, profile),
       messages: clean,
     }),
@@ -169,6 +176,10 @@ export async function getReply(messages, apiKey, mode = 'chat', profile = null) 
   }
 
   const data = await res.json();
+  const u = data.usage || {};
+  console.log(
+    `[usage] mode=${mode} stop=${data.stop_reason} input=${u.input_tokens} cache_write=${u.cache_creation_input_tokens || 0} cache_read=${u.cache_read_input_tokens || 0} output=${u.output_tokens}`,
+  );
   const text = (data.content || [])
     .filter((b) => b.type === 'text')
     .map((b) => b.text)
