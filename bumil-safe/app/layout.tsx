@@ -92,7 +92,8 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
-      {process.env.NEXT_PUBLIC_GA_ID && (
+      {/* 개발 서버(npm run dev)의 테스트 방문·클릭이 실제 방문자 통계에 섞이지 않도록 production에서만 로드 */}
+      {process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_GA_ID && (
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
       )}
     </html>
