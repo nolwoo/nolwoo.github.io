@@ -15,6 +15,8 @@ const KNOWLEDGE = readFileSync(join(__dirname, '..', 'knowledge.md'), 'utf-8');
 // Haiku(claude-haiku-4-5)로 바꿀 땐 output_config.effort·adaptive thinking을 지원하지 않아 400이 나므로 둘 다 뺄 것.
 export const MODEL = 'claude-sonnet-5';
 const EFFORT = 'low';
+const MAX_MESSAGE_CHARS = 4000; // 메시지 1개 최대 글자 수
+const MAX_PROFILE_CHARS = 300; // 아이 정보 항목 1개 최대 글자 수
 
 const LIMITS = `# 대상 범위 (반드시 지킬 것)
 - 이 앱은 **미취학 남아(0~7세)** 전용입니다.
@@ -39,11 +41,13 @@ const SOURCES = `답변의 근거는 오직 위 [전문가 지식베이스]뿐�
 function buildProfileBlock(profile) {
   if (!profile || typeof profile !== 'object') return '';
   const lines = [];
-  if (profile.ageText) lines.push(`- 나이: 만 ${profile.ageText}`);
-  if (profile.birthdate) lines.push(`- 생년월일: ${profile.birthdate}`);
-  if (profile.temperament) lines.push(`- 성향: ${profile.temperament}`);
-  if (profile.concerns) lines.push(`- 평소 훈육 고민: ${profile.concerns}`);
-  if (profile.interests) lines.push(`- 관심사: ${profile.interests}`);
+  // 문자열이 아닌 값·과도한 길이·줄바꿈(프롬프트 구조 흉내)을 걸러낸다.
+  const f = (v) => (typeof v === 'string' ? v.replace(/\s+/g, ' ').trim().slice(0, MAX_PROFILE_CHARS) : '');
+  if (f(profile.ageText)) lines.push(`- 나이: 만 ${f(profile.ageText)}`);
+  if (f(profile.birthdate)) lines.push(`- 생년월일: ${f(profile.birthdate)}`);
+  if (f(profile.temperament)) lines.push(`- 성향: ${f(profile.temperament)}`);
+  if (f(profile.concerns)) lines.push(`- 평소 훈육 고민: ${f(profile.concerns)}`);
+  if (f(profile.interests)) lines.push(`- 관심사: ${f(profile.interests)}`);
   if (lines.length === 0) return '';
   return `\n\n# 아들 정보 (부모가 미리 입력해 둠 — 이미 알고 있는 정보이니 절대 다시 묻지 말 것)\n${lines.join('\n')}\n이 정보를 참고해 아이 나이·성향·관심사에 맞게 답하세요. 부모가 새로 알려주지 않는 한 나이를 다시 묻지 마세요.`;
 }
@@ -147,10 +151,22 @@ export async function getReply(messages, apiKey, mode = 'chat', profile = null) 
   }
 
   // 사용자/도우미 메시지만, 최근 20개로 제한 (비용·문맥 관리)
+  // 빈 내용은 API가 400으로 거절하므로 제외하고, 메시지당 길이를 제한한다(비용·남용 방어).
   const clean = messages
-    .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+    .filter(
+      (m) =>
+        m &&
+        (m.role === 'user' || m.role === 'assistant') &&
+        typeof m.content === 'string' &&
+        m.content.trim() !== '',
+    )
     .slice(-20)
-    .map((m) => ({ role: m.role, content: m.content }));
+    .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_MESSAGE_CHARS) }));
+  // 최근 20개로 자르면 assistant로 시작할 수 있다 — user로 시작하도록 맞춘다.
+  while (clean.length > 0 && clean[0].role !== 'user') clean.shift();
+  if (clean.length === 0) {
+    throw new Error('messages가 비어 있습니다.');
+  }
 
   // 답변 길이는 프롬프트로 조절한다. max_tokens는 사고 토큰까지 포함한 상한이라 넉넉히 둔다.
   const maxTokens = mode === 'urgent' ? 2048 : 4096;

@@ -740,10 +740,12 @@
     if (route === 'profile') populateProfileForm();
     if (route === 'urgent' && urgentHistory.length === 0) {
       const g = await fetchGreeting('urgent');
+      if (currentRoute() !== 'urgent' || chatUrgentEl.children.length > 0) return;
       addMessage(chatUrgentEl, 'bot', g);
     }
     if (route === 'reflect' && reflectHistory.length === 0) {
       const g = await fetchGreeting('reflection');
+      if (currentRoute() !== 'reflect' || chatReflectEl.children.length > 0) return;
       addMessage(chatReflectEl, 'bot', g);
     }
     if (route === 'urgent') inputUrgentEl.focus();
