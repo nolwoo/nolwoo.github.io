@@ -91,14 +91,14 @@ export default function LocationPage() {
           <SectionHead
             center
             title="멀어서 방문이 어려우세요?"
-            lead="전화·카카오톡으로도 상담해 드려요. 온라인 상담 신청도 가능합니다."
+            lead="전화·카카오톡으로도 상담해 드려요."
           />
           <div className="mt-9 flex justify-center">
             <ConsultButtons size="lg" showPhoneNumber className="justify-center" />
           </div>
           <p className="mt-6 text-[14px]">
             <a href="/contact" className="font-medium text-blue hover:underline">
-              온라인 상담 신청하기 →
+              상담 안내 보기 →
             </a>
           </p>
         </Container>

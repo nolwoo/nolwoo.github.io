@@ -48,6 +48,7 @@ export function ProductBrowser() {
         </div>
         <label className="text-[14px] text-ink-muted">
           <select
+            aria-label="정렬 기준"
             value={sort}
             onChange={(e) => setSort(e.target.value as SortKey)}
             className="rounded-sm border border-hairline bg-canvas px-3 py-2 text-[14px] text-ink"
