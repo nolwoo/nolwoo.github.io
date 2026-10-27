@@ -551,11 +551,12 @@
     (function () {
       var bar = document.getElementById('topbar');
       var KEY = 'nolwoo_banner_hidden_until';
-      var until = +localStorage.getItem(KEY) || 0;
+      var until = 0;
+      try { until = +localStorage.getItem(KEY) || 0; } catch (e) {}
       if (Date.now() < until) bar.classList.add('hide');
       document.getElementById('bnDismiss').addEventListener('click', function () {
         bar.classList.add('hide');
-        localStorage.setItem(KEY, Date.now() + 24 * 60 * 60 * 1000);
+        try { localStorage.setItem(KEY, Date.now() + 24 * 60 * 60 * 1000); } catch (e) {}
       });
     })();
 

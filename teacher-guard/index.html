@@ -2056,7 +2056,12 @@ $('#runBtn').onclick = () => {
    기록
    ═══════════════════════════════════════════════════════ */
 function loadLog() { try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch (e) { return []; } }
-function writeLog(v) { localStorage.setItem(LS_KEY, JSON.stringify(v)); renderLog(); }
+/* localStorage 쓰기 — 차단·용량 초과 시 throw 하므로 실패를 알리고 false 반환 */
+function lsSet(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+  catch (e) { alert('이 브라우저에서는 저장할 수 없습니다. (사생활 보호 모드·저장공간 차단 또는 용량 초과)'); return false; }
+}
+function writeLog(v) { const ok = lsSet(LS_KEY, v); if (ok) renderLog(); return ok; }
 
 function saveLog(r) {
   const logs = loadLog();
@@ -2075,8 +2080,7 @@ function saveLog(r) {
     goods: r.goods.map(x => x.txt),
     redlines: [...r.hard, ...r.soft].map(x => x.t),
   });
-  writeLog(logs);
-  alert('기록에 저장했습니다. “기록” 탭에서 확인하세요.');
+  if (writeLog(logs)) alert('기록에 저장했습니다. “기록” 탭에서 확인하세요.');
 }
 
 function fmt(iso) {
@@ -2147,8 +2151,7 @@ $('#impFile').onchange = e => {
       const cur = loadLog();
       const ids = new Set(cur.map(x => x.id));
       const merged = [...cur, ...clean.filter(x => !ids.has(x.id))].sort((a, b) => b.id - a.id);
-      writeLog(merged);
-      alert(`${merged.length - cur.length}건을 가져왔습니다.`);
+      if (writeLog(merged)) alert(`${merged.length - cur.length}건을 가져왔습니다.`);
     } catch (err) { alert('가져오기에 실패했습니다. 이 앱에서 내보낸 JSON 파일인지 확인하세요.'); }
     e.target.value = '';
   };
@@ -2291,7 +2294,7 @@ function renderUserSources() {
       </div>`).join('')
     : `<div class="empty" style="padding:20px 8px">아직 직접 추가한 근거가 없습니다.</div>`;
   $$('#userSrcBox [data-usdel]').forEach(b => b.onclick = () => {
-    localStorage.setItem(LS_SRC, JSON.stringify(userSources().filter(x => x.id !== b.dataset.usdel)));
+    lsSet(LS_SRC, userSources().filter(x => x.id !== b.dataset.usdel));
     renderUserSources();
   });
 }
@@ -2303,7 +2306,7 @@ $('#usAdd').onclick = () => {
     id: String(Date.now()), tier: $('#usTier').value, date: $('#usDate').value || '',
     cite, note, url: $('#usUrl').value.trim(), via: '직접 추가',
   });
-  localStorage.setItem(LS_SRC, JSON.stringify(list));
+  if (!lsSet(LS_SRC, list)) return;
   ['#usCite', '#usNote', '#usUrl', '#usDate'].forEach(s => $(s).value = '');
   renderUserSources();
 };

@@ -590,16 +590,21 @@ function load() {
     if (raw) {
       const s = JSON.parse(raw);
       s.deleted = s.deleted || [];               // 삭제 이력(기기 간 삭제 전파용)
+      s.children = s.children || []; s.records = s.records || []; s.assessments = s.assessments || [];
       return s;
     }
   } catch (e) {}
   return { children: [], activeChildId: null, records: [], assessments: [], deleted: [] };
 }
 function save() {
-  localStorage.setItem(STORE_KEY, JSON.stringify(state));
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+  catch (e) { toast("이 브라우저에서는 저장할 수 없어요 — 창을 닫으면 기록이 사라집니다. 백업 파일을 내려받아 두세요"); }
 }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
-function today() { return new Date().toISOString().slice(0, 10); }
+function today() {   // 로컬(한국) 날짜 — toISOString()은 UTC라 오전 9시 이전에 하루 전 날짜가 나옴
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
 function fmt(d) { return d; }
 function daysBetween(a, b) { return Math.round((new Date(b) - new Date(a)) / 86400000); }
 function ageOf(child) {
