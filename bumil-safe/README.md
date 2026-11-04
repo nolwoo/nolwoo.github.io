@@ -1,3 +1,19 @@
+# 범일금고 영등포대리점 홈페이지
+
+Next.js 앱. Vercel로 배포합니다. 환경변수는 `.env.example`을 참고하세요.
+
+## 외부 이미지 주의
+
+상품 이미지는 저장소에 없고 **외부 서버에서 직접 불러옵니다** (`lib/products.ts`).
+
+- `bumilsafe.co.kr` (범일금고 본사 사이트)
+- `shop-phinf.pstatic.net` (네이버 스마트스토어 이미지 서버)
+
+본사나 스토어가 이미지 주소를 바꾸거나 지우면 이 사이트의 상품 사진이 깨집니다.
+이미지 사용 허락 범위는 본사와 확인해 두세요.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
