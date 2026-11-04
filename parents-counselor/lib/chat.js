@@ -12,7 +12,8 @@ const KNOWLEDGE = readFileSync(join(__dirname, '..', 'knowledge.md'), 'utf-8');
 
 // Sonnet 5는 적응형 사고(thinking)가 기본으로 켜지고, 사고 토큰도 max_tokens에 포함된다.
 // 짧은 상담 답변이라 effort는 low로 두고 max_tokens엔 여유를 준다.
-// Haiku(claude-haiku-4-5)로 바꿀 땐 output_config.effort·adaptive thinking을 지원하지 않아 400이 나므로 둘 다 뺄 것.
+// 더 저렴한 claude-haiku-5-5는 adaptive thinking·effort를 그대로 지원한다.
+// 구형 claude-haiku-4-5로 바꿀 땐 둘 다 지원하지 않아 400이 나므로 함께 뺄 것.
 export const MODEL = 'claude-sonnet-5';
 const EFFORT = 'low';
 const MAX_MESSAGE_CHARS = 4000; // 메시지 1개 최대 글자 수
