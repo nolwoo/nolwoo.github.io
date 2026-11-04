@@ -30,7 +30,7 @@ parents-counselor/
 ├─ server.js            로컬 실행용 서버 (+ /api/greeting)
 ├─ api/chat.js          배포(Vercel)용 서버리스 함수 — 채팅
 ├─ api/greeting.js      배포(Vercel)용 서버리스 함수 — 모드별 인사말
-├─ transcript.txt / cho1.txt / cho2.txt   영상 원본 전사 (참고용)
+├─ (영상 원본 전사는 저작권 문제로 저장소에서 제외 — 로컬에만 보관)
 └─ .env.example         API 키 넣는 양식
 ```
 

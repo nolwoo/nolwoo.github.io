@@ -3,3 +3,8 @@
 **/.playwright-mcp/
 .claude/settings.local.json
 **/.claude/settings.local.json
+
+# 저작권 있는 원본 전사·내부 작업 메모는 공개 저장소에 올리지 않는다
+parents-counselor/transcript*.txt
+parents-counselor/cho*.txt
+*핸드오프*.md
