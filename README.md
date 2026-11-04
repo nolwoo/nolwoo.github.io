@@ -7,7 +7,7 @@
 | `/` (`index.html`) | 놀우 포트폴리오 | |
 | `clone-mogwai/` | 놀우의 투자노트 | |
 | `adhd-teacher/` | 학생 행동 관찰 노트 (교사용) | `noindex` |
-| `teacher-guard/` | 교실 나침반 — 지도인가, 학대인가 | `tools/`에서만 `nofollow` 링크 (페이지 자체엔 `noindex` 없음) |
+| `teacher-guard/` | 교실 나침반 — 지도인가, 학대인가 | `noindex` |
 | `voca-teacher/` | 보카 티처 — 여행·일상 영어 | |
 | `tools/` | 교육 도구 모음 (위 교사용 도구 허브) | `noindex`, 링크 공유 전용 |
 | `parents-counselor/` | 아들 맞춤 처방전 (Vercel 서버리스) | `ANTHROPIC_API_KEY` 필요 |
@@ -23,6 +23,6 @@
 
 - 이 저장소의 파일은 GitHub Pages로 **그대로 공개**됩니다. 내부 메모, 원본 자료, 비밀 키를 올리지 마세요
   (`.gitignore`에 일부 패턴이 등록되어 있습니다).
-- 교사용 도구는 검색에 드러나지 않게 운영합니다(`noindex` 또는 `nofollow` 허브 링크). `teacher-guard/`는 페이지 자체에
-  `noindex`가 없어서, 다른 공개 페이지에 링크하면 검색에 노출될 수 있습니다.
+- 교사용 도구(`adhd-teacher/`, `teacher-guard/`, `tools/`)는 `noindex`로 검색에 드러나지 않게 운영합니다.
+  공개로 바꾸려면 각 페이지의 `<meta name="robots">` 한 줄을 지우면 됩니다.
 - 고객사 홈페이지의 사진·문구는 각 업체의 것이라 이 저장소에는 라이선스를 붙이지 않았습니다.
