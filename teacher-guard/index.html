@@ -49,6 +49,9 @@
     padding: 11px 14px; font-size: 13px; color: #6b4a05; margin: 16px 0 4px; line-height: 1.6;
   }
   .disclaimer b { font-weight: 700; }
+  .verified { margin-top: 10px; font-size: 12.5px; line-height: 1.6; color: var(--sub); }
+  .verified b { color: var(--ink); font-weight: 700; }
+  .verified.stale { color: #9a3412; }
 
   /* ── tabs ── */
   nav.tabs {
@@ -361,6 +364,7 @@
     반드시 변호사와 소속 교원단체·교육청 교권보호 담당의 조력을 받으십시오.
     입력한 내용은 <b>이 브라우저에만</b> 저장되고 어디로도 전송되지 않습니다.
   </div>
+  <p class="verified" id="verifiedNote"></p>
 </header>
 
 <nav class="tabs">
@@ -2375,6 +2379,25 @@ $('#tierList').innerHTML = Object.entries(TIER_META).map(([k, m]) => {
 }).join('');
 
 renderLog();
+
+/* ── 마지막 확인 날짜 ──
+   법령·판례·교육부 고시를 원문(국가법령정보센터·대법원)과 대조한 날짜.
+   내용을 다시 확인하거나 고칠 때마다 이 날짜만 바꾸면 화면에 반영된다.
+   확인 날짜가 넘어 있으면 화면에 '다시 확인 필요'가 붙는다. */
+var LAST_VERIFIED = '2026-11-04';
+var VERIFY_STALE_DAYS = 120;
+(function(){
+  var el = document.getElementById('verifiedNote');
+  if (!el) return;
+  var d = new Date(LAST_VERIFIED + 'T00:00:00');
+  var days = Math.floor((Date.now() - d.getTime()) / 86400000);
+  var label = d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() + '.';
+  el.innerHTML = '주요 법령·판례·고시는 <b>' + label + '</b> 기준으로 원문과 대조했습니다(직통번호 운영시간·공제 한도·처리 기한 등 운영 안내는 법령이 아니라 보도·교육청 안내가 근거이며, 각 항목의 출처 표기를 확인하세요). 그 뒤의 개정·새 판결은 반영되지 않았을 수 있습니다.';
+  if (days > VERIFY_STALE_DAYS) {
+    el.className = 'verified stale';
+    el.innerHTML += ' <b>확인한 지 ' + days + '일이 지났습니다 — 법령 개정 여부를 국가법령정보센터에서 다시 확인하세요.</b>';
+  }
+})();
 </script>
 </body>
 </html>
