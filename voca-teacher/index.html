@@ -386,15 +386,21 @@ const MASTER_IV = 21;              // 복습 간격 21일 이상 = "외운 단�
 let S = load();
 
 function load(){
+  const defaults = { progress:{}, history:{}, streak:0, lastDay:null, goal:10, autoSpeak:true, scope:"all" };
   try{
     const raw = JSON.parse(localStorage.getItem(KEY));
-    if(raw && raw.progress){
-      if(raw.autoSpeak === undefined) raw.autoSpeak = true;
-      if(!raw.scope || (raw.scope !== "all" && !CATEGORY_LABEL[raw.scope])) raw.scope = "all";
-      return raw;
+    if(raw && typeof raw === "object" && raw.progress && typeof raw.progress === "object"){
+      // 저장 데이터에 빠진 필드가 있으면 기본값으로 채운다 (일부 필드가 없을 때 화면이 깨지던 문제)
+      const s = Object.assign({}, defaults, raw);
+      if(!s.history || typeof s.history !== "object") s.history = {};
+      if(typeof s.streak !== "number") s.streak = 0;
+      if(typeof s.goal !== "number" || s.goal <= 0) s.goal = 10;
+      if(typeof s.autoSpeak !== "boolean") s.autoSpeak = true;
+      if(!s.scope || (s.scope !== "all" && !CATEGORY_LABEL[s.scope])) s.scope = "all";
+      return s;
     }
   }catch(e){}
-  return { progress:{}, history:{}, streak:0, lastDay:null, goal:10, autoSpeak:true, scope:"all" };
+  return defaults;
 }
 function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
 
