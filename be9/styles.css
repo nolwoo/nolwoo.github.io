@@ -86,7 +86,7 @@ header.site{
   backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
   transition:background-color .3s ease, border-color .3s ease, backdrop-filter .3s ease;
 }
-header.site .wrap{ display:flex; align-items:center; justify-content:space-between; padding:1em 0; gap:1.5rem; }
+header.site .wrap{ display:flex; align-items:center; justify-content:space-between; padding-top:1em; padding-bottom:1em; gap:1.5rem; }
 .logo{ display:flex; align-items:center; gap:.5em; font-size:1.35rem; font-weight:700; text-decoration:none; flex:none; transition:color .2s ease; }
 .logo .mark{ width:9px; height:9px; border-radius:50%; background:var(--ink); transition:background-color .2s ease; }
 nav.primary{ display:flex; gap:1.6em; font-size:0.9rem; font-weight:600; color:var(--ink-soft); transition:color .2s ease; }
@@ -94,7 +94,11 @@ nav.primary a{ text-decoration:none; transition:color .2s ease; }
 nav.primary a:hover{ color:var(--ink); }
 nav.primary a[aria-current="page"]{ color:var(--ink); }
 .header-actions{ display:flex; align-items:center; gap:.7em; }
-@media (max-width:900px){ nav.primary{ display:none; } }
+@media (max-width:900px){
+  header.site .wrap{ flex-wrap:wrap; row-gap:.4em; }
+  nav.primary{ order:3; width:100%; overflow-x:auto; white-space:nowrap; gap:1.2em; padding-bottom:.2em; -webkit-overflow-scrolling:touch; }
+  .header-actions .btn-ghost{ display:none; }
+}
 
 /* ---------- home-only: header floats transparent over the hero, then solidifies on scroll ---------- */
 header.site.site--home.is-transparent{

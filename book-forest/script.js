@@ -62,7 +62,7 @@ function renderPrograms(targetId, list, opts) {
   if (!list.length) {
     el.innerHTML = `
       <div class="empty-note">
-        <strong>지금은 모집 중인 모임이 없어요</strong>
+        <strong>${(opts && opts.emptyTitle) || '지금은 모집 중인 모임이 없어요'}</strong>
         <p>오픈채팅에 들어오시면 다음 모집 소식을 가장 먼저 받아보실 수 있어요.</p>
       </div>`;
     return;
@@ -100,7 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const tabs = document.querySelectorAll('.filter-tab');
       const applyFilter = (status) => {
         const list = status === '전체' ? PROGRAMS : PROGRAMS.filter((p) => p.status === status);
-        renderPrograms('allProgramList', list, { full: true });
+        const EMPTY = { '전체': '아직 등록된 모임이 없어요', '모집중': '지금은 모집 중인 모임이 없어요',
+          '모집마감': '모집이 마감된 모임이 없어요', '진행중': '지금 진행 중인 모임이 없어요', '종료': '종료된 모임 기록이 없어요' };
+        renderPrograms('allProgramList', list, { full: true, emptyTitle: EMPTY[status] });
       };
       tabs.forEach((tab) => {
         tab.addEventListener('click', () => {
