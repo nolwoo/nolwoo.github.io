@@ -33,6 +33,9 @@
   header.app h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
   header.app p.tagline { color: var(--sub); font-size: 13.5px; margin-top: 2px; }
 
+  .verified { margin-top: 10px; font-size: 12.5px; line-height: 1.6; color: var(--sub); }
+  .verified b { color: var(--ink); font-weight: 700; }
+  .verified.stale { color: #9a3412; }
   .disclaimer {
     background: var(--accent-soft); border: 1px solid #dbeafe; border-radius: 10px;
     padding: 10px 14px; font-size: 13px; color: #1e40af; margin: 12px 0 4px;
@@ -277,6 +280,7 @@
       🔒 기록은 <b>이 브라우저에만</b> 저장되며 서버로 전송되지 않습니다. 그래도 학생의 건강 관련
       추정이 담기는 민감한 기록이니, 이름 대신 <b>번호나 별명</b>으로 등록하시길 권합니다.
     </div>
+    <p class="verified" id="verifiedNote"></p>
     <div class="childbar" id="childbar"></div>
     <div class="child-form" id="childForm">
       <input type="text" id="childName" placeholder="번호 또는 별명 (예: 3-7)" style="width:180px">
@@ -1397,6 +1401,24 @@ document.getElementById("recDate").value = today();
 buildSymChecks();
 buildAssessForm();
 renderAll();
+
+/* ── 마지막 확인 날짜 ──
+   채점 규칙(NICHQ Vanderbilt 지침)·DSM-5-TR 기준 요약·아동학대 신고 안내(아동학대처벌법)를
+   원문과 대조한 날짜. 내용을 다시 확인하거나 고칠 때 이 날짜만 바꾸면 화면에 반영된다. */
+var LAST_VERIFIED = '2026-11-04';
+var VERIFY_STALE_DAYS = 180;
+(function(){
+  var el = document.getElementById('verifiedNote');
+  if (!el) return;
+  var d = new Date(LAST_VERIFIED + 'T00:00:00');
+  var days = Math.floor((Date.now() - d.getTime()) / 86400000);
+  var label = d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() + '.';
+  el.innerHTML = '채점 규칙과 신고 안내는 <b>' + label + '</b> 기준으로 원문과 대조했습니다. 이 도구의 문항은 원척도를 줄인 것이라 원척도 점수와 같지 않습니다.';
+  if (days > VERIFY_STALE_DAYS) {
+    el.className = 'verified stale';
+    el.innerHTML += ' <b>확인한 지 ' + days + '일이 지났습니다 — 기준이 바뀌었는지 다시 확인하세요.</b>';
+  }
+})();
 </script>
 
 </body>
