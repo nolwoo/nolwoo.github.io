@@ -6,8 +6,8 @@ import { KakaoMap } from "@/components/KakaoMap";
 import { SITE } from "@/lib/site";
 
 export const metadata = {
-  title: "오시는길",
-  description: `영등포 금고 매장 오시는 길 안내. ${SITE.address.road}, ${SITE.address.hours}.`,
+  title: "영등포 금고 매장 오시는길",
+  description: `영등포 금고 매장 오시는 길 안내. ${SITE.address.road}, 문래역 4번 출구 근처. ${SITE.address.hours}.`,
   alternates: { canonical: "/location" },
 };
 

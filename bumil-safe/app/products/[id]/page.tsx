@@ -26,7 +26,9 @@ export async function generateMetadata({
   const { id } = await params;
   const p = getProduct(id);
   if (!p) return { title: "제품을 찾을 수 없습니다" };
-  const description = `${p.catLabel} · ${p.lock} · ${p.price}원. 영등포 금고 전문점에서 범일금고 본사 정품을 직접 설치해 드립니다.`;
+  // 제품명을 앞에 넣어 페이지마다 다른 설명문으로 — 색상 변형(오아르크 18종 등)이 같은
+  // 분류·잠금·가격이라 제품명 없이는 동일 description이 돼 네이버 SEO 진단에 걸린다.
+  const description = `${p.name} · ${p.catLabel} · ${p.lock} · ${p.price}원. 영등포 금고 전문점에서 본사 정품을 직접 설치해 드립니다.`;
   return {
     title: p.name,
     description,
