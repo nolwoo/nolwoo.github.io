@@ -89,6 +89,50 @@ const LOCAL_BUSINESS_JSONLD = {
         closes: "18:00",
       },
       brand: { "@type": "Brand", name: SITE.brand },
+      // 제공 서비스 — 사장님 확인 사실(설치 지역 서울·경기, 이전 설치·개문 가능, 무상 A/S 1년·방문 수리).
+      // 가격은 지역·층·제품·승강기 유무에 따라 달라 넣지 않는다.
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "금고 판매·설치 서비스",
+        itemListElement: [
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "금고 방문 설치",
+              serviceType: "금고 설치",
+              description: "범일금고 정품을 전문 기사가 직접 방문해 설치합니다. 주문 후 보통 1주일 내외.",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "금고 이전 설치",
+              serviceType: "금고 이전 설치",
+              description: "이미 설치한 금고를 다른 위치로 옮겨 설치합니다.",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "금고 개문",
+              serviceType: "금고 개문",
+              description: "비밀번호나 열쇠를 분실했거나 열리지 않는 금고를 엽니다.",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "방문 수리·A/S",
+              serviceType: "금고 A/S",
+              description: "무상 A/S 1년, 방문 수리 가능.",
+            },
+          },
+        ],
+      },
       parentOrganization: { "@type": "Organization", name: SITE.brand, url: "https://bumilsafe.co.kr" },
       sameAs: [
         "https://pf.kakao.com/_bpxgiX",
