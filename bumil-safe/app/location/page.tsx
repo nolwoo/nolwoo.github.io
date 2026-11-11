@@ -7,7 +7,7 @@ import { SITE } from "@/lib/site";
 
 export const metadata = {
   title: "영등포 금고 매장 오시는길",
-  description: `영등포 금고 매장 오시는 길 안내. ${SITE.address.road}, 문래역 4번 출구 근처. ${SITE.address.hours}.`,
+  description: `영등포 금고 매장 오시는 길 안내. ${SITE.address.road} ${SITE.address.detail}, 문래역 4번 출구 근처. ${SITE.address.hours}.`,
   alternates: { canonical: "/location" },
 };
 
@@ -54,6 +54,7 @@ export default function LocationPage() {
               <ul className="mt-6 space-y-4 text-[15px]">
                 <Row label="도로명" value={SITE.address.road} />
                 <Row label="지번" value={SITE.address.jibun} />
+                <Row label="건물" value={SITE.address.detail} />
                 <Row
                   label="전화"
                   value={

@@ -58,7 +58,9 @@ export function Footer() {
                     </>
                   )}
                 </li>
-                <li>{SITE.address.road}</li>
+                <li>
+                  {SITE.address.road} {SITE.address.detail}
+                </li>
               </ul>
             </div>
           </div>

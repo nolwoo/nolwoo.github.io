@@ -63,14 +63,14 @@ const LOCAL_BUSINESS_JSONLD = {
       name: `${SITE.brand} ${SITE.branch}`,
       alternateName: [`${SITE.brand} 영등포`, `영등포 ${SITE.brand}`],
       description:
-        "범일금고 본사 정품을 취급하는 영등포 금고 대리점. 가정용·사무용 금고 상담, 전문 기사 방문 설치, 구매 후 A/S.",
+        "범일금고 본사 정품을 취급하는 영등포 금고 대리점. 가정용·사무용 금고 상담, 서울·경기 전 지역 전문 기사 방문 설치, 1년 무상 A/S.",
       image: `${SITE_URL}/og-image.jpg`,
       url: SITE_URL,
       telephone: "+82-2-2632-6070",
       priceRange: `${fmtWon(Math.min(...PRICES))}-${fmtWon(Math.max(...PRICES))}`,
       address: {
         "@type": "PostalAddress",
-        streetAddress: SITE.address.road,
+        streetAddress: `${SITE.address.road} ${SITE.address.detail}`,
         addressLocality: "영등포구",
         addressRegion: "서울특별시",
         addressCountry: "KR",
@@ -78,7 +78,10 @@ const LOCAL_BUSINESS_JSONLD = {
       // 네이버 지역검색 API가 돌려준 매장 좌표(mapx/mapy ÷ 1e7)
       geo: { "@type": "GeoCoordinates", latitude: 37.5206019, longitude: 126.899677 },
       hasMap: SITE.map.naver,
-      areaServed: { "@type": "AdministrativeArea", name: "서울특별시 영등포구" },
+      areaServed: [
+        { "@type": "AdministrativeArea", name: "서울특별시" },
+        { "@type": "AdministrativeArea", name: "경기도" },
+      ],
       openingHoursSpecification: {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],

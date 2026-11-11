@@ -24,6 +24,7 @@ export const SITE = {
 
   address: {
     road: "서울 영등포구 영등포로 164",
+    detail: "윤옥빌딩 1층",
     jibun: "서울 영등포구 당산동1가 6",
     hours: "평일 09:00–18:00 (주말·공휴일 상담 가능)",
   },

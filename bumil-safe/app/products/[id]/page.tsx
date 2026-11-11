@@ -65,7 +65,7 @@ export default async function ProductDetail({
     "@type": "Product",
     name: p.name,
     image: [p.img, ...(p.images ?? [])],
-    description: `${p.catLabel} · ${p.lock} · 범일금고 본사 정품. 영등포 전문 기사 방문 설치.`,
+    description: `${p.catLabel} · ${p.lock} · 범일금고 본사 정품. 서울·경기 전 지역 전문 기사 방문 설치, 1년 무상 A/S.`,
     brand: { "@type": "Brand", name: "범일금고" },
     category: p.catLabel,
     offers: {
@@ -166,7 +166,8 @@ export default async function ProductDetail({
                 />
               )}
               <Spec label="공급" value="범일금고 본사 정품" />
-              <Spec label="설치" value="영등포 전문 기사 방문 설치" />
+              <Spec label="설치" value="서울·경기 전 지역 전문 기사 방문 설치" />
+              <Spec label="A/S" value="무상 1년 · 방문 수리 가능" />
             </ul>
 
             <p className="mt-6 rounded-lg bg-parchment px-4 py-3 text-[13px] text-ink-muted">
