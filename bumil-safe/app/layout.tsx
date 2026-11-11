@@ -63,7 +63,7 @@ const LOCAL_BUSINESS_JSONLD = {
       name: `${SITE.brand} ${SITE.branch}`,
       alternateName: [`${SITE.brand} 영등포`, `영등포 ${SITE.brand}`],
       description:
-        "범일금고 본사 정품을 취급하는 영등포 금고 대리점. 가정용·사무용 금고 상담, 서울·경기 전 지역 전문 기사 방문 설치, 1년 무상 A/S.",
+        "범일금고 본사 정품을 취급하는 영등포 금고 대리점. 가정용·사무용 금고 상담, 서울·경기 전 지역 전문 기사 방문 설치, 1년 무상 A/S, 이전 설치와 금고 개문.",
       image: `${SITE_URL}/og-image.jpg`,
       url: SITE_URL,
       telephone: "+82-2-2632-6070",
