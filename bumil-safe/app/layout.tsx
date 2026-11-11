@@ -5,6 +5,7 @@ import { TopBanner } from "@/components/TopBanner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SITE } from "@/lib/site";
+import { PRODUCTS } from "@/lib/products";
 import { SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -47,23 +48,61 @@ export const metadata: Metadata = {
   },
 };
 
-// 지역 업체 구조화 데이터(JSON-LD) — 검색엔진이 상호·주소·전화·영업시간을 명확히 이해하도록
+// 지역 업체 구조화 데이터(JSON-LD) — 검색엔진·AI 검색이 상호·주소·전화·영업시간과
+// "같은 업체의 다른 프로필(카카오 채널·스마트스토어·네이버 플레이스)"을 하나로 묶어 이해하도록.
+// 값은 화면에 보이는 정보와 일치시킨다(전화·주소·시간은 lib/site.ts 기준).
+const PRICES = PRODUCTS.map((p) => Number(p.price.replace(/[^0-9]/g, "")));
+const fmtWon = (n: number) => `₩${n.toLocaleString("en-US")}`;
+
 const LOCAL_BUSINESS_JSONLD = {
   "@context": "https://schema.org",
-  "@type": "Store",
-  name: `${SITE.brand} ${SITE.branch}`,
-  image: `${SITE_URL}/og-image.jpg`,
-  telephone: SITE.phone,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: SITE.address.road,
-    addressLocality: "영등포구",
-    addressRegion: "서울특별시",
-    addressCountry: "KR",
-  },
-  areaServed: "영등포구",
-  openingHours: "Mo-Fr 09:00-18:00",
-  url: SITE_URL,
+  "@graph": [
+    {
+      "@type": "Store",
+      "@id": `${SITE_URL}/#store`,
+      name: `${SITE.brand} ${SITE.branch}`,
+      alternateName: [`${SITE.brand} 영등포`, `영등포 ${SITE.brand}`],
+      description:
+        "범일금고 본사 정품을 취급하는 영등포 금고 대리점. 가정용·사무용 금고 상담, 전문 기사 방문 설치, 구매 후 A/S.",
+      image: `${SITE_URL}/og-image.jpg`,
+      url: SITE_URL,
+      telephone: "+82-2-2632-6070",
+      priceRange: `${fmtWon(Math.min(...PRICES))}-${fmtWon(Math.max(...PRICES))}`,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: SITE.address.road,
+        addressLocality: "영등포구",
+        addressRegion: "서울특별시",
+        addressCountry: "KR",
+      },
+      // 네이버 지역검색 API가 돌려준 매장 좌표(mapx/mapy ÷ 1e7)
+      geo: { "@type": "GeoCoordinates", latitude: 37.5206019, longitude: 126.899677 },
+      hasMap: SITE.map.naver,
+      areaServed: { "@type": "AdministrativeArea", name: "서울특별시 영등포구" },
+      openingHoursSpecification: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "09:00",
+        closes: "18:00",
+      },
+      brand: { "@type": "Brand", name: SITE.brand },
+      parentOrganization: { "@type": "Organization", name: SITE.brand, url: "https://bumilsafe.co.kr" },
+      sameAs: [
+        "https://pf.kakao.com/_bpxgiX",
+        "https://smartstore.naver.com/safebumil",
+        "https://map.naver.com/p/entry/place/1073548864",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: `${SITE.brand} ${SITE.branch}`,
+      alternateName: `${SITE.brand} 영등포`,
+      inLanguage: "ko-KR",
+      publisher: { "@id": `${SITE_URL}/#store` },
+    },
+  ],
 };
 
 export default function RootLayout({
